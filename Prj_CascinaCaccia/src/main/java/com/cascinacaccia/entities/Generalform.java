@@ -33,7 +33,20 @@ public class Generalform {
 	private Category category;
 	
 	@OneToOne(mappedBy = "generalForm", cascade = CascadeType.ALL)
-    private InformationForm informationForm;
+    private Informationform informationForm;
+
+	
+	
+	public Generalform(String id, String name, String surname, String email, Category category,
+			Informationform informationForm) {
+		
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.category = category;
+		this.informationForm = informationForm;
+	}
 
 	public String getId() {
 		return id;
