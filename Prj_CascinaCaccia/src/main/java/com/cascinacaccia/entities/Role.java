@@ -5,7 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "roles")
+@Table(name="role")
 public class Role {
 	
 	//characteristics of the entity role
@@ -15,6 +15,12 @@ public class Role {
 	
 	//default constructor
 	public Role() {}
+	
+	// constructor that initializes the 'id' and 'name' fields
+	public Role(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 	
 	//getters and setters
 	public String getId() {
@@ -29,5 +35,4 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 }
