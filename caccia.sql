@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Dic 17, 2024 alle 16:35
+-- Creato il: Dic 17, 2024 alle 18:33
 -- Versione del server: 10.4.28-MariaDB
 -- Versione PHP: 8.2.4
 
@@ -20,6 +20,43 @@ SET time_zone = "+00:00";
 --
 -- Database: `caccia`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `category`
+--
+
+CREATE TABLE `category` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `general_form`
+--
+
+CREATE TABLE `general_form` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `surname` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `category_id` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `information_form`
+--
+
+CREATE TABLE `information_form` (
+  `id` varchar(255) NOT NULL,
+  `general_form_id` varchar(255) NOT NULL,
+  `content` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -86,6 +123,26 @@ INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 --
 
 --
+-- Indici per le tabelle `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indici per le tabelle `general_form`
+--
+ALTER TABLE `general_form`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Indici per le tabelle `information_form`
+--
+ALTER TABLE `information_form`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `general_form_id` (`general_form_id`);
+
+--
 -- Indici per le tabelle `role`
 --
 ALTER TABLE `role`
@@ -107,6 +164,18 @@ ALTER TABLE `user_roles`
 --
 -- Limiti per le tabelle scaricate
 --
+
+--
+-- Limiti per la tabella `general_form`
+--
+ALTER TABLE `general_form`
+  ADD CONSTRAINT `general_form_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+
+--
+-- Limiti per la tabella `information_form`
+--
+ALTER TABLE `information_form`
+  ADD CONSTRAINT `information_form_ibfk_1` FOREIGN KEY (`general_form_id`) REFERENCES `general_form` (`id`);
 
 --
 -- Limiti per la tabella `user_roles`
