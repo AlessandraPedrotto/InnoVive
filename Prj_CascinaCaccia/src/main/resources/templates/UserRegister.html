@@ -6,7 +6,8 @@
 </head>
 <body>
 	<h1>Register</h1>
-    <form method="post" action="/register">
+    <form th:action="@{/admin/register}" th:object="${user}" method="post">
+    
         <label for="name">Name:</label>
         <input type="text" name="name" required><br>
 
@@ -18,8 +19,14 @@
 
         <label for="password">Password:</label>
         <input type="password" name="password" required><br>
+    
+        <!-- Display success or error messages -->
+        <p th:if="${exist}" style="color:red;" th:text="${exist}"></p>
+        <p th:if="${regiSuccess}" style="color:green;" th:text="${regiSuccess}"></p>
+        <p th:if="${error}" style="color:red;" th:text="${error}"></p>
 
         <button type="submit">Register</button>
     </form>
+    <a href="/profile">Back </a>
 </body>
 </html>

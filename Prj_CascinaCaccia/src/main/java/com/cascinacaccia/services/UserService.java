@@ -108,11 +108,6 @@ public class UserService implements UserDetailsService{
         return false;
 	}
     
-    //get all users from the database
-    public List<User> getAllUsers() {
-        return userDAO.findAll();  
-    }
-    
     ///method to delete a user
     public void deleteUserById(String userId) {
         userDAO.deleteById(userId); 
