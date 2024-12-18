@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
+    <meta charset="ISO-8859-1">
     <title>Home</title>
 </head>
 <body>
-    <h2>Welcome to the Home Page</h2>
-    <p>You are successfully logged in!</p>
-    <a th:href="@{/logout}">Logout</a>
+    <h1>Welcome to the Home Page</h1>
+    <!-- Anchor links for Login and Registration -->
+    <a href="/login">Login</a> | 
+    <a href="/register">Register</a>
 </body>
 </html>
