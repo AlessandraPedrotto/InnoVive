@@ -16,7 +16,7 @@ public class Role {
 	//default constructor
 	public Role() {}
 	
-	// constructor that initializes the 'id' and 'name' fields
+	//constructor that initializes the 'id' and 'name' fields
 	public Role(String id, String name) {
         this.id = id;
         this.name = name;

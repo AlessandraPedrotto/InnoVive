@@ -22,12 +22,6 @@ public class AuthController {
         return "Login";
     }
 	
-	//when the user navigates to "/home", this method is called
-	@GetMapping("/home")
-    public String homePage() {
-        return "Home";
-    }
-	
 	//this is a GET request to "/register" where we load the registration form
     @GetMapping("/register")
     public String registerPage(Model model) {
@@ -38,9 +32,16 @@ public class AuthController {
     //this POST method handles the form submission after the user fills out the registration form
     @PostMapping("/register")
     public String registerUser(@ModelAttribute User user, Model model) {
-        try {
+    	
+    	// Check if the user (email) already exists
+        boolean userExists = userService.isEmailAlreadyInUse(user);
+        if (userExists) {
+            model.addAttribute("exist", "Error, the email is alredy registered.");
+            return "UserRegister";
+        }
+    	try {
             userService.register(user);
-            model.addAttribute("regiSuccess", "Registrato con successo");
+            model.addAttribute("regiSuccess", "Registered successfully");
             //after successful registration, redirect the user to the login page
             return "redirect:/login";
         } catch (Exception e) {
