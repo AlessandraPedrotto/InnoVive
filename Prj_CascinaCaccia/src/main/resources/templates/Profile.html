@@ -15,9 +15,10 @@
         </p>
 	</div>
     <!-- Admin-specific button -->
-    <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/dashboard">
-	    Admin Dashboard
+    <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">
+	    List Users
 	</a>
+	<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
     <!-- Logout link -->
     <a th:href="@{/logout}">Logout</a>
 </body>
