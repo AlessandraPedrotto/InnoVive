@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>Are you sure you want to delete this user?</h2>
+	<p>Name: <span th:text="${user.name}"></span></p>
+	<p>Surname: <span th:text="${user.surname}"></span></p>
+	<p>Email: <span th:text="${user.email}"></span></p>
+	
+	<!-- Form to confirm deletion -->
+	<form th:action="@{/admin/deleteUser}" method="post">
+	    <input type="hidden" name="userId" th:value="${user.id}" />
+	    <button type="submit">Yes, delete user</button>
+	</form>
+	<a href="/admin/listUsers">Back</a>
+</body>
+</html>
