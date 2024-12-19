@@ -1,7 +1,7 @@
 const buttons = document.querySelectorAll('.secondary a');
 const medie = document.getElementById('medie');
 const superiori = document.getElementById('superiori');
-const tutti = document.getElementById('tutti') 
+const tutti = document.getElementById('tutti') ;
 
 
 //  for each button, adding an event listener
