@@ -81,4 +81,27 @@ public class FilterService {
         users.addAll(usersBySurname);
         return users.stream().distinct().collect(Collectors.toList());
     }
+    
+    //method for the pagination
+    public List<User> getPaginatedUsers(List<User> allUsers, int page, int resultsPerPage) {
+        int startIndex = (page - 1) * resultsPerPage;
+        int endIndex = Math.min(startIndex + resultsPerPage, allUsers.size());
+        return allUsers.subList(startIndex, endIndex);
+    }
+    
+    //method to get all the pages
+    public int getTotalPages(List<User> allUsers, int resultsPerPage) {
+        return (int) Math.ceil((double) allUsers.size() / resultsPerPage);
+    }
+    
+    //method to get the first page
+    public int getStartPage(int currentPage, int blockSize) {
+        return (currentPage - 1) / blockSize * blockSize + 1;
+    }
+    
+    //method to get the last page
+    public int getEndPage(int currentPage, int blockSize, int totalPages) {
+        int endPage = (currentPage / blockSize) * blockSize + blockSize;
+        return Math.min(endPage, totalPages);
+    }
 }

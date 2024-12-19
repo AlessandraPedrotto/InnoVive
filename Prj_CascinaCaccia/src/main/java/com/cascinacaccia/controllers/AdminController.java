@@ -28,7 +28,9 @@ public class AdminController {
     //list of all the existing accounts
     @GetMapping("/listUsers")
     public String listUsers(@RequestParam(name = "query", required = false, defaultValue = "") String query,
-            				@RequestParam(name = "sort", required = false) Boolean sortAscending,Model model) {
+            				@RequestParam(name = "sort", required = false) Boolean sortAscending,
+            				@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+            		        @RequestParam(name = "size", required = false, defaultValue = "1") int size,Model model) {
         List<User> users;
 
         //if there's a query, search the users; otherwise, get all users
@@ -43,8 +45,29 @@ public class AdminController {
             users = filterService.sortUsersBySurname(users, sortAscending);
         }
 
-        model.addAttribute("users", users);
-        model.addAttribute("query", query); 
+        //pagination logic: Get the total number of users
+        int totalUsers = users.size();
+        
+        //calculate total pages
+        int totalPages = (int) Math.ceil((double) totalUsers / size);
+        
+        //ensure the current page is within the valid range
+        if (page < 1) {
+            page = 1; 
+        } else if (page > totalPages) {
+            page = totalPages; 
+        }
+
+        // Paginate the list of users
+        List<User> paginatedUsers = filterService.getPaginatedUsers(users, page, size);
+
+        // Add pagination details to the model
+        model.addAttribute("users", paginatedUsers);
+        model.addAttribute("query", query);
+        model.addAttribute("totalPages", totalPages); 
+        model.addAttribute("currentPage", page); 
+        model.addAttribute("totalUsers", totalUsers); 
+        model.addAttribute("sort", sortAscending); 
         return "ListUsers";
     }
 
