@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Attività</title>
+    <link rel="stylesheet" href="../static/styles/normalize.css">
+    <link rel="stylesheet" href="../static/styles/style.css?v=1.0" />
+
+</head>
+
+<body>
+    <!-- NAVBAR STARTS -->
+    <nav class="navbar">
+        <div class="logo">
+            EDUCATION
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="./Attivita.html">Attività</a></li>
+            <li><a href="./Struttura.html">Struttura</a></li>
+            <li><a href="./Prenota.html">Prenota</a></li>
+            <li><a href="/login" class="area-riservata">Area riservata</a></li>
+        </ul>
+        <!-- hamburger menu -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+                <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z">
+                </path>
+            </svg>
+        </div>
+
+        <!-- mobile menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="close" onclick="toggleMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+                    <path
+                        d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z">
+                    </path>
+                </svg>
+            </div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="./Attivita.html">Attività</a></li>
+                <li><a href="./Struttura.html">Struttura</a></li>
+                <li><a href="./Prenota.html">Prenota</a></li>
+                <!-- Anchor links for Login and Registration -->
+                <li><a href="/login" class="area-riservata">Area riservata</a></li>
+            </ul>
+            <div class="mobile-logo">
+                EDUCATION
+            </div>
+        </div>
+    </nav>
+    <!-- NAVBAR ENDS -->
+<script src="../static/scripts/main.js"></script>
+</body>
+
+</html>
