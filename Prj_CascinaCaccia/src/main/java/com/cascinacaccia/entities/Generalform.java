@@ -32,8 +32,8 @@ public class Generalform {
 	@JoinColumn(name="category_id",nullable = false)
 	private Category category;
 	
-	@OneToOne(mappedBy = "generalForm", cascade = CascadeType.ALL)
-    private Informationform informationForm;
+	//@OneToOne(mappedBy = "general_form", cascade = CascadeType.ALL)
+    //private Informationform informationForm;
 
 	
 	
@@ -45,7 +45,7 @@ public class Generalform {
 		this.surname = surname;
 		this.email = email;
 		this.category = category;
-		this.informationForm = informationForm;
+		//this.informationForm = informationForm;
 	}
 
 	public String getId() {
