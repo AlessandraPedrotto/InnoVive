@@ -78,6 +78,7 @@ public class SecurityConfig {
                 request.getSession().setAttribute("name", fullName);
                 request.getSession().setAttribute("userId", userId);
                 request.getSession().setAttribute("role", role);  //set role in session
+                System.out.println("Full Name set in session: " + fullName);
             }
             
             response.sendRedirect("/");

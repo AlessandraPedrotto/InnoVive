@@ -108,6 +108,13 @@ public class UserService implements UserDetailsService{
         return false;
 	}
     
+    //method to get user by email
+    public User getUserByEmail(Object principal) {
+    	UserDetails userDetails = (UserDetails) principal;
+        return userDAO.findByEmail(userDetails.getUsername())
+                      .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+    
     ///method to delete a user
     public void deleteUserById(String userId) {
         userDAO.deleteById(userId); 
@@ -122,6 +129,24 @@ public class UserService implements UserDetailsService{
         	//return the roles associated with the user
             return user.get().getRoles(); 
         }
-        throw new EntityNotFoundException("Utente non trovato con ID: " + idUser);
+        throw new EntityNotFoundException("User not found with ID: " + idUser);
+    }
+    
+    //method to change a user password 
+    public void changePassword(String userId, String oldPassword, String newPassword) throws Exception {
+        // Change user's password after verifying the old password
+        User user = userDAO.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+        // Verify old password is correct
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new Exception("The old password is wrong.");
+        }
+
+        // Encode new password and update user
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedNewPassword);
+
+        // Save user with new password
+        userDAO.save(user);
     }
 }
