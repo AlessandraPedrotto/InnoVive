@@ -115,6 +115,12 @@ public class UserService implements UserDetailsService{
                       .orElseThrow(() -> new RuntimeException("User not found"));
     }
     
+    //method to get user by id
+    public User getUserById(String userId) {
+        return userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    
     ///method to delete a user
     public void deleteUserById(String userId) {
         userDAO.deleteById(userId); 

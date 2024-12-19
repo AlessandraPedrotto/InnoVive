@@ -1,6 +1,8 @@
 package com.cascinacaccia.controllers;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,13 +26,18 @@ public class AdminController {
     UserService userService;
 	@Autowired
 	FilterService filterService;
+	
+	//regular expressions for validating email and password
+    private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
+    private static final String REGEX_EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
+	
     //list of all the existing accounts
     @GetMapping("/listUsers")
     public String listUsers(@RequestParam(name = "query", required = false, defaultValue = "") String query,
             				@RequestParam(name = "sort", required = false) Boolean sortAscending,
             				@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            		        @RequestParam(name = "size", required = false, defaultValue = "1") int size,Model model) {
+            		        @RequestParam(name = "size", required = false, defaultValue = "3") int size,Model model) {
         List<User> users;
 
         //if there's a query, search the users; otherwise, get all users
@@ -72,15 +79,25 @@ public class AdminController {
     }
 
     //delete User
+    @GetMapping("/deleteUser")
+    public String confirmDeleteUser(@RequestParam String userId, Model model) {
+        // Get the user details to display on the confirmation page
+        User user = userService.getUserById(userId);
+
+        // Add user data to the model so it can be displayed on the page
+        model.addAttribute("user", user);
+
+        // Return the confirmation page
+        return "DeleteUser"; // You will create this template next
+    }
+    
     @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam String userId) {
         userService.deleteUserById(userId);
-     
-        //redirect back to the dashboard
-        return "redirect:/admin/listUsers"; 
+        return "redirect:/admin/listUsers"; //redirect back to the list of users after deletion
     }
     
-  //this is a GET request to "/register" where we load the registration form
+    //this is a GET request to "/register" where we load the registration form
     @GetMapping("/register")
     @PreAuthorize("hasRole('ADMIN')")
     public String registerPage(Model model) {
@@ -88,25 +105,51 @@ public class AdminController {
         return "UserRegister"; 
     }
 
-    // Handle User Registration (POST request)
+    //handle User Registration (POST request)
     @PostMapping("/register")
     @PreAuthorize("hasRole('ADMIN')")
     public String registerUser(@ModelAttribute User user, Model model) {
-        // Check if the email is already registered
+        //check if the email is already registered
         boolean userExists = userService.isEmailAlreadyInUse(user);
         if (userExists) {
             model.addAttribute("exist", "Error, the email is already registered.");
             return "UserRegister";  // Stay on the register page
         }
 
+        //validate email format
+        if (!isValidEmail(user.getEmail())) {
+            model.addAttribute("emailError", "Invalid email format.");
+            return "UserRegister";  // Stay on the register page
+        }
+
+        //validate password format
+        if (!isValidPassword(user.getPassword())) {
+            model.addAttribute("passwordError", "Password must be at least 8 characters long, contain an uppercase letter, a number, and a special character.");
+            return "UserRegister";  // Stay on the register page
+        }
+        
         try {
-            // Register the new user
+            //register the new user
             userService.register(user);
             model.addAttribute("regiSuccess", "Registered successfully");
-            return "redirect:/profile";  // Redirect to profile page after success
+            return "redirect:/profile";  //redirect to profile page after success
         } catch (Exception e) {
             model.addAttribute("error", "Registration failed: " + e.getMessage());
-            return "UserRegister";  // Stay on the register page if there is an error
+            return "UserRegister";  //stay on the register page if there is an error
         }
+    }
+    
+    //method to validate password using regex
+    private boolean isValidPassword(String password) {
+        Pattern pattern = Pattern.compile(REGEX_PASSWORD);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches(); 
+    }
+
+    //method to validate email using regex
+    private boolean isValidEmail(String email) {
+        Pattern pattern = Pattern.compile(REGEX_EMAIL);  
+        Matcher matcher = pattern.matcher(email); 
+        return matcher.matches(); 
     }
 }
