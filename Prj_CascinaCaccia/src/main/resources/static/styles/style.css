@@ -208,3 +208,102 @@
   }
   
   /* NAVBAR ENDS */
+
+
+/* ATTIVITA STARTS */
+  .page-title{
+    text-align: center;
+}
+
+
+/* secondary menu */
+.secondary {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+}
+
+.secondary a {
+    text-decoration: none;
+    color: #000;
+    transition: all 0.5s ease;
+    padding: 15px;
+}
+
+/* hidden class */
+.hidden {
+    display: none;
+}
+
+/* styling links */
+.secondary a:hover {
+    cursor: pointer;
+    color: #F09321;
+    border-bottom: 1px solid #F09321;
+}
+
+.secondary a.active,
+.active {
+    color: #F09321;
+    border-bottom: 1px solid #F09321;
+}
+
+/* attivita div */
+.attivita {
+    display: flex;
+    flex-direction: column;
+    padding-top: 15px;
+}
+
+@media screen and (min-width:1180px) {
+    .attivita {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+
+
+.card-attivita{
+    display: flex;
+}
+
+
+.foto-attivita{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+.foto-attivita img{
+    width: 350px;
+}
+
+.descrizione-attivita{
+    width: 50%;
+    padding: 2rem;
+}
+
+@media screen and (max-width:768px) {
+    .card-attivita {
+        flex-direction: column;
+    }
+
+    .foto-attivita{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        order: -1;
+    }
+    .foto-attivita img{
+        width: 80%;
+    }
+    
+    .descrizione-attivita{
+        width: 100%;
+    }
+}
+  /* ATTIVITA ENDS */
