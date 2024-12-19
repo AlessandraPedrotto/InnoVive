@@ -6,6 +6,8 @@
 </head>
 <body>
 	<h2>Are you sure you want to delete this user?</h2>
+	
+	<!-- User details -->
 	<p>Name: <span th:text="${user.name}"></span></p>
 	<p>Surname: <span th:text="${user.surname}"></span></p>
 	<p>Email: <span th:text="${user.email}"></span></p>
@@ -15,6 +17,8 @@
 	    <input type="hidden" name="userId" th:value="${user.id}" />
 	    <button type="submit">Yes, delete user</button>
 	</form>
+	
+	<!-- Exit page button -->
 	<a href="/admin/listUsers">Back</a>
 </body>
 </html>

@@ -6,6 +6,8 @@
 </head>
 <body>
 	<h1>Register</h1>
+	
+	<!-- Register form -->
     <form th:action="@{/admin/register}" th:object="${user}" method="post">
     
         <label for="name">Name:</label>
@@ -27,6 +29,8 @@
 
         <button type="submit">Register</button>
     </form>
+    
+    <!-- Exit page button -->
     <a href="/profile">Back </a>
 </body>
 </html>

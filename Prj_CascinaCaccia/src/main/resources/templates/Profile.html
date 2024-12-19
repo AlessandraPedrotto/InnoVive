@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
     <meta charset="ISO-8859-1">
     <title>Profile</title>
@@ -25,8 +24,11 @@
     <!-- Admin-specific buttons -->
     <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
 	<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
+	
+	<!-- Buttons for every user -->
     <a href="/changePassword">Change password</a>
     <a href="/profile">View all requests</a>
+    
     <!-- Logout link -->
     <a th:href="@{/logout}">Logout</a>
 </body>
