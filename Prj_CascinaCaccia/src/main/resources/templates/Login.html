@@ -6,6 +6,8 @@
 </head>
 <body>
     <h2>Login</h2>
+    
+    <!-- Login form -->
     <form th:action="@{/login}" method="post">
         <label for="email">Email:</label>
         <input type="email" id="email" name="username" required><br>
@@ -15,6 +17,8 @@
 
         <button type="submit">Login</button>
     </form>
+    
+    <!-- Error and logout message -->
     <p th:if="${param.error}">Invalid email or password</p>
     <p th:if="${param.logout}">You have been logged out</p>
 </body>
