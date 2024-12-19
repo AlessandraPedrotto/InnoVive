@@ -46,5 +46,30 @@
         </tr>
     </tbody>
 </table>
+<!-- Pagination Controls -->
+    <div>
+    <!-- First Page -->
+    <a th:if="${currentPage > 1}" th:href="@{/admin/listUsers(page=1, query=${query}, sort=${sort})}">First Page</a>
+
+    <!-- Previous Page -->
+    <a th:if="${currentPage > 1}" 
+       th:href="@{/admin/listUsers(page=${currentPage - 1}, query=${query}, sort=${sort})}" 
+       class="btn btn-outline-primary mx-1">Previous Page</a>
+
+    <!-- Display page numbers -->
+    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+        <a th:href="@{/admin/listUsers(page=${i}, query=${query}, sort=${sort})}" 
+           th:text="${i}" 
+           class="btn btn-outline-primary mx-1" 
+           th:classappend="${i == currentPage ? 'btn-primary text-white' : ''}"></a>
+    </span>
+
+    <!-- Next Page -->
+    <a th:if="${currentPage < totalPages}" 
+       th:href="@{/admin/listUsers(page=${currentPage + 1}, query=${query}, sort=${sort})}" 
+       class="btn btn-outline-primary mx-1">Next Page</a>
+    <!-- Last Page -->
+    <a th:if="${currentPage < totalPages}" th:href="@{/admin/listUsers(page=${totalPages}, query=${query}, sort=${sort})}">Last Page</a>
+</div>
 </body>
 </html>
