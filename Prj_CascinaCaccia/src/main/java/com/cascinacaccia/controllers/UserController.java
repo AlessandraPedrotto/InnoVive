@@ -2,6 +2,8 @@ package com.cascinacaccia.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +28,8 @@ public class UserController {
 	UserService userService;
 	@Autowired
 	UserImageDAO userImageDAO;
+	
+	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
 	
 	//navigation to profile page
 	@GetMapping("/profile")
@@ -66,12 +70,16 @@ public class UserController {
         try {
             String oldPassword = formData.get("oldPassword");
             String newPassword = formData.get("newPassword");
-            
             String confirmPassword = formData.get("confirmPassword");
             
             //check if the new password you entered is correct
             if (!newPassword.equals(confirmPassword)) {
                 redirectAttributes.addFlashAttribute("error", "New passwords do not match.");
+                return "redirect:/changePassword";
+            }
+            
+            if (!isValidPassword(newPassword)) {
+                redirectAttributes.addFlashAttribute("error", "Password must be at least 8 characters long, contain an uppercase letter, a number, and a special character.");
                 return "redirect:/changePassword";
             }
             
@@ -86,6 +94,13 @@ public class UserController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/changePassword";
         }
+    }
+    
+    //method to validate password using regex (same logic as in AdminController)
+    private boolean isValidPassword(String password) {
+        Pattern pattern = Pattern.compile(REGEX_PASSWORD);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches(); 
     }
     
     //navigation to profile image page

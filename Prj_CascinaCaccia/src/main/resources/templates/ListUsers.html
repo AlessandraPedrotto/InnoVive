@@ -48,6 +48,12 @@
 		            <td th:text="${user.surname}"></td>
 		            <td th:text="${user.email}"></td>
 		            <td>
+		            	<!-- Button to view Public Profile -->
+	                    <a th:href="@{/admin/publicProfile/{userId}(userId=${user.id})}">
+	                        <button type="button">View Profile</button>
+	                    </a>
+	                    
+	                    <!-- Button to delete profile -->
 		                <form th:action="@{/admin/deleteUser}" method="get">
 		                    <input type="hidden" name="userId" th:value="${user.id}" />
 		                    <button sec:authorize="hasRole('ADMIN')" type="submit">Delete</button>
