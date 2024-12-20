@@ -9,7 +9,7 @@
 
 <body>
     <h2>Login</h2>
-    
+
     <!-- Login form -->
     <form th:action="@{/login}" method="post">
         <label for="email">Email:</label>
@@ -20,7 +20,7 @@
 
         <button type="submit">Login</button>
     </form>
-    
+
     <!-- Error and logout message -->
     <p th:if="${param.error}">Invalid email or password</p>
     <p th:if="${param.logout}">You have been logged out</p>
@@ -46,7 +46,7 @@
                 <div class="links">
                     <a href="#">Attivita'</a>
                     <a href="#">Struttura</a>
-                    <a href="#">Preonta</a>
+                    <a href="#">Prenota</a>
                 </div>
                 <div class="footer-logo">
                     <p>EDUCATION</p>
