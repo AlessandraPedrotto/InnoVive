@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +22,11 @@ public class User {
     private String surname;
     private String email;
     private String password;
+    
+    //relationship between user and user image
+    @ManyToOne
+    @JoinColumn(name = "userImg_id")
+    private UserImage userImage;
     
     //relationship between user and role
     @ManyToMany(fetch = FetchType.EAGER)
@@ -63,6 +69,12 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public UserImage getUserImage() {
+		return userImage;
+	}
+	public void setUserImage(UserImage userImage) {
+		this.userImage = userImage;
 	}
 	public List<Role> getRoles() {
         return roles;
