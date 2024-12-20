@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import com.cascinacaccia.entities.Role;
 import com.cascinacaccia.entities.User;
+import com.cascinacaccia.entities.UserImage;
 import com.cascinacaccia.repos.UserDAO;
+import com.cascinacaccia.repos.UserImageDAO;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -28,6 +30,8 @@ public class UserService implements UserDetailsService{
 	
 	@Autowired
 	UserDAO userDAO;
+	@Autowired
+	UserImageDAO userImageDAO;
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
@@ -42,6 +46,13 @@ public class UserService implements UserDetailsService{
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
+        
+     // Fetch the default profile image from the database (assuming ID 1 for default image)
+        UserImage defaultProfileImage = userImageDAO.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Default profile image not found"));
+        
+        // Set the default profile image for the new user
+        user.setUserImage(defaultProfileImage);
         
         //create a list of roles for the user
         List<Role> roles = new ArrayList<>();
@@ -153,6 +164,25 @@ public class UserService implements UserDetailsService{
         user.setPassword(encodedNewPassword);
 
         //save user with new password
+        userDAO.save(user);
+    }
+    
+    //retrieve all available user images
+    public List<UserImage> getAllUserImg() {
+        return userImageDAO.findAll();
+    }
+    
+    //method to assign or change the profile image of a user
+    public void assignOrUpdateProfileImage(String userId, Long userImageId) {
+        //get the user by ID
+        User user = userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        //get the image by ID
+        UserImage userImage = userImageDAO.findById(userImageId).orElseThrow(() -> new RuntimeException("Image not found"));
+
+        user.setUserImage(userImage);
+        
+        //save the user with the new image
         userDAO.save(user);
     }
 }
