@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -81,6 +82,21 @@ public class AdminController {
         model.addAttribute("sort", sortAscending);
         model.addAttribute("hasUsers", !users.isEmpty()); 
         return "ListUsers";
+    }
+    
+    //view user details (Public Profile)
+    @GetMapping("/publicProfile/{userId}")
+    public String publicProfile(@PathVariable("userId") String userId, Model model) {
+        User user = userService.getUserById(userId);
+
+        //add user details to the model (name, surname, email, and profile image)
+        String profileImageUrl = user.getUserImage() != null ? user.getUserImage().getImgPath() : "/default-image.png";
+        
+        model.addAttribute("fullName", user.getName());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("profileImageUrl", profileImageUrl);
+        model.addAttribute("surname", user.getSurname());
+        return "PublicProfile";
     }
 
     //delete User

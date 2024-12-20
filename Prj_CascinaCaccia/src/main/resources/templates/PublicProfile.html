@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>User Profile</h2>
+
+	<div>
+	    <p><strong>Name:</strong> <span th:text="${fullName}"></span></p>
+	    <p><strong>Surname:</strong> <span th:text="${surname}"></span></p>
+	    <p><strong>Email:</strong> <span th:text="${email}"></span></p>
+	    <p><strong>Profile Image:</strong> <img th:src="@{${profileImageUrl}}" alt="Profile Image" width="100" height="100" /></p>
+	</div>
+	
+	<!-- Exit page button -->
+	<a href="/admin/listUsers" class="button">Back to User List</a>
+</body>
+</html>
