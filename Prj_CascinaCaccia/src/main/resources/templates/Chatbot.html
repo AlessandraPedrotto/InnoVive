@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caccia Chatbot</title>
+<style>
+	/* Replay icon for user messages */
+	.message.user .text span {
+	    color: #888; /* Gray color for the icon */
+	}
+	
+	.message.user .text span:hover {
+	    color: #007bff; /* Blue on hover */
+	}
+	
+    /* Chatbot Button at the bottom right */
+    #chatbotButton {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    #chatbotButton:hover {
+        background-color: #45a049;
+    }
+    
+    /* Chatbot Container */
+    #chatbotContainer {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        background-color: #4CAF50;
+        border-radius: 10px;
+        display: none;
+        flex-direction: column;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        padding: 10px;
+    }
+    
+    /* Chatbot Header */
+    #chatbotHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+        font-weight: bold;
+    }
+    
+    /* Messages */
+    #chatMessages {
+        flex-grow: 1;
+        padding: 10px;
+        overflow-y: scroll;  
+        scrollbar-width: none; 
+        -ms-overflow-style: none; 
+    }
+    
+    #chatMessages::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .message {
+        display: flex;
+        margin-bottom: 10px;
+        flex-direction: column;
+    }
+    
+    .message.user {
+        align-items: flex-end;
+    }
+    
+    .message.bot {
+        align-items: flex-start;
+    }
+    
+    .message .text {
+        max-width: 75%;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 14px;
+        word-wrap: break-word;
+    }
+    
+    .message.user .text {
+        background-color: white;
+        color: black;
+    }
+    
+    .message.bot .text {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    /* Buttons for chatbot */
+    .buttons-container {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column; 
+    }
+    
+    .buttons-container button {
+        background-color: white;
+        color: black;
+        border: 1px solid #ccc;
+        padding: 8px;
+        border-radius: 5px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+    
+    .buttons-container button:hover {
+        background-color: #f0f0f0;
+    }
+    
+    .buttons-container button:disabled {
+        background-color: #e0e0e0;
+        cursor: not-allowed;
+    }
+</style>
+</head>
+<body>
+
+    <!-- Chatbot Button -->
+    <div id="chatbotButton" onclick="toggleChatbot()">Chat with Caccia</div>
+
+    <!-- Chatbot Container -->
+    <div id="chatbotContainer">
+        <div id="chatbotHeader">
+            <span>Chat with Caccia</span>
+            <button onclick="toggleChatbot()">X</button>
+        </div>
+        <div id="chatMessages"></div>
+    </div>
+
+<script>
+//Toggle the visibility of the chatbot container
+function toggleChatbot() {
+    const chatbotContainer = document.getElementById('chatbotContainer');
+    chatbotContainer.style.display = (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '') ? 'flex' : 'none';
+
+    // If chatbot is shown for the first time, display the initial message
+    if (chatbotContainer.style.display === 'flex' && document.getElementById('chatMessages').childElementCount === 0) {
+        showInitialMessage();
+    }
+}
+
+function handleQuestionClick(question, buttonsContainer) {
+    // Disable all buttons in the current group when a button is clicked
+    disableAllButtons();
+
+    // Add user message with replay icon
+    const userMessage = document.createElement('div');
+    userMessage.classList.add('message', 'user');
+
+    const userText = document.createElement('div');
+    userText.classList.add('text');
+    userText.textContent = question;
+
+    // Add replay icon
+    const replayIcon = document.createElement('span');
+    replayIcon.innerHTML = "&#x21ba;"; // Unicode for refresh icon
+    replayIcon.style.cursor = "pointer";
+    replayIcon.style.marginLeft = "10px";
+    replayIcon.style.fontSize = "12px";
+    replayIcon.title = "Replay this question";
+
+    replayIcon.onclick = () => {
+        handleQuestionClick(question, buttonsContainer);
+    };
+
+    userText.appendChild(replayIcon); // Add the icon next to the text
+    userMessage.appendChild(userText);
+    document.getElementById('chatMessages').appendChild(userMessage);
+
+    // Simulate bot response
+    setTimeout(() => {
+        const botMessage = document.createElement('div');
+        botMessage.classList.add('message', 'bot');
+
+        const botText = document.createElement('div');
+        botText.classList.add('text');
+        botText.textContent = getBotResponse(question);
+
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.classList.add('buttons-container');
+
+        // Handle additional questions for "What can you do?"
+        if (question === "What can you do?") {
+            const followUpQuestions = [
+                "How do you help with tasks?",
+                "Can you provide examples?",
+                "What makes you unique?"
+            ];
+
+            followUpQuestions.forEach(followUp => {
+                const followUpButton = document.createElement('button');
+                followUpButton.textContent = followUp;
+                followUpButton.onclick = () => handleQuestionClick(followUp, buttonsContainer);
+                buttonsContainer.appendChild(followUpButton);
+            });
+        }
+
+        // Add "Ask something else" button
+        const askMoreButton = document.createElement('button');
+        askMoreButton.textContent = "Ask something else";
+        askMoreButton.onclick = function () {
+            // Disable all buttons in the current group
+            disableAllButtons();
+
+            // Add "Ask something else" as a user message
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('message', 'user');
+
+            const userText = document.createElement('div');
+            userText.classList.add('text');
+            userText.textContent = "Ask something else";
+            userMessage.appendChild(userText);
+            document.getElementById('chatMessages').appendChild(userMessage);
+
+            // Show the initial message after user message is added
+            showInitialMessage();
+
+            // Scroll to the bottom of the chat
+            scrollToBottom();
+        };
+        buttonsContainer.appendChild(askMoreButton);
+
+        botMessage.appendChild(botText);
+        botMessage.appendChild(buttonsContainer);
+        document.getElementById('chatMessages').appendChild(botMessage);
+
+        // Scroll to the bottom of the chat
+        scrollToBottom();
+    }, 500);
+}
+
+// When showing initial message, disable all buttons if they are already shown
+function showInitialMessage() {
+    // Disable all previous buttons before rendering new ones
+    disableAllButtons();
+
+    const botMessage = document.createElement('div');
+    botMessage.classList.add('message', 'bot');
+    
+    const botText = document.createElement('div');
+    botText.classList.add('text');
+    botText.textContent = "How can I help you?";
+    
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.classList.add('buttons-container');
+    
+    const questions = [
+        "What is your name?",
+        "What can you do?",
+        "Tell me a joke!"
+    ];
+
+    questions.forEach(question => {
+        const button = document.createElement('button');
+        button.textContent = question;
+        button.onclick = () => handleQuestionClick(question, buttonsContainer);
+        buttonsContainer.appendChild(button);
+    });
+
+    botMessage.appendChild(botText);
+    botMessage.appendChild(buttonsContainer);
+    document.getElementById('chatMessages').appendChild(botMessage);
+
+    // Scroll to the bottom of the chat
+    scrollToBottom();
+}
+
+// Disable all buttons from previous responses
+function disableAllButtons() {
+    const allButtons = document.querySelectorAll('.buttons-container button');
+    allButtons.forEach(button => button.disabled = true);
+}
+
+// Bot response based on user input
+function getBotResponse(userMessage) {
+    const responses = {
+        "What is your name?": "I am Caccia, your friendly chatbot!",
+        "What can you do?": "I can answer your questions, tell jokes, and assist with tasks! Here's more I can do:",
+        "Tell me a joke!": "Why don't skeletons fight each other? They don't have the guts!",
+        "How do you help with tasks?": "I provide step-by-step guidance to help you complete your tasks efficiently.",
+        "Can you provide examples?": "Sure! I can assist with coding, answering questions, and even creative writing.",
+        "What makes you unique?": "I’m fast, adaptive, and always ready to help!"
+    };
+
+    return responses[userMessage] || "I'm sorry, I didn't understand that.";
+}
+
+// Scroll to the bottom of the chat
+function scrollToBottom() {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+</script>
+
+</body>
+</html>

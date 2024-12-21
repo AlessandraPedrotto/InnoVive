@@ -22,7 +22,7 @@ public class GeneralformController {
 	public String generalForm(){
 		return "GeneralForm";
 	}
-	
+	/*
 	public List<Generalform> getAllGeneralForms(){
 		return generalservice.getAllGeneralForms();
 	}
@@ -30,7 +30,7 @@ public class GeneralformController {
 	public Generalform saveGeneralform(Generalform generalform) {
 		return generalservice.saveGeneralform(generalform);
 	}
-	
+	*/
 	
 	
 
