@@ -19,7 +19,8 @@ public class InformationformController {
 		public String informationForm(){
 			return "InformationForm";
 		}
-		
+}
+		/*
 		@GetMapping
 		public List<Informationform> getAllInformationForms(){
 			return informationservice.getAllInformationForms();
@@ -27,5 +28,5 @@ public class InformationformController {
 		
 			
 }
-   
+   */
 

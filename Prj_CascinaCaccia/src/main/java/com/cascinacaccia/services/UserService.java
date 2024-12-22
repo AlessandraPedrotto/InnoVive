@@ -1,6 +1,5 @@
 package com.cascinacaccia.services;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,9 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.cascinacaccia.entities.PasswordResetToken;
 import com.cascinacaccia.entities.Role;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
@@ -57,11 +53,11 @@ public class UserService implements UserDetailsService{
         user.setEmail(email);
         user.setPassword(password);
         
-     // Fetch the default profile image from the database (assuming ID 1 for default image)
+        //fetch the default profile image from the database
         UserImage defaultProfileImage = userImageDAO.findById(1L)
                 .orElseThrow(() -> new RuntimeException("Default profile image not found"));
         
-        // Set the default profile image for the new user
+        //set the default profile image for the new user
         user.setUserImage(defaultProfileImage);
         
         //create a list of roles for the user
@@ -112,69 +108,6 @@ public class UserService implements UserDetailsService{
                 .authorities(authorities)
                 .build();
     }
-	
-	// Generate the password reset link and send the email
-    public String sendResetEmail(User user) {
-        try {
-            String resetLink = generateResetToken(user);
-            SimpleMailMessage msg = new SimpleMailMessage();
-            msg.setFrom("innovive2024@gmail.com");
-            msg.setTo(user.getEmail());
-            msg.setSubject("Forgotten Password");
-            msg.setText("Hello, \n\nPlease click on this link to reset your password: " 
-                    + resetLink + "\n\nRegards, \nCascina Caccia");
-            javaMailSender.send(msg);
-            return "success";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error";
-        }
-    }
-
-    // Generate reset token and create a reset link
-    private String generateResetToken(User user) {
-        UUID uuid = UUID.randomUUID();
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        LocalDateTime expiryDateTime = currentDateTime.plusMinutes(15);
-        
-        PasswordResetToken resetToken = new PasswordResetToken();
-        resetToken.setUser(user);
-        resetToken.setToken(uuid.toString());
-        resetToken.setExpiryDateTime(expiryDateTime);
-
-        // Save the token in the database
-        tokenDAO.save(resetToken);
-
-        // Generate the reset link
-        String endpointUrl = "http://localhost:8080/resetPassword/";
-        return endpointUrl + resetToken.getToken();
-    }
-	
- // Check if a token has expired
-    public boolean hasExpired(LocalDateTime expiryDateTime) {
-        return expiryDateTime.isBefore(LocalDateTime.now());
-    }
-
-
-    // Find a reset token by its value
-    public PasswordResetToken findResetTokenByToken(String token) {
-        return tokenDAO.findByToken(token); // Lookup token in the database
-    }
-	
- // Run this method every 1 second
-    @Scheduled(fixedRate = 1000)  // Every second
-    public void cleanExpiredTokens() {
-        LocalDateTime now = LocalDateTime.now();
-        
-        // Fetch tokens that have expired
-        List<PasswordResetToken> expiredTokens = tokenDAO.findByExpiryDateTimeBefore(now);
-        
-        // If there are expired tokens, delete them immediately
-        if (!expiredTokens.isEmpty()) {
-            tokenDAO.deleteAll(expiredTokens);
-            System.out.println("Expired tokens cleaned up: " + expiredTokens.size());
-        }
-    }
     
 	//method to check if an email already exists in the db
     public boolean isEmailAlreadyInUse(User user) {
@@ -204,8 +137,7 @@ public class UserService implements UserDetailsService{
         return userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    
-    ///method to delete a user
+    //method to delete a user
     public void deleteUserById(String userId) {
         userDAO.deleteById(userId); 
     }
@@ -247,7 +179,8 @@ public class UserService implements UserDetailsService{
     
     //method to assign or change the profile image of a user
     public void assignOrUpdateProfileImage(String userId, Long userImageId) {
-        //get the user by ID
+        
+    	//get the user by ID
         User user = userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
         //get the image by ID

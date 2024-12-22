@@ -7,7 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cascinacaccia.entities.PasswordResetToken;
 
+//the TokenDAO interface provides standard methods for CRUD operations (e.g., save, delete)
 public interface TokenDAO extends JpaRepository<PasswordResetToken, Integer> {
+	
 	PasswordResetToken findByToken(String token);
-	 List<PasswordResetToken> findByExpiryDateTimeBefore(LocalDateTime expiryDateTime);
+	
+	List<PasswordResetToken> findByExpiryDateTimeBefore(LocalDateTime expiryDateTime);
 }
