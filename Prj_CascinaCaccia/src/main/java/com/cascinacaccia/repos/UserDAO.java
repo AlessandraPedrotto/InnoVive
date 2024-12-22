@@ -13,7 +13,6 @@ public interface UserDAO extends JpaRepository<User, String>{
 	public List<User> findAll();
 	public boolean existsById(String Id);
 	public boolean existsByEmail(String email);
-	
 	List<User> findByNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(String name, String surname);
 	List<User> findByEmailContainingIgnoreCase(String email);
 	List<User> findByNameContainingIgnoreCase(String name);

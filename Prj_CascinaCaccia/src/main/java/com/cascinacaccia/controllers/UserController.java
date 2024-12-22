@@ -2,20 +2,25 @@ package com.cascinacaccia.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cascinacaccia.entities.PasswordResetToken;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
+import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.repos.UserImageDAO;
 import com.cascinacaccia.services.UserService;
 
@@ -28,6 +33,10 @@ public class UserController {
 	UserService userService;
 	@Autowired
 	UserImageDAO userImageDAO;
+	@Autowired
+	UserDAO userDAO;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
 	
@@ -129,4 +138,91 @@ public class UserController {
         }
         return "redirect:/profile";
     }
+    
+  //navigation to the page forgot password
+    @GetMapping("/forgotPassword")
+    public String showForgotPasswordPage() {
+        return "ForgotPassword"; 
+    }
+
+    @PostMapping("/forgotPassword")
+    public String processForgotPassword(@RequestParam("email") String email, Model model) {
+        Optional<User> optionalUser = userDAO.findByEmail(email);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            String result = userService.sendResetEmail(user); 
+            if ("success".equals(result)) {
+                model.addAttribute("success", "Email di reset inviata correttamente a " + email);
+            } else {
+                model.addAttribute("error", "Errore durante l'invio dell'email.");
+            }
+        } else {
+            model.addAttribute("error", "Utente con questa email non trovato.");
+        }
+
+        return "ForgotPassword"; 
+    }
+    
+    // Mostra il form di reset della password quando l'utente clicca sul link
+    @GetMapping("/resetPassword/{token}")
+    public String showResetPasswordForm(@PathVariable String token, Model model) {
+        System.out.println("Received token: " + token);  // Check if the token is correctly passed
+        PasswordResetToken resetToken = userService.findResetTokenByToken(token);
+
+        if (resetToken != null && !userService.hasExpired(resetToken.getExpiryDateTime())) {
+            model.addAttribute("token", token); // Add the token to the model
+            return "ResetPassword"; // Display the form
+        }
+
+        return "redirect:/?error=expired"; // Redirect if token is expired or invalid
+    }
+
+
+
+    // Processa il reset della password
+    @PostMapping("/resetPassword")
+    public String processResetPassword(@RequestParam("token") String token,
+                                       @RequestParam("password") String password, 
+                                       @RequestParam("confirmPassword") String confirmPassword,
+                                       Model model) {
+        // Log the received token
+        System.out.println("Received token in POST: " + token);
+        
+        // Fetch the reset token from the database
+        PasswordResetToken resetToken = userService.findResetTokenByToken(token);
+        if (resetToken == null) {
+            System.out.println("Token not found in POST request!");
+            return "redirect:/?error=invalidToken";
+        }
+
+        // Log the expiry date of the token
+        System.out.println("Token expiry date: " + resetToken.getExpiryDateTime());
+        
+        // Check if the token has expired
+        if (userService.hasExpired(resetToken.getExpiryDateTime())) {
+            System.out.println("Token has expired.");
+            return "redirect:/?error=expired";
+        }
+
+        // Continue with the password reset process if the token is valid
+        if (!password.equals(confirmPassword)) {
+            model.addAttribute("error", "Le password non coincidono.");
+            model.addAttribute("token", token);
+            return "ResetPassword";
+        }
+        
+        if (!isValidPassword(confirmPassword)) {
+        	model.addAttribute("error", "Password must be at least 8 characters long, contain an uppercase letter, a number, and a special character.");
+            model.addAttribute("token", token);
+        	return "ResetPassword";
+        }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(password)); // Hash the password before saving
+        userDAO.save(user);
+
+        return "redirect:/login?success=passwordReset";
+    }
+
 }
