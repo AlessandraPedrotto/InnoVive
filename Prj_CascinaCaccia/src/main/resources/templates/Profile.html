@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
     <meta charset="ISO-8859-1">
     <title>Profile</title>
@@ -11,6 +10,8 @@
     
     <!-- Display user details -->
     <div>
+    	<p>Profile image:</p>
+    	<img th:src="@{${profileImageUrl}}" alt="Profile Image" />
     	<p><strong>Email:</strong> <span th:text="${email}">No email found</span></p>
 		<p><strong>Name:</strong> <span th:text="${fullName}">No name found</span><strong> Surname:</strong> <span th:text="${surname}">No surname found</span></p>
     </div>
@@ -23,10 +24,14 @@
 	</div>
 	
     <!-- Admin-specific buttons -->
-    <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
-	<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
-    <a href="/changePassword">Change password</a>
-    <a href="/profile">View all requests</a>
+    <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>|
+	<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>|
+	
+	<!-- Buttons for every user -->
+    <a href="/changePassword">Change password</a>|
+    <a href="/profile">View all requests</a>|
+    <a href="/profileImage">Profile image</a>|
+    
     <!-- Logout link -->
     <a th:href="@{/logout}">Logout</a>
 </body>

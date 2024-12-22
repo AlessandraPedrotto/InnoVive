@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="ISO-8859-1">
-<title>User Register</title>
+    <meta charset="ISO-8859-1">
+    <title>User Register</title>
+    <link rel="stylesheet" href="../static/styles/style.css?v=1.0">
 </head>
+
 <body>
-	<h1>Register</h1>
+    <h1>Register</h1>
+
+    <!-- Register form -->
     <form th:action="@{/admin/register}" th:object="${user}" method="post">
-    
+
         <label for="name">Name:</label>
         <input type="text" name="name" required><br>
 
@@ -19,7 +24,7 @@
 
         <label for="password">Password:</label>
         <input type="password" name="password" required><br>
-    
+
         <!-- Display success or error messages -->
         <p th:if="${exist}" style="color:red;" th:text="${exist}"></p>
         <p th:if="${regiSuccess}" style="color:green;" th:text="${regiSuccess}"></p>
@@ -28,5 +33,47 @@
         <button type="submit">Register</button>
     </form>
     <a href="/profile">Back </a>
+
+    <!-- footer -->
+    <footer>
+        <div class="footer">
+            <div class="footer-content">
+                <h3>DOVE SIAMO</h3>
+                <div class="map-container">
+                    <iframe class="map"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d34112.41367341239!2d7.929175114028833!3d45.16229478153038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4787d83975557773%3A0xce98a033bd811358!2sCascina%20Caccia!5e0!3m2!1sit!2sit!4v1734621088019!5m2!1sit!2sit"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <p>
+                    Via Serra Alta, 6, San Sebastiano da Po (TO)
+                </p>
+
+            </div>
+            <div class="footer-content">
+                <h3>EducatiON - Cascina Caccia</h3>
+                <div class="links">
+                    <a href="#">Attivita'</a>
+                    <a href="#">Struttura</a>
+                    <a href="#">Prenota</a>
+                </div>
+                <div class="footer-logo">
+                    <p>EDUCATION</p>
+                </div>
+            </div>
+            <div class="footer-content">
+                <h3>SOCIAL</h3>
+                <div class="social-links-container">
+                    <a class="social-links" href="#"><img class="social-icons" src="../static/img/facebook-logo.svg"
+                            alt="facebook"></a>
+                    <a class="social-links" href="#"><img class="social-icons" src="../static/img/instagram-logo.svg"
+                            alt="instagram"></a>
+                    <a class="social-links" href="#"><img class="social-icons" src="../static/img/youtube-logo.svg"
+                            alt="twitter"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
+
 </html>

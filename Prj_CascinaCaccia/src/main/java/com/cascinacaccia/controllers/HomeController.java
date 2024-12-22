@@ -13,4 +13,10 @@ public class HomeController {
     	//return the Home page
         return "Home"; 
     }
+    @GetMapping("/chatbot")
+    public String chatbot() {
+    	
+    	//return the Home page
+        return "Chatbot"; 
+    }
 }

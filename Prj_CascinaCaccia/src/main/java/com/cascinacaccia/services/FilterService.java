@@ -1,7 +1,9 @@
 package com.cascinacaccia.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.UserDAO;
 
 @Service
+//service for the methods related to the filters, pagination and research users
 public class FilterService {
 	
 	@Autowired
@@ -83,10 +86,34 @@ public class FilterService {
     }
     
     //method for the pagination
-    public List<User> getPaginatedUsers(List<User> allUsers, int page, int resultsPerPage) {
-        int startIndex = (page - 1) * resultsPerPage;
-        int endIndex = Math.min(startIndex + resultsPerPage, allUsers.size());
-        return allUsers.subList(startIndex, endIndex);
+    public List<User> getPaginatedUsers(List<User> users, int page, int size) {
+        
+    	//ensure valid pagination parameters
+        if (size <= 0) {
+            //default to 10 items per page if the size is invalid
+            size = 10;
+        }
+        if (page <= 0) {
+            //default to the first page if the page number is invalid
+            page = 1;
+        }
+
+        //handle empty list case
+        if (users == null || users.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        //calculate the indices for pagination
+        int fromIndex = Math.max(0, (page - 1) * size);
+        int toIndex = Math.min(users.size(), page * size);
+
+        //if fromIndex is out of bounds or toIndex < fromIndex, return an empty list
+        if (fromIndex >= users.size() || fromIndex > toIndex) {
+            return new ArrayList<>();
+        }
+
+        //return the sublist for pagination
+        return users.subList(fromIndex, toIndex);
     }
     
     //method to get all the pages
