@@ -2,6 +2,7 @@ package com.cascinacaccia.entities;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -9,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,6 +24,9 @@ public class User {
     private String surname;
     private String email;
     private String password;
+    
+    @OneToOne(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    private PasswordResetToken passwordResetToken;
     
     //relationship between user and user image
     @ManyToOne
@@ -85,4 +90,10 @@ public class User {
         }
         this.roles = roles;
     }
+	public PasswordResetToken getPasswordResetToken() {
+		return passwordResetToken;
+	}
+	public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
+		this.passwordResetToken = passwordResetToken;
+	}
 }

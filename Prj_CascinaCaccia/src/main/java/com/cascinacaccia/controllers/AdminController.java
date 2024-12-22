@@ -1,11 +1,13 @@
 package com.cascinacaccia.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,18 +17,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cascinacaccia.entities.PasswordResetToken;
 import com.cascinacaccia.entities.User;
+import com.cascinacaccia.repos.TokenDAO;
+import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.UserService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
+	
+	@Autowired
+	UserDAO userDAO;
+	@Autowired
+	TokenDAO tokenDAO;
 	@Autowired
     UserService userService;
 	@Autowired
 	FilterService filterService;
+	
 	
 	//regular expressions for validating email and password
     private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
@@ -117,6 +127,9 @@ public class AdminController {
         userService.deleteUserById(userId);
         return "redirect:/admin/listUsers"; 
     }
+    
+    
+
     
     //this is a GET request to "/register" where we load the registration form
     @GetMapping("/register")
