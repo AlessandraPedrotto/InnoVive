@@ -25,6 +25,7 @@ public class User {
     private String email;
     private String password;
     
+    //relationship between user and password reset
     @OneToOne(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     private PasswordResetToken passwordResetToken;
     
