@@ -2,6 +2,7 @@ package com.cascinacaccia.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.cascinacaccia.entities.PasswordResetToken;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.TokenDAO;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ForgotPasswordService {
@@ -41,10 +44,16 @@ public class ForgotPasswordService {
     }
 
     //generate reset token and create a reset link
-    private String generateResetToken(User user) {
+	private String generateResetToken(User user) {
+    	
         UUID uuid = UUID.randomUUID();
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime expiryDateTime = currentDateTime.plusMinutes(15);
+        
+        Optional<PasswordResetToken> oldToken = tokenDAO.findByUser(user);
+        if (oldToken.isPresent()) {
+        	deleteAndFlushPasswordResetToken(oldToken.get());
+        }
         
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setUser(user);
@@ -59,6 +68,10 @@ public class ForgotPasswordService {
         return endpointUrl + resetToken.getToken();
     }
 	
+	@Transactional
+	public void deleteAndFlushPasswordResetToken(PasswordResetToken token) {
+		tokenDAO.delete(token);  // Delete the token
+	}
     //check if a token has expired
     public boolean hasExpired(LocalDateTime expiryDateTime) {
         return expiryDateTime.isBefore(LocalDateTime.now());
