@@ -2,7 +2,6 @@ package com.cascinacaccia.entities;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -26,7 +25,7 @@ public class User {
     private String password;
     
     //relationship between user and password reset
-    @OneToOne(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToOne(mappedBy="user", fetch=FetchType.EAGER)
     private PasswordResetToken passwordResetToken;
     
     //relationship between user and user image

@@ -2,7 +2,6 @@ package com.cascinacaccia.entities;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +22,7 @@ public class PasswordResetToken {
 	private String token;
 	private LocalDateTime expiryDateTime;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable=false)
 	private User user;
 	
