@@ -5,9 +5,38 @@
 <meta charset="ISO-8859-1">
 <title>Profile images</title>
 </head>
+<style>
+		/* Add margin to the body or the main container */
+        body {
+            margin: 100px; 
+        }
+        /* Style for the image grid */
+        .image-grid ul {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr); 
+            gap: 10px; 
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        /* Style for individual images */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Optional: Add a hover effect on the images */
+        .profile-img:hover {
+            opacity: 0.8;
+            cursor: pointer;
+        }
+</style>
 <body>
 	<h2>Available Profile Images</h2>
-    <div>
+    <div class="image-grid">
         <ul>
         
             <!-- Iterate over allUserImages and display each image -->
@@ -18,7 +47,7 @@
 				    <input type="hidden" name="userId" th:value="${user.id}" />
 				    <input type="hidden" name="userImageId" th:value="${image.id}"/>
 				    <button type="submit" style="border: none; background: none;">
-				        <img th:src="@{${image.imgPath}}" alt="Image" width="100" height="100"/>
+				        <img th:src="@{${image.imgPath}}" alt="Image" class="profile-img"/>
 				    </button>
 				</form>
             </li>

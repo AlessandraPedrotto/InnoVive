@@ -54,7 +54,7 @@ public class UserService implements UserDetailsService{
         user.setPassword(password);
         
         //fetch the default profile image from the database
-        UserImage defaultProfileImage = userImageDAO.findById(1L)
+        UserImage defaultProfileImage = userImageDAO.findById(12L)
                 .orElseThrow(() -> new RuntimeException("Default profile image not found"));
         
         //set the default profile image for the new user
