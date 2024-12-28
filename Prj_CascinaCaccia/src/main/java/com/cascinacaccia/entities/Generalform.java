@@ -1,14 +1,19 @@
 package com.cascinacaccia.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "general_form")
+@Table(name = "general_form", uniqueConstraints = @UniqueConstraint(columnNames = {"email", "category_id", "name", "surname"}))
 public class Generalform {
 	
 	//characteristics of the entity GeneralForm
@@ -20,6 +25,10 @@ public class Generalform {
 	
 	@ManyToOne
 	private Category category;
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "generalform_id")
+	public List<Informationform> informationForms;
 	
 	private LocalDateTime submissionDate;
 	
@@ -78,11 +87,11 @@ public class Generalform {
         this.category = category;
     }
     
-    public LocalDateTime getsubmissionDate() {
+    public LocalDateTime getSubmissionDate() {
         return submissionDate;
     }
 
-    public void setsubmissionDate(LocalDateTime submissionDate) {
+    public void setSubmissionDate(LocalDateTime submissionDate) {
         this.submissionDate = submissionDate;
     }
 }
