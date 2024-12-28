@@ -1,53 +1,43 @@
 package com.cascinacaccia.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "general_form")
 public class Generalform {
-
+	
+	//characteristics of the entity GeneralForm
 	@Id
-	@Column(name = "id")
 	private String id;
-	
-	
-	@Column(name = "name")
 	private String name; 
-	
-	@Column(name = "surname")
 	private String surname; 
-	
-	@Column(name = "email")
 	private String email; 
 	
-	
 	@ManyToOne
-	@JoinColumn(name="category_id",nullable = false)
 	private Category category;
 	
-	//@OneToOne(mappedBy = "general_form", cascade = CascadeType.ALL)
-    //private Informationform informationForm;
-
+	private LocalDateTime submissionDate;
 	
+	//default constructor
+    public Generalform() {
+    }
 	
-	public Generalform(String id, String name, String surname, String email, Category category,
-			Informationform informationForm) {
+	public Generalform(String id, String name, String surname, String email, Category category) {
 		
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.category = category;
-		//this.informationForm = informationForm;
+		this.submissionDate = LocalDateTime.now();
 	}
-
+	
+	//getters and setters
 	public String getId() {
 		return id;
 	}
@@ -80,20 +70,19 @@ public class Generalform {
 		this.email = email;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Generalform [id=");
-		builder.append(id);
-		builder.append(", name=");
-		builder.append(name);
-		builder.append(", surname=");
-		builder.append(surname);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append("]");
-		return builder.toString();
-	}
-	
-	
+	public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+    
+    public LocalDateTime getsubmissionDate() {
+        return submissionDate;
+    }
+
+    public void setsubmissionDate(LocalDateTime submissionDate) {
+        this.submissionDate = submissionDate;
+    }
 }
