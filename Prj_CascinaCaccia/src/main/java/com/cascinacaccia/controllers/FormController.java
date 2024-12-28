@@ -1,5 +1,7 @@
 package com.cascinacaccia.controllers;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +53,19 @@ public class FormController {
             //fetch Category
             Category category = categoryDAO.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+            
+            //check for existing Generalform entries
+            List<Generalform> existingForms = generalFormDAO.findByEmailAndCategoryAndNameAndSurname(email, category, name, surname);
 
-            //create GeneralForm
-            Generalform generalform = new Generalform(UUID.randomUUID().toString(), name, surname, email, category);
-            generalFormDAO.save(generalform);
+            Generalform generalform;
+            if (!existingForms.isEmpty()) {
+                // Reuse the existing Generalform if found
+                generalform = existingForms.get(0); // Get the first match
+            } else {
+                // Create a new Generalform if no match is found
+                generalform = new Generalform(UUID.randomUUID().toString(), name, surname, email, category);
+                generalFormDAO.save(generalform);
+            }
 
             //create InformationForm
             Informationform informationForm = new Informationform(UUID.randomUUID().toString(), generalform, content);
