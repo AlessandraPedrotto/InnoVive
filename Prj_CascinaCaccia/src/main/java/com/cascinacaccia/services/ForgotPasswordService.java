@@ -18,14 +18,22 @@ import com.cascinacaccia.repos.TokenDAO;
 import jakarta.transaction.Transactional;
 
 @Service
+/*
+ * ForgotPasswordService handles the operations related to password reset functionality.
+ * It is responsible for:
+ * - Generating a password reset token and sending an email to the user with the reset link.
+ * - Checking if a reset token has expired.
+ * - Retrieving a reset token by its value.
+ * - Cleaning up expired reset tokens periodically.
+ */
 public class ForgotPasswordService {
 	
 	@Autowired
-	TokenDAO tokenDAO;
+	private TokenDAO tokenDAO;
 	@Autowired
-	JavaMailSender javaMailSender;
+	private JavaMailSender javaMailSender;
 	
-	//generate the password reset link and send the email
+	//method to generate the password reset link and send the email
     public String sendResetEmail(User user) {
         try {
             String resetLink = generateResetToken(user);
@@ -43,7 +51,7 @@ public class ForgotPasswordService {
         }
     }
 
-    //generate reset token and create a reset link
+    //method to generate reset token and create a reset link
 	private String generateResetToken(User user) {
     	
         UUID uuid = UUID.randomUUID();
@@ -68,22 +76,22 @@ public class ForgotPasswordService {
         return endpointUrl + resetToken.getToken();
     }
 	
+	//method to delete the old password reset token
 	@Transactional
 	public void deleteAndFlushPasswordResetToken(PasswordResetToken token) {
-		tokenDAO.delete(token);  // Delete the token
+		tokenDAO.delete(token); 
 	}
-    //check if a token has expired
+    //method to check if a token has expired
     public boolean hasExpired(LocalDateTime expiryDateTime) {
         return expiryDateTime.isBefore(LocalDateTime.now());
     }
 
-
-    //find a reset token by its value
+    //method to find a reset token by its value
     public PasswordResetToken findResetTokenByToken(String token) {
         return tokenDAO.findByToken(token);
     }
 	
-    //run this method every 1 second
+    //method to clean expired tokens every 1 second
     @Scheduled(fixedRate = 1000)
     public void cleanExpiredTokens() {
         LocalDateTime now = LocalDateTime.now();

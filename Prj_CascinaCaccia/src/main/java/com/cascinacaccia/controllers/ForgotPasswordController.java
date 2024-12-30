@@ -39,6 +39,7 @@ public class ForgotPasswordController {
         return "ForgotPassword"; 
     }
     
+    //process to change the password forgotten
     @PostMapping("/forgotPassword")
     public String processForgotPassword(@RequestParam("email") String email, Model model) {
         Optional<User> optionalUser = userDAO.findByEmail(email);
