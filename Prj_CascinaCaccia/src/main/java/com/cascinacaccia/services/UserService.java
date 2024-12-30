@@ -7,7 +7,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,28 +17,36 @@ import org.springframework.stereotype.Service;
 import com.cascinacaccia.entities.Role;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
-import com.cascinacaccia.repos.TokenDAO;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.repos.UserImageDAO;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-/*the UserService class implements UserDetailsService, 
- *which is used for loading user-specific data during authentication in Spring Security
+/*
+* UserService is a service class responsible for managing user-related operations in the system.
+* It implements the UserDetailsService interface for user authentication with Spring Security.
+* The primary functionalities provided by this service include:
+* - Registering a new user and assigning default roles and profile images.
+* - Assigning or updating roles for a user.
+* - Loading user details by email during authentication (required by Spring Security).
+* - Checking if a user's email already exists in the database.
+* - Retrieving user details by email or ID.
+* - Deleting a user by ID.
+* - Retrieving the roles associated with a user.
+* - Changing a user's password.
+* - Assigning or updating a user's profile image.
+* - Retrieving a list of all available user images.
+* - Fetching all users in the system.
 */
 public class UserService implements UserDetailsService{
 	
 	@Autowired
-	UserDAO userDAO;
+	private UserDAO userDAO;
 	@Autowired
-	UserImageDAO userImageDAO;
+	private UserImageDAO userImageDAO;
 	@Autowired
-	TokenDAO tokenDAO;
-	@Autowired
-	PasswordEncoder passwordEncoder;
-	@Autowired
-	JavaMailSender javaMailSender;
+	private PasswordEncoder passwordEncoder;
 	
 	//method to register a new user
 	public void register(User user) { 
@@ -142,7 +149,7 @@ public class UserService implements UserDetailsService{
         userDAO.deleteById(userId); 
     }
     
-    //retrieve roles associated with a user
+    //method to retrieve roles associated with a user
     public List<Role> getUserRoles(String idUser) {
     	
         Optional<User> user = userDAO.findById(idUser);
@@ -172,7 +179,7 @@ public class UserService implements UserDetailsService{
         userDAO.save(user);
     }
     
-    //retrieve all available user images
+    //method to retrieve all available user images
     public List<UserImage> getAllUserImg() {
         return userImageDAO.findAll();
     }
@@ -190,5 +197,10 @@ public class UserService implements UserDetailsService{
         
         //save the user with the new image
         userDAO.save(user);
+    }
+    
+    //method to get all the users
+    public List<User> getAllUsers() {
+        return userDAO.findAll(); 
     }
 }

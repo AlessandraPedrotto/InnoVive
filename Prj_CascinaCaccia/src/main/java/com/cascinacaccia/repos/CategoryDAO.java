@@ -7,7 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cascinacaccia.entities.Category;
 
-//the CategoryDAO interface provides standard methods for CRUD operations (e.g., save, delete)
+/*
+ * The CategoryDAO interface extends JpaRepository to provide standard CRUD operations for the Category entity.
+ * It also includes custom query methods for searching categories based on their:
+ * - Name
+ * - Id
+ */
 public interface CategoryDAO extends JpaRepository<Category, String>{
 	
     List<Category> findByName(String name);

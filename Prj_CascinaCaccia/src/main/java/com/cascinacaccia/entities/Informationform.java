@@ -2,6 +2,7 @@ package com.cascinacaccia.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -17,6 +18,12 @@ public class Informationform {
 	private Generalform generalform;
 	
 	private String content;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+    private User assignedUser;
+	
+	private String status;
 	
 	//default constructor
     public Informationform() { 
@@ -52,5 +59,21 @@ public class Informationform {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+	
+	public User getAssignedUser() {
+		return assignedUser;
+	}
+
+	public void setAssignedUser(User assignedUser) {
+		this.assignedUser = assignedUser;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

@@ -1,7 +1,6 @@
 package com.cascinacaccia.controllers;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,10 @@ import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.repos.InformationformDAO;
-import com.cascinacaccia.services.InformationService;
+import com.cascinacaccia.services.InformationFormService;
 
 @Controller
-public class FormController {
+public class InformationFormController {
 
     @Autowired
     CategoryDAO categoryDAO;
@@ -30,7 +29,7 @@ public class FormController {
     @Autowired
     InformationformDAO informationFormDAO;
     @Autowired
-    InformationService informationService;
+    InformationFormService informationFormService;
     
     //navigation to the page information form
     @GetMapping("/informationForm")
@@ -39,7 +38,8 @@ public class FormController {
         model.addAttribute("categoryId", "");
         return "InformationForm";
     }
-
+    
+    //submission of the information form
     @PostMapping("/submit-form")
     public String submitForm(
         @RequestParam String name, 
@@ -69,11 +69,12 @@ public class FormController {
 
             //create InformationForm
             Informationform informationForm = new Informationform(UUID.randomUUID().toString(), generalform, content);
+            informationForm.setStatus("TO_DO");
             informationFormDAO.save(informationForm);
 
             //send Emails via service
-            informationService.sendEmailToAdmin("innovive2024@gmail.com", generalform.getName(), generalform.getSurname(), generalform.getEmail(), generalform.getCategory().getName(), informationForm.getContent());
-            informationService.sendConfirmationEmail(email);
+            informationFormService.sendEmailToAdmin("innovive2024@gmail.com", generalform.getName(), generalform.getSurname(), generalform.getEmail(), generalform.getCategory().getName(), informationForm.getContent());
+            informationFormService.sendConfirmationEmail(email);
 
             redirectAttributes.addFlashAttribute("message", "Form submitted successfully!");
             return "redirect:/informationForm";
@@ -82,5 +83,30 @@ public class FormController {
             redirectAttributes.addFlashAttribute("error", "Error processing form: " + e.getMessage());
             return "redirect:/informationForm";
         }
+    }
+    
+    //assign a user to a task
+    @PostMapping("/assignUser")
+    public String assignUserToInformation(@RequestParam String informationFormId, @RequestParam String userId, RedirectAttributes redirectAttributes) {
+        try {
+            informationFormService.assignUser(userId, informationFormId);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to assign user: " + e.getMessage());
+            return "redirect:/request";
+        }
+        return "redirect:/request";
+    }
+    
+    //remove a user from a task
+    @PostMapping("/removeUserFromInformationForm")
+    public String removeUserFromInformation(@RequestParam String informationFormId, @RequestParam String userId, RedirectAttributes redirectAttributes) {
+        try {
+            informationFormService.removeUser(userId, informationFormId);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to remove user: " + e.getMessage());
+            return "redirect:/request";
+        }
+        redirectAttributes.addFlashAttribute("success", "User removed successfully.");
+        return "redirect:/request";
     }
 }

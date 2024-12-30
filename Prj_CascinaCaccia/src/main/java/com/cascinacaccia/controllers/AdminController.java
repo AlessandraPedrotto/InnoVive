@@ -121,6 +121,7 @@ public class AdminController {
         return "DeleteUser"; 
     }
     
+    //process to delete a user
     @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam String userId) {
         userService.deleteUserById(userId);

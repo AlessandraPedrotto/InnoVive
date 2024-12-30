@@ -9,7 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.cascinacaccia.entities.PasswordResetToken;
 import com.cascinacaccia.entities.User;
 
-//the TokenDAO interface provides standard methods for CRUD operations (e.g., save, delete)
+/*
+ * The TokenDAO interface extends JpaRepository to provide standard CRUD operations for the PasswordResetToken entity.
+ * It includes methods for saving, deleting, and querying password reset tokens.
+ */
 public interface TokenDAO extends JpaRepository<PasswordResetToken, Integer> {
 	
 	Optional<PasswordResetToken> findByUser(User user);

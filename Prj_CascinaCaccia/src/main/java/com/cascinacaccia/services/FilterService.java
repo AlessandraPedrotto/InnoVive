@@ -11,13 +11,21 @@ import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.UserDAO;
 
 @Service
-//service for the methods related to the filters, pagination and research users
+/*
+ * FilterService provides various methods for filtering, sorting, and paginating users.
+ * It offers functionality to:
+ * - Retrieve all users from the database.
+ * - Sort users by surname in ascending or descending order.
+ * - Search users by email, name, or surname, with support for full name searches (name and surname).
+ * - Paginate the results of user lists for efficient display of large datasets.
+ * - Calculate total pages and determine the start and end pages for pagination.
+ */
 public class FilterService {
 	
 	@Autowired
 	UserDAO userDAO;
 	
-	//get all users from the database
+	//method to get all users from the database
     public List<User> getAllUsers() {
         return userDAO.findAll();  
     }
@@ -41,7 +49,8 @@ public class FilterService {
         
         //check if the query contains a space, indicating it's a full name search
         if (query.contains(" ")) {
-            //split query into name and surname
+            
+        	//split query into name and surname
             String[] parts = query.split(" ");
             
             //check if there are exactly two parts (name and surname)
@@ -58,11 +67,13 @@ public class FilterService {
                 users.addAll(usersBySurnameName);
                 users = users.stream().distinct().collect(Collectors.toList());
             } else {
-                //if there are not exactly two parts (e.g., empty string or too many parts)
+                
+            	//if there are not exactly two parts (e.g., empty string or too many parts)
                 users = handleSinglePartQuery(query);
             }
         } else {
-            //handle single part queries (name, surname, or email)
+            
+        	//handle single part queries (name, surname, or email)
             users = handleSinglePartQuery(query);
         }
         
