@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.UserDAO;
 
@@ -137,6 +138,53 @@ public class FilterService {
     
     //method to get the last page
     public int getEndPage(int currentPage, int blockSize, int totalPages) {
+        int endPage = (currentPage / blockSize) * blockSize + blockSize;
+        return Math.min(endPage, totalPages);
+    }
+    
+    //method for the pagination (requests)
+    public List<Generalform> getPaginatedRequest(List<Generalform> generalForms, int page, int size) {
+        
+    	//ensure valid pagination parameters
+        if (size <= 0) {
+            //default to 10 items per page if the size is invalid
+            size = 10;
+        }
+        if (page <= 0) {
+            //default to the first page if the page number is invalid
+            page = 1;
+        }
+
+        //handle empty list case
+        if (generalForms == null || generalForms.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        //calculate the indices for pagination
+        int fromIndex = Math.max(0, (page - 1) * size);
+        int toIndex = Math.min(generalForms.size(), page * size);
+
+        //if fromIndex is out of bounds or toIndex < fromIndex, return an empty list
+        if (fromIndex >= generalForms.size() || fromIndex > toIndex) {
+            return new ArrayList<>();
+        }
+
+        //return the sublist for pagination
+        return generalForms.subList(fromIndex, toIndex);
+    }
+    
+    //method to get all the pages (requests)
+    public int getTotalPagesRequest(List<User> allUsers, int resultsPerPage) {
+        return (int) Math.ceil((double) allUsers.size() / resultsPerPage);
+    }
+    
+    //method to get the first page (requests)
+    public int getStartPageRequest(int currentPage, int blockSize) {
+        return (currentPage - 1) / blockSize * blockSize + 1;
+    }
+    
+    //method to get the last page (requests)
+    public int getEndPageRequest(int currentPage, int blockSize, int totalPages) {
         int endPage = (currentPage / blockSize) * blockSize + blockSize;
         return Math.min(endPage, totalPages);
     }

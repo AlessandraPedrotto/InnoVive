@@ -94,4 +94,13 @@ public class Generalform {
     public void setSubmissionDate(LocalDateTime submissionDate) {
         this.submissionDate = submissionDate;
     }
+
+	public List<Informationform> getInformationForms() {
+		return informationForms;
+	}
+
+	public void setInformationForms(List<Informationform> informationForms) {
+		this.informationForms = informationForms;
+	}
+    
 }
