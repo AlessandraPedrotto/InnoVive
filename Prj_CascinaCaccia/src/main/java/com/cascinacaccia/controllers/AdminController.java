@@ -47,7 +47,11 @@ public class AdminController {
             				@RequestParam(name = "page", required = false, defaultValue = "1") int page,
             		        @RequestParam(name = "size", required = false, defaultValue = "3") int size,Model model) {
         List<User> users;
-
+        
+        if (sortAscending == null) {
+            sortAscending = true;
+        }
+        
         //if there's a query, search the users; otherwise, get all users
         if (query == null || query.isEmpty()) {
         	users = filterService.getAllUsers();

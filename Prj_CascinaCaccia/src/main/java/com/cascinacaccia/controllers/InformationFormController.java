@@ -109,4 +109,16 @@ public class InformationFormController {
         redirectAttributes.addFlashAttribute("success", "User removed successfully.");
         return "redirect:/request";
     }
+    
+    //assign a status to a task
+    @PostMapping("/assignStatus")
+    public String assignStatusToInformation(@RequestParam String informationFormStatus, @RequestParam String informationFormId, RedirectAttributes redirectAttributes) {
+        try {
+            informationFormService.assignStatus(informationFormStatus, informationFormId);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to assign status: " + e.getMessage());
+            return "redirect:/request";
+        }
+        return "redirect:/request";
+    }
 }
