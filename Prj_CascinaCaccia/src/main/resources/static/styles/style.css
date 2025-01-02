@@ -391,3 +391,328 @@ to {
 
 
   /* ATTIVITA ENDS */
+
+
+
+/* PRENOTA STARTS */
+
+.prenota-container{
+  margin: 0 auto;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.calendar-container{
+  width: 50vw;
+}
+
+
+.form-info{
+  height: max-content;
+  width: 100%;
+  width: 50vw;
+}
+
+.form-field{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+}
+
+
+input, textarea, select {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 28px;
+  padding: 15px;
+  outline: none; 
+  transition: all 0.3s ease;
+}
+
+textarea {
+  border-radius: 13px;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none; 
+  box-shadow: 0 0 8px rgba(255, 165, 0, 0.6); 
+}
+
+
+
+.calendar {
+  height: max-content;
+  width: 70%;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 28px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  margin: auto;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: black;
+  padding: 15px;
+}
+
+.calendar-body {
+  padding: 10px;
+}
+
+.calendar-week-day {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-weight: 600;
+  height: 50px;
+}
+
+.calendar-week-day div {
+  display: grid;
+  place-items: center;
+  color: gray;
+  font-size: 16px;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  color: black;
+  font-weight: bold;
+}
+
+.calendar-days div {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  position: relative;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.month-picker {
+  padding: 5px 10px;
+}
+
+.month-picker:hover {
+  background-color: #f09321;
+  border-radius: 28px;
+  cursor: pointer;
+}
+
+.year-picker {
+  display: flex;
+  align-items: center;
+  cursor: default;
+}
+
+.year-change {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.year-change:hover {
+  background-color: #f09321;
+}
+
+.calendar-days div:hover {
+  background-color: #f09321;
+  border-radius: 50%;
+  color: white;
+}
+
+.calendar-days div.selected {
+  border-radius: 50%;
+  background-color: #f09321;
+  color: #fff;
+}
+
+.month-list {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  padding: 20px;
+  color: black;
+  grid-template-columns: repeat(3, auto);
+  gap: 5px;
+  display: none;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.month-list > div {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 0;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.month-list > div:hover {
+  background-color: #f5a165;
+}
+
+.show {
+  display: grid;
+  transform: scale(1);
+}
+
+.disabled {
+  color: #ccc;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.domenica, .calendar-body .calendar-week-day div.domenica {
+  color: #f09321;
+}
+
+
+
+@media (max-width: 1179px){
+  .prenota-container{
+    width: 90%;
+  }
+  .calendar{
+    width: 100%;
+  }
+}
+
+@media (max-width: 967px){
+  .prenota-container{
+    width: 100%;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .calendar-container{
+    width: 80vw;
+  }
+
+  .form-info{
+    width: 80vw;
+  }
+
+
+}
+
+
+@media (max-width: 768px) {
+
+  .month-list > div {
+    padding: 0;
+  }
+
+  .calendar {
+    padding: 5px;
+    width: 100%;
+  }
+
+  .calendar-header {
+    font-size: 20px;
+  }
+
+  .calendar-days div {
+    font-size: 18px;
+  }
+
+  .year-change {
+    height: 30px;
+    width: 30px;
+    margin: 0 5px;
+  }
+}
+
+@media (max-width: 480px) {
+
+
+  .prenota-container{
+    width: 100%;
+  }
+
+  .calendar-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+}
+
+
+.conferma-container{
+  background-color:#fff;
+  box-shadow: 0px -3px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+#selected-date{
+  font-weight: bold;
+}
+
+.conferma-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.conferma-button{
+  background-color: #F09321;
+  color: #fff;
+  padding: 20px 40px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+}
+
+.conferma-button:hover{
+  background-color: #f5a165;
+  cursor: pointer;
+
+}
+
+
+
+
+@media (max-width: 967px){
+
+  .conferma-container{
+    flex-direction: column;
+    align-items:center;
+    gap: 10px;
+  }
+
+  .conferma-button{
+    width: 50%;
+  }
+}
+
+
+/* PRENOTA ENDS */
