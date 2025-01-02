@@ -716,3 +716,37 @@ input:focus, textarea:focus, select:focus {
 
 
 /* PRENOTA ENDS */
+
+/* STRUTTURA STARTS */
+
+#struttura {
+  margin-bottom: 70px;
+  margin-top: 70px;
+}
+
+.card-struttura{
+  display: flex;
+}
+
+.descrizione-struttura{
+  width: 50%;
+  padding: 2rem;
+}
+
+
+.foto-struttura{
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+.foto-struttura img{
+  width: 350px;
+}
+
+@media screen and (max-width:768px) {
+  .card-struttura {
+      flex-direction: column;
+  }
+}
+
+/* STRUTTURA ENDS */
