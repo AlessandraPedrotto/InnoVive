@@ -1,9 +1,11 @@
 package com.cascinacaccia.controllers;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,11 +17,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cascinacaccia.entities.Generalform;
+import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
+import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.repos.UserImageDAO;
 import com.cascinacaccia.services.ForgotPasswordService;
+import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,15 +34,19 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 	
 	@Autowired
-	ForgotPasswordService forgotPasswordService;
+	private ForgotPasswordService forgotPasswordService;
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	UserImageDAO userImageDAO;
+	private UserImageDAO userImageDAO;
 	@Autowired
-	UserDAO userDAO;
+	private UserDAO userDAO;
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private InformationformDAO informationFormDAO;
+	@Autowired
+	private InformationFormService informationFormService;
 	
 	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
 	
@@ -48,12 +58,71 @@ public class UserController {
 
 	    String profileImageUrl = user.getUserImage() != null ? user.getUserImage().getImgPath() : "/default-image.png";
 	    
+	    //fetch the assigned requests for the logged-in user
+	    List<Generalform> assignedForms = informationFormService.getAssignedFormsByUser(user.getId());
+	    
+	    //filter the InformationForms to only include those assigned to the user
+	    assignedForms.forEach(generalForm -> {
+	        List<Informationform> assignedInformationForms = generalForm.getInformationForms().stream()
+	            .filter(informationForm -> informationForm.getAssignedUser() != null && 
+	                informationForm.getAssignedUser().getId().equals(user.getId()))
+	            .collect(Collectors.toList());
+	        generalForm.setInformationForms(assignedInformationForms); 
+	    });
+	    
 	    //pass the user's name, surname and email to the model
 	    model.addAttribute("fullName", user.getName()); //add name
 	    model.addAttribute("email", user.getEmail());  //add email
 	    model.addAttribute("profileImageUrl", profileImageUrl); //add image
 	    model.addAttribute("surname", user.getSurname()); //add surname
+	    model.addAttribute("assignedForms", assignedForms);
 	    return "profile";
+	}
+	
+	//navigation to yourTasks page
+	@GetMapping("/yourTasks")
+	public String userTasks(@AuthenticationPrincipal Object principal, Model model) throws Exception{
+		
+		User user = userService.getUserByEmail(principal);
+		
+		//fetch the assigned requests for the logged-in user
+	    List<Generalform> assignedForms = informationFormService.getAssignedFormsByUser(user.getId())
+	    		.stream()
+	    	    .sorted(Comparator.comparing(
+	    	        Generalform::getSubmissionDate,
+	    	        Comparator.nullsLast(Comparator.naturalOrder())
+	    	    ))
+	    	    .collect(Collectors.toList());
+		    
+	    //filter the InformationForms to only include those assigned to the user
+	    assignedForms.forEach(generalForm -> {
+	        List<Informationform> assignedInformationForms = generalForm.getInformationForms().stream()
+	            .filter(informationForm -> informationForm.getAssignedUser() != null && 
+	                informationForm.getAssignedUser().getId().equals(user.getId()))
+	            .collect(Collectors.toList());
+	        generalForm.setInformationForms(assignedInformationForms); 
+	    });
+	    
+	    model.addAttribute("assignedForms", assignedForms);
+	    return "YourTasks";
+	}
+	
+	//process to change the status of a form
+	@PostMapping("/assignStatusProfile")
+	public String assignStatus(@RequestParam("informationFormId") String informationFormId,
+	                            @RequestParam("informationFormStatus") String status) {
+	    //fetch the Informationform using the ID
+	    Informationform informationForm = informationFormDAO.findById(informationFormId)
+	        .orElseThrow(() -> new RuntimeException("InformationForm not found"));
+
+	    //update the status of the Informationform
+	    informationForm.setStatus(status);
+	    
+	    //save the updated Informationform
+	    informationFormDAO.save(informationForm);
+
+	    //redirect back to the profile page
+	    return "redirect:/yourTasks";
 	}
 	
 	//navigation to change password page

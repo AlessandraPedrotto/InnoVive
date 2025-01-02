@@ -78,9 +78,10 @@
 			                    <tr>
 			                    	<th>Category</th>
 			                        <th>Content</th>
+			                        <th>Date</th>
 			                        <th>Status</th>
 			                        <th>Employee</th>
-			                        <th>Action</th>
+			                        <th sec:authorize="hasRole('ADMIN')" >Action</th>
 			                    </tr>
 			                </thead>
 			                <tbody>
@@ -89,6 +90,7 @@
 			                    <tr th:each="informationForm : ${generalForm.informationForms}">
 			                    	<td th:text="${generalForm.category.name ?: 'No category'}"></td> <!-- Display Category -->
 			                        <td th:text="${informationForm.getContent() ?: 'No content'}"></td>
+			                        <td th:text="${generalForm.submissionDate ?: 'No date'}"></td>
 			                        <td th:text="${informationForm.getStatus() ?: 'TO DO'}"></td>
 			                        <td>
 							            <div class="d-flex align-items-center">
@@ -112,6 +114,7 @@
 							            
 							            <!-- Button to open the assignment modal for user-->
 							            <button 
+							            	sec:authorize="hasRole('ADMIN')" 
 							                class="btn btn-primary btn-sm" 
 							                type="button" 
 							                data-toggle="modal" 
@@ -124,6 +127,7 @@
 						                    th:action="@{/removeUserFromInformationForm}" 
 						                    method="post" 
 						                    th:if="${informationForm.getAssignedUser() != null}" 
+						                    sec:authorize="hasRole('ADMIN')" 
 						                    onsubmit="return confirm('Are you sure you want to remove this user from the information form?');">
 						                    <input type="hidden" name="informationFormId" th:value="${informationForm.id}" />
 						                    <input type="hidden" name="userId" th:value="${informationForm.getAssignedUser().id}" />
@@ -132,6 +136,7 @@
 						                
 							            <!-- Button to open the assignment modal for status-->
 							            <button 
+							            	sec:authorize="hasRole('ADMIN')" 
 							                class="btn btn-primary btn-sm" 
 							                type="button" 
 							                data-toggle="modal" 

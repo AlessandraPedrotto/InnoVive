@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
@@ -16,6 +16,7 @@
 	</div>
 	
 	<!-- Exit page button -->
+    <a th:href="@{/admin/yourTasksPublic/{userId}(userId=${userId})}">View Tasks</a>
 	<a href="/admin/listUsers" class="button">Back</a>
 </body>
 </html>

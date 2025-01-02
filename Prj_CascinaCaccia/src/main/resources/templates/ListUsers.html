@@ -48,6 +48,7 @@
 		            <td th:text="${user.surname}"></td>
 		            <td th:text="${user.email}"></td>
 		            <td>
+		            
 		            	<!-- Button to view Public Profile -->
 	                    <a th:href="@{/admin/publicProfile/{userId}(userId=${user.id})}">
 	                        <button type="button">View Profile</button>
@@ -62,7 +63,7 @@
 		        </tr>
 		    </tbody>
 		</table>
-	
+	</div>
 	<!-- Pagination Controls -->
 	<div>
 	

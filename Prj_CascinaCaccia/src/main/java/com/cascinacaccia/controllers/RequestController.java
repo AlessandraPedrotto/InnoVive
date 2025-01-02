@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cascinacaccia.entities.Generalform;
-import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.repos.InformationformDAO;
