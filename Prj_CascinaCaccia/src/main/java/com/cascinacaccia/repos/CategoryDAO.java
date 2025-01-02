@@ -16,5 +16,6 @@ import com.cascinacaccia.entities.Category;
 public interface CategoryDAO extends JpaRepository<Category, String>{
 	
     List<Category> findByName(String name);
+    
     Optional<Category> findById(String id);
 }

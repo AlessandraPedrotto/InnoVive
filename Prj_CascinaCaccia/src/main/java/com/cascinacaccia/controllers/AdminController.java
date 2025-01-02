@@ -1,8 +1,10 @@
 package com.cascinacaccia.controllers;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cascinacaccia.entities.Generalform;
+import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
+import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.TokenDAO;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.services.FilterService;
+import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
 
 @Controller
@@ -26,13 +32,17 @@ import com.cascinacaccia.services.UserService;
 public class AdminController {
 	
 	@Autowired
-	UserDAO userDAO;
+	private UserDAO userDAO;
 	@Autowired
-	TokenDAO tokenDAO;
+	private TokenDAO tokenDAO;
 	@Autowired
-    UserService userService;
+	private UserService userService;
 	@Autowired
-	FilterService filterService;
+	private FilterService filterService;
+	@Autowired
+	private InformationFormService informationFormService;
+	@Autowired
+	private InformationformDAO informationFormDAO;
 	
 	
 	//regular expressions for validating email and password
@@ -99,7 +109,8 @@ public class AdminController {
     //view user details (Public Profile)
     @GetMapping("/publicProfile/{userId}")
     public String publicProfile(@PathVariable("userId") String userId, Model model) {
-        User user = userService.getUserById(userId);
+        
+    	User user = userService.getUserById(userId);
 
         //add user details to the model (name, surname, email, and profile image)
         String profileImageUrl = user.getUserImage() != null ? user.getUserImage().getImgPath() : "/default-image.png";
@@ -110,7 +121,60 @@ public class AdminController {
         model.addAttribute("surname", user.getSurname());
         return "PublicProfile";
     }
+    
+    //navigation to yourTasksPublic page
+    @GetMapping("/yourTasksPublic/{userId}")
+    public String yourTasksPublic(@PathVariable("userId") String userId, Model model) {
+        
+    	//fetch user by userId
+        User user = userService.getUserById(userId);
 
+        //fetch tasks assigned to this user and sort by submissionDate
+        List<Generalform> assignedForms = informationFormService.getAssignedFormsByUser(user.getId())
+        		.stream()
+        	    .sorted(Comparator.comparing(
+        	        Generalform::getSubmissionDate,
+        	        Comparator.nullsLast(Comparator.naturalOrder())
+        	    ))
+        	    .collect(Collectors.toList());
+        
+        //filter tasks based on user assignment
+        assignedForms.forEach(generalForm -> {
+            List<Informationform> assignedInformationForms = generalForm.getInformationForms().stream()
+                .filter(informationForm -> informationForm.getAssignedUser() != null && 
+                    informationForm.getAssignedUser().getId().equals(user.getId()))
+                .collect(Collectors.toList());
+            generalForm.setInformationForms(assignedInformationForms); 
+        });
+
+        //add data to the model
+        model.addAttribute("assignedForms", assignedForms);
+        model.addAttribute("user", user);  
+
+        return "YourTasksPublic"; 
+    }
+    
+    //process to change the status of a form
+    @PostMapping("/assignStatusPublicProfile")
+	public String assignStatusPublicProfile(
+			@RequestParam("userId") String userId,
+			@RequestParam("informationFormId") String informationFormId,
+			@RequestParam("informationFormStatus") String status) {
+    	
+	    //fetch the Informationform using the ID
+	    Informationform informationForm = informationFormDAO.findById(informationFormId)
+	        .orElseThrow(() -> new RuntimeException("InformationForm not found"));
+
+	    //update the status of the Informationform
+	    informationForm.setStatus(status);
+	    
+	    //save the updated Informationform
+	    informationFormDAO.save(informationForm);
+
+	    //redirect back to the profile page
+	    return "redirect:/admin/yourTasksPublic/" + userId;
+	}
+    
     //delete User
     @GetMapping("/deleteUser")
     public String confirmDeleteUser(@RequestParam String userId, Model model) {

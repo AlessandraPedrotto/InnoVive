@@ -24,7 +24,7 @@ import com.cascinacaccia.repos.UserDAO;
 public class FilterService {
 	
 	@Autowired
-	UserDAO userDAO;
+	private UserDAO userDAO;
 	
 	//method to get all users from the database
     public List<User> getAllUsers() {

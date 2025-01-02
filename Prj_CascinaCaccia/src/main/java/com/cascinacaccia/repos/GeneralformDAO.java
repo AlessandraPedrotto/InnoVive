@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cascinacaccia.entities.Category;
 import com.cascinacaccia.entities.Generalform;
+import com.cascinacaccia.entities.User;
 
 /*
  * GeneralformDAO is the repository interface for accessing the Generalform entity in the database.
@@ -21,4 +22,6 @@ public interface GeneralformDAO extends JpaRepository<Generalform,String>{
 	
 	List<Generalform> findByEmailAndCategoryAndNameAndSurname(String email, Category category, String name, String surname);
 	List<Generalform> findAll(Sort sort);
+	List<Generalform> findAllById(Iterable<String> ids); 
+	List<Generalform> findAllByInformationForms_AssignedUser(User user);
 }
