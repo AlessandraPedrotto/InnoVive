@@ -358,10 +358,13 @@
 
 .footer-logo {
   background-color: rgba(255, 119, 0, .56);
-  padding: 1rem;
   text-align: center;
 }
 
+.footer-logo img {
+  height: 100px;
+  width: auto;
+}
 
 @media (max-width: 768px) {
 
@@ -1091,4 +1094,5 @@ select:focus {
     width: 70%;
   }
 }
+
 /* PASSWORD DIMENTICATA ENDS */
