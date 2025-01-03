@@ -19,4 +19,22 @@ public class HomeController {
     	//return the Home page
         return "Chatbot"; 
     }
+    @GetMapping("/prenota")
+    public String prenota() {
+    	
+    	//return the Home page
+        return "Prenota"; 
+    }
+    @GetMapping("/attivita")
+    public String attivita() {
+    	
+    	//return the Home page
+        return "Attivita"; 
+    }
+    @GetMapping("/struttura")
+    public String struttura() {
+    	
+    	//return the Home page
+        return "Struttura"; 
+    }
 }

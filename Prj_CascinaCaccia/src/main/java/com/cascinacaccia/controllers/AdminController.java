@@ -179,11 +179,41 @@ public class AdminController {
     @GetMapping("/deleteUser")
     public String confirmDeleteUser(@RequestParam String userId, Model model) {
         
-    	//get the user details to display on the confirmation page
-        User user = userService.getUserById(userId);
+    	User user = userService.getUserById(userId);
 
-        //add user data to the model so it can be displayed on the page
-        model.addAttribute("user", user);
+        //fetch tasks assigned to this user and sort by submissionDate
+    	List<Generalform> assignedForms = informationFormService.getAssignedFormsByUser(user.getId())
+    	        .stream()
+    	        .sorted(Comparator.comparing(Generalform::getSubmissionDate, Comparator.nullsLast(Comparator.naturalOrder())))
+    	        .collect(Collectors.toList());
+
+    	    //filter tasks with "TO DO" or "IN PROGRESS" statuses
+    	    List<Generalform> filteredForms = assignedForms.stream()
+    	        .filter(generalForm -> {
+    	            
+    	        	//filter the associated information forms with relevant statuses
+    	            List<Informationform> filteredInformationForms = generalForm.getInformationForms().stream()
+    	                .filter(informationForm -> 
+    	                    informationForm.getAssignedUser() != null &&
+    	                    informationForm.getAssignedUser().getId().equals(user.getId()) &&
+    	                    (informationForm.getStatus().equalsIgnoreCase("TO DO") || 
+    	                     informationForm.getStatus().equalsIgnoreCase("TO_DO") || 		
+    	                     informationForm.getStatus().equalsIgnoreCase("IN PROGRESS"))
+    	                )
+    	                .collect(Collectors.toList());
+
+    	            //only keep general forms that have at least one relevant information form
+    	            if (!filteredInformationForms.isEmpty()) {
+    	                generalForm.setInformationForms(filteredInformationForms);
+    	                return true;
+    	            } else {
+    	                return false;
+    	            }
+    	        })
+    	        .collect(Collectors.toList());
+
+    	    model.addAttribute("assignedForms", filteredForms);
+    	    model.addAttribute("user", user);
 
         //return the confirmation page
         return "DeleteUser"; 

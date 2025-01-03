@@ -23,13 +23,13 @@ import com.cascinacaccia.services.UserService;
 public class ForgotPasswordController {
 	
 	@Autowired
-	ForgotPasswordService forgotPasswordService;
+	private ForgotPasswordService forgotPasswordService;
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	UserDAO userDAO;
+	private UserDAO userDAO;
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 	
 	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
 	

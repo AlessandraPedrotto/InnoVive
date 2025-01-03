@@ -104,19 +104,19 @@ public class InformationFormService {
     //method to get all the assigned tasks (forms) to a user
     public List<Generalform> getAssignedFormsByUser(String userId) {
     	
-        // Fetch the User entity using the userId from the user repository
+        //fetch the User entity using the userId from the user repository
         User user = userDAO.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Fetch the assigned Informationforms for that user
+        //fetch the assigned Informationforms for that user
         List<Informationform> assignedInformationForms = informationFormDAO.findByAssignedUser(user);
 
-        // Extract the IDs of the related Generalform entries
+        //extract the IDs of the related Generalform entries
         List<String> generalFormIds = assignedInformationForms.stream()
                 .map(informationform -> informationform.getGeneralFormId())
                 .collect(Collectors.toList());
 
-        // Fetch and return the Generalform entries by their IDs
+        //fetch and return the Generalform entries by their IDs
         return generalFormDAO.findAllById(generalFormIds);  
     }
     
@@ -130,5 +130,10 @@ public class InformationFormService {
         } else {
             throw new RuntimeException("Information Form not found with ID: " + informationFormId);
         }
+    }
+    
+    //method to save the information forms
+    public void saveInformationForm(Informationform informationForm) {
+        informationFormDAO.save(informationForm);
     }
 }

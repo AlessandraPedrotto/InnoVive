@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Role;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
@@ -47,6 +49,9 @@ public class UserService implements UserDetailsService{
 	private UserImageDAO userImageDAO;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Lazy
+	@Autowired
+	private InformationFormService informationFormService;
 	
 	//method to register a new user
 	public void register(User user) { 
@@ -146,6 +151,29 @@ public class UserService implements UserDetailsService{
 
     //method to delete a user
     public void deleteUserById(String userId) {
+    	
+    	// Fetch the user
+    	User user = userDAO.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+
+        // Step 1: Remove associations with Informationforms
+        List<Generalform> generalForms = informationFormService.getAssignedFormsByUser(userId);
+        for (Generalform generalForm : generalForms) {
+            generalForm.getInformationForms().forEach(informationForm -> {
+                if (informationForm.getAssignedUser() != null && 
+                    informationForm.getAssignedUser().getId().equals(userId)) {
+                    // Nullify the user reference in the information form
+                    informationForm.setAssignedUser(null);
+                    informationFormService.saveInformationForm(informationForm); // Save the update
+                }
+            });
+        }
+
+        // Step 2: Remove roles and other associations
+        user.getRoles().clear(); // Clear roles
+        userDAO.save(user); // Save the updated user state to ensure no dangling references
+
+        // Step 3: Delete the user
         userDAO.deleteById(userId); 
     }
     

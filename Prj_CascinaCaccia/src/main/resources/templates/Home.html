@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="ISO-8859-1">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/styles/style.css?v=1.0">
 
     <!-- Stylesheet con percorso relativo (scommentare per vedere lo stile) -->
-    <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
 
 <body>
@@ -20,9 +20,9 @@
         </div>
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
-            <li><a href="./Attivita.html">Attività</a></li>
-            <li><a href="./Struttura.html">Struttura</a></li>
-            <li><a href="./Prenota.html">Prenota</a></li>
+            <li><a href="/attivita">Attività</a></li>
+            <li><a href="/struttura">Struttura</a></li>
+            <li><a href="/prenota">Prenota</a></li>
             <li><a href="/informationForm">Informazioni</a></li>
             <li><a href="/login" class="area-riservata">Area riservata</a></li>
             <!--   <li><a href="/informationform" class="information-form">Modulo informazioni</a></li>-->
@@ -46,9 +46,9 @@
             </div>
             <ul>
                 <li><a href="#">Home</a></li>
-                <li><a href="./Attivita.html">Attività</a></li>
-                <li><a href="./Struttura.html">Struttura</a></li>
-                <li><a href="./Prenota.html">Prenota</a></li>
+                <li><a href="/attivita">Attività</a></li>
+                <li><a href="/struttura">Struttura</a></li>
+                <li><a href="/prenota">Prenota</a></li>
                 <!-- Anchor links for Login and Registration -->
                 <li><a href="/login" class="area-riservata">Area riservata</a></li>
             </ul>
@@ -58,7 +58,7 @@
         </div>
     </nav>
     <!-- NAVBAR ENDS -->
-    <script src="../static/scripts/main.js"></script>
+    <script src="/scripts/main.js"></script>
 
     <!-- main starts -->
     <main>
