@@ -55,7 +55,8 @@
 	                    </a>
 	                    
 	                    <!-- Button to delete profile -->
-		                <form th:action="@{/admin/deleteUser}" method="get">
+		                <form th:action="@{/admin/deleteUser}" method="get"
+		                	th:if="${user.id != loggedInUserId}">
 		                    <input type="hidden" name="userId" th:value="${user.id}" />
 		                    <button sec:authorize="hasRole('ADMIN')" type="submit">Delete</button>
 		                </form>

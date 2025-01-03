@@ -15,9 +15,8 @@ import com.cascinacaccia.entities.User;
  */
 public interface TokenDAO extends JpaRepository<PasswordResetToken, Integer> {
 	
-	Optional<PasswordResetToken> findByUser(User user);
-	PasswordResetToken findByToken(String token);
-	void deleteById(Integer id);
-	
-	List<PasswordResetToken> findByExpiryDateTimeBefore(LocalDateTime expiryDateTime);
+	Optional<PasswordResetToken> findByUser(User user);  // Find token by user
+    PasswordResetToken findByToken(String token);        // Find token by token value
+    void delete(PasswordResetToken token);               // Delete token
+    List<PasswordResetToken> findByExpiryDateTimeBefore(LocalDateTime expiryDateTime);
 }
