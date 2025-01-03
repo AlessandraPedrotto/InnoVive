@@ -4,29 +4,82 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Login</title>
+    <link rel="stylesheet" href="/styles/normalize.css">
     <link rel="stylesheet" href="/styles/style.css?v=1.0">
 </head>
 
 <body>
+<!-- NAVBAR STARTS -->
+<nav class="navbar">
+    <div class="logo">
+        <img src="/img/logo.png" alt="Education logo">
+    </div>
+    <ul class="nav-links">
+        <li><a href="./Home.html">Home</a></li>
+        <li><a href="./Attivita.html">Attività</a></li>
+        <li><a href="./Struttura.html">Struttura</a></li>
+        <li><a href="./Prenota.html">Prenota</a></li>
+        <li><a href="/login" class="area-riservata">Area riservata</a></li>
+    </ul>
+    <!-- hamburger menu -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+            <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z">
+            </path>
+        </svg>
+    </div>
+
+    <!-- mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="close" onclick="toggleMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+                <path
+                    d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z">
+                </path>
+            </svg>
+        </div>
+        <ul>
+            <li><a href="./Home.html">Home</a></li>
+            <li><a href="./Attivita.html">Attività</a></li>
+            <li><a href="./Struttura.html">Struttura</a></li>
+            <li><a href="#">Prenota</a></li>
+            <!-- Anchor links for Login and Registration -->
+            <li><a href="/login" class="area-riservata">Area riservata</a></li>
+        </ul>
+        <div class="mobile-logo">
+            <img src="/img/logo.png" alt="Education logo">
+        </div>
+    </div>
+</nav>
+<!-- NAVBAR ENDS -->
+<h1 class="page-title">EducatiON - Area Riservata</h1>
+
+<!-- LOGIN STARTS -->
+ <div class="login-container">
     <h2>Login</h2>
+     <!-- Login form -->
+     <form class="login-form" th:action="@{/login}" method="post">
+         <label for="email">Email:</label>
+         <input type="email" id="email" name="username" required><br>
+         
+         <label for="password">Password:</label>
+         <input type="password" id="password" name="password" required><br>
+         
+         <button id="accediBtn" type="submit">Accedi</button>
+        </form>
+        
+        
+        <div class="login-utilities">
 
-    <!-- Login form -->
-    <form th:action="@{/login}" method="post">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="username" required><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-
-        <button type="submit">Login</button>
-    </form>
-    
-    <a href="/forgotPassword">Forgot password</a>
-
-    <!-- Error and logout message -->
-    <p th:if="${param.error}">Invalid email or password</p>
-    <p th:if="${param.logout}">You have been logged out</p>
-
+            <a id="passwordRecovery" href="/forgotPassword">Password dimenticata?</a>
+            
+            <!-- Error and logout message -->
+            <p th:if="${param.error}">Invalid email or password</p>
+            <p th:if="${param.logout}">You have been logged out</p>
+        </div>
+    </div>
+<!-- LOGIN ENDS -->
+        
     <!-- footer -->
     <footer>
         <div class="footer">
@@ -57,11 +110,11 @@
             <div class="footer-content">
                 <h3>SOCIAL</h3>
                 <div class="social-links-container">
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/facebook-logo.svg"
+                    <a class="social-links" href="#"><img class="social-icons" src="../static/img/facebook-logo.svg"
                             alt="facebook"></a>
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/instagram-logo.svg"
+                    <a class="social-links" href="#"><img class="social-icons" src="../static/img/instagram-logo.svg"
                             alt="instagram"></a>
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/youtube-logo.svg"
+                    <a class="social-links" href="#"><img class="social-icons" src="../static/img/youtube-logo.svg"
                             alt="twitter"></a>
                 </div>
             </div>
