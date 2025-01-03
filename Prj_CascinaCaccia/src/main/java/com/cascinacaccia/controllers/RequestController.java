@@ -20,11 +20,11 @@ import com.cascinacaccia.services.UserService;
 public class RequestController {
 	
 	@Autowired
-	GeneralformDAO generalFormDAO;
+	private GeneralformDAO generalFormDAO;
 	@Autowired
-	InformationformDAO informationFormDAO;
+	private InformationformDAO informationFormDAO;
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
 	private FilterService filterService;
 	

@@ -23,13 +23,13 @@ import com.cascinacaccia.services.InformationFormService;
 public class InformationFormController {
 
     @Autowired
-    CategoryDAO categoryDAO;
+    private CategoryDAO categoryDAO;
     @Autowired
-    GeneralformDAO generalFormDAO;
+    private GeneralformDAO generalFormDAO;
     @Autowired
-    InformationformDAO informationFormDAO;
+    private InformationformDAO informationFormDAO;
     @Autowired
-    InformationFormService informationFormService;
+    private InformationFormService informationFormService;
     
     //navigation to the page information form
     @GetMapping("/informationForm")
@@ -50,6 +50,7 @@ public class InformationFormController {
         RedirectAttributes redirectAttributes) {
 
         try {
+        	
             //fetch Category
             Category category = categoryDAO.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
@@ -59,17 +60,19 @@ public class InformationFormController {
 
             Generalform generalform;
             if (!existingForms.isEmpty()) {
-                // Reuse the existing Generalform if found
-                generalform = existingForms.get(0); // Get the first match
+            	
+                //reuse the existing Generalform if found
+                generalform = existingForms.get(0); 
             } else {
-                // Create a new Generalform if no match is found
+            	
+                //create a new Generalform if no match is found
                 generalform = new Generalform(UUID.randomUUID().toString(), name, surname, email, category);
                 generalFormDAO.save(generalform);
             }
 
             //create InformationForm
             Informationform informationForm = new Informationform(UUID.randomUUID().toString(), generalform, content);
-            informationForm.setStatus("TO_DO");
+            informationForm.setStatus("TO DO");
             informationFormDAO.save(informationForm);
 
             //send Emails via service
