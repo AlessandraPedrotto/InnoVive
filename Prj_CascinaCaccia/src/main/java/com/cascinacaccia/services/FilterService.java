@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.UserDAO;
 

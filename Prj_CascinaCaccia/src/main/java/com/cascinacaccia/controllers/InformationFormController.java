@@ -55,6 +55,9 @@ public class InformationFormController {
             Category category = categoryDAO.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
             
+            //get the category name
+            String categoryName = category.getName();
+            
             //check for existing Generalform entries
             List<Generalform> existingForms = generalFormDAO.findByEmailAndCategoryAndNameAndSurname(email, category, name, surname);
 
@@ -76,8 +79,8 @@ public class InformationFormController {
             informationFormDAO.save(informationForm);
 
             //send Emails via service
-            informationFormService.sendEmailToAdmin("innovive2024@gmail.com", generalform.getName(), generalform.getSurname(), generalform.getEmail(), generalform.getCategory().getName(), informationForm.getContent());
-            informationFormService.sendConfirmationEmail(email);
+            informationFormService.sendEmailToAdmin("innovive2024@gmail.com", generalform.getName(), generalform.getSurname(), generalform.getEmail(), categoryName, informationForm.getContent());
+            informationFormService.sendConfirmationEmail(email, name, surname, email, categoryName, content);
 
             redirectAttributes.addFlashAttribute("message", "Form submitted successfully!");
             return "redirect:/informationForm";

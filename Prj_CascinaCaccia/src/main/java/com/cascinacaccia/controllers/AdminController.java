@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,6 @@ import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.InformationformDAO;
-import com.cascinacaccia.repos.TokenDAO;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.InformationFormService;
@@ -33,8 +34,6 @@ public class AdminController {
 	
 	@Autowired
 	private UserDAO userDAO;
-	@Autowired
-	private TokenDAO tokenDAO;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -55,7 +54,19 @@ public class AdminController {
     public String listUsers(@RequestParam(name = "query", required = false, defaultValue = "") String query,
             				@RequestParam(name = "sort", required = false) Boolean sortAscending,
             				@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            		        @RequestParam(name = "size", required = false, defaultValue = "3") int size,Model model) {
+            		        @RequestParam(name = "size", required = false, defaultValue = "3") int size,
+            		        @AuthenticationPrincipal org.springframework.security.core.userdetails.User loggedInUser, 
+            		        Model model) {
+    	
+    	if (loggedInUser == null) {
+            return "redirect:/login"; 
+        }
+
+        // You need to fetch the full custom user object based on email
+        User userFromDb = userDAO.findByEmail(loggedInUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("Logged-in user not found"));
+
+    	
         List<User> users;
         
         if (sortAscending == null) {
@@ -103,6 +114,7 @@ public class AdminController {
         model.addAttribute("totalUsers", totalUsers); 
         model.addAttribute("sort", sortAscending);
         model.addAttribute("hasUsers", !users.isEmpty()); 
+        model.addAttribute("loggedInUserId", userFromDb.getId());
         return "ListUsers";
     }
     

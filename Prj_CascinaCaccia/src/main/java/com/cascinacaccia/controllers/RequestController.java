@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.GeneralformDAO;
-import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.UserService;
 
@@ -22,11 +21,7 @@ public class RequestController {
 	@Autowired
 	private GeneralformDAO generalFormDAO;
 	@Autowired
-	private InformationformDAO informationFormDAO;
-	@Autowired
 	private UserService userService;
-	@Autowired
-	private FilterService filterService;
 	
 	//mapping to display all form submissions
     @GetMapping("/request")

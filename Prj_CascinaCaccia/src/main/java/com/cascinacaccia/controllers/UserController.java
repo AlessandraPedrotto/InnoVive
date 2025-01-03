@@ -22,10 +22,8 @@ import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
 import com.cascinacaccia.repos.InformationformDAO;
-import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.repos.UserImageDAO;
 import com.cascinacaccia.services.FilterService;
-import com.cascinacaccia.services.ForgotPasswordService;
 import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
 
@@ -35,13 +33,9 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 	
 	@Autowired
-	private ForgotPasswordService forgotPasswordService;
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private UserImageDAO userImageDAO;
-	@Autowired
-	private UserDAO userDAO;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired

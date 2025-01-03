@@ -17,15 +17,12 @@ import com.cascinacaccia.entities.PasswordResetToken;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.services.ForgotPasswordService;
-import com.cascinacaccia.services.UserService;
 
 @Controller
 public class ForgotPasswordController {
 	
 	@Autowired
 	private ForgotPasswordService forgotPasswordService;
-	@Autowired
-	private UserService userService;
 	@Autowired
 	private UserDAO userDAO;
 	@Autowired
@@ -46,7 +43,9 @@ public class ForgotPasswordController {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            String result = forgotPasswordService.sendResetEmail(user); 
+            String userName = user.getName();  // Assuming getFirstName() returns the user's first name
+            String userSurname = user.getSurname(); 
+            String result = forgotPasswordService.sendResetEmail(user, userName, userSurname); 
             if ("success".equals(result)) {
                 model.addAttribute("success", "Reset email successfully sent to " + email);
             } else {
