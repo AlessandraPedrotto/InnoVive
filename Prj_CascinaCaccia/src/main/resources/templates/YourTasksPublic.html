@@ -151,7 +151,31 @@
 			    </div>
 			</div>
 		</div>
-		
+	<!-- Pagination Controls -->
+	<div class="pagination">
+	    <!-- First Page -->
+	    <a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}" 
+	       th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=1, size=${size})}">First</a>
+	
+	    <!-- Previous Page -->
+	    <a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}" 
+	       th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage - 1}, size=${size})}">Previous</a>
+	
+	    <!-- Page Numbers -->
+	    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+	        <a class="btn btn-sm" th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${i}, size=${size})}" 
+	           th:classappend="${i == currentPage ? 'btn-primary text-white' : 'btn-light'}" 
+	           th:text="${i}"></a>
+	    </span>
+	
+	    <!-- Next Page -->
+	    <a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}" 
+	       th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage + 1}, size=${size})}">Next</a>
+	
+	    <!-- Last Page -->
+	    <a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}" 
+	       th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${totalPages}, size=${size})}">Last</a>
+	</div>
 	<!-- Script to toggle arrow direction -->
     <script>
         $(document).ready(function () {
