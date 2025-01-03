@@ -95,96 +95,41 @@ public class FilterService {
         return users.stream().distinct().collect(Collectors.toList());
     }
     
-    //method for the pagination
-    public List<User> getPaginatedUsers(List<User> users, int page, int size) {
-        
-    	//ensure valid pagination parameters
+    //generic method for paginating any list
+    public static <T> List<T> getPaginatedList(List<T> list, int page, int size) {
+
         if (size <= 0) {
-            //default to 10 items per page if the size is invalid
             size = 10;
         }
         if (page <= 0) {
-            //default to the first page if the page number is invalid
-            page = 1;
+            page = 1; 
         }
 
         //handle empty list case
-        if (users == null || users.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             return new ArrayList<>();
         }
 
-        //calculate the indices for pagination
+        //calculate indices for pagination
         int fromIndex = Math.max(0, (page - 1) * size);
-        int toIndex = Math.min(users.size(), page * size);
-
-        //if fromIndex is out of bounds or toIndex < fromIndex, return an empty list
-        if (fromIndex >= users.size() || fromIndex > toIndex) {
-            return new ArrayList<>();
-        }
+        int toIndex = Math.min(list.size(), page * size);
 
         //return the sublist for pagination
-        return users.subList(fromIndex, toIndex);
+        return list.subList(fromIndex, toIndex);
     }
-    
-    //method to get all the pages
-    public int getTotalPages(List<User> allUsers, int resultsPerPage) {
-        return (int) Math.ceil((double) allUsers.size() / resultsPerPage);
+
+    //generic method to get total pages
+    public static <T> int getTotalPages(List<T> list, int resultsPerPage) {
+        return (int) Math.ceil((double) list.size() / resultsPerPage);
     }
-    
-    //method to get the first page
-    public int getStartPage(int currentPage, int blockSize) {
+
+    //generic method to get the start page for pagination block
+    public static int getStartPage(int currentPage, int blockSize) {
         return (currentPage - 1) / blockSize * blockSize + 1;
     }
-    
-    //method to get the last page
-    public int getEndPage(int currentPage, int blockSize, int totalPages) {
-        int endPage = (currentPage / blockSize) * blockSize + blockSize;
-        return Math.min(endPage, totalPages);
-    }
-    
-    //method for the pagination (requests)
-    public List<Generalform> getPaginatedRequest(List<Generalform> generalForms, int page, int size) {
-        
-    	//ensure valid pagination parameters
-        if (size <= 0) {
-            //default to 10 items per page if the size is invalid
-            size = 10;
-        }
-        if (page <= 0) {
-            //default to the first page if the page number is invalid
-            page = 1;
-        }
 
-        //handle empty list case
-        if (generalForms == null || generalForms.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        //calculate the indices for pagination
-        int fromIndex = Math.max(0, (page - 1) * size);
-        int toIndex = Math.min(generalForms.size(), page * size);
-
-        //if fromIndex is out of bounds or toIndex < fromIndex, return an empty list
-        if (fromIndex >= generalForms.size() || fromIndex > toIndex) {
-            return new ArrayList<>();
-        }
-
-        //return the sublist for pagination
-        return generalForms.subList(fromIndex, toIndex);
-    }
-    
-    //method to get all the pages (requests)
-    public int getTotalPagesRequest(List<User> allUsers, int resultsPerPage) {
-        return (int) Math.ceil((double) allUsers.size() / resultsPerPage);
-    }
-    
-    //method to get the first page (requests)
-    public int getStartPageRequest(int currentPage, int blockSize) {
-        return (currentPage - 1) / blockSize * blockSize + 1;
-    }
-    
-    //method to get the last page (requests)
-    public int getEndPageRequest(int currentPage, int blockSize, int totalPages) {
+    //generic method to get the end page for pagination block
+    public static int getEndPage(int currentPage, int blockSize, int totalPages) {
         int endPage = (currentPage / blockSize) * blockSize + blockSize;
         return Math.min(endPage, totalPages);
     }

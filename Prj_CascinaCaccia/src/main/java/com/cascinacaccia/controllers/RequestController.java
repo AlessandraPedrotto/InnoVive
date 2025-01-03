@@ -43,7 +43,7 @@ public class RequestController {
         int totalForms = generalForms.size();
         
         //calculate total pages
-        int totalPages = (int) Math.ceil((double) totalForms / size);
+        int totalPages = FilterService.getTotalPages(generalForms, size);
         
         //ensure the current page is within the valid range
         if (page < 1) {
@@ -53,7 +53,7 @@ public class RequestController {
         }
 
         //paginate the list of users
-        List<Generalform> paginatedForms = filterService.getPaginatedRequest(generalForms, page, size);
+        List<Generalform> paginatedForms = FilterService.getPaginatedList(generalForms, page, size);
         
         //add the form lists to the model
         model.addAttribute("query", query);

@@ -24,6 +24,7 @@ import com.cascinacaccia.entities.UserImage;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.repos.UserImageDAO;
+import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.ForgotPasswordService;
 import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
@@ -81,7 +82,10 @@ public class UserController {
 	
 	//navigation to yourTasks page
 	@GetMapping("/yourTasks")
-	public String userTasks(@AuthenticationPrincipal Object principal, Model model) throws Exception{
+	public String userTasks(@AuthenticationPrincipal Object principal,
+						@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+			            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+			            Model model) throws Exception{
 		
 		User user = userService.getUserByEmail(principal);
 		
@@ -102,8 +106,27 @@ public class UserController {
 	            .collect(Collectors.toList());
 	        generalForm.setInformationForms(assignedInformationForms); 
 	    });
-	    
-	    model.addAttribute("assignedForms", assignedForms);
+	 
+	    //pagination logic: Get the total number of forms
+	    int totalForms = assignedForms.size();
+
+	    //calculate total pages
+	    int totalPages = FilterService.getTotalPages(assignedForms, size);
+
+	    //ensure the current page is within the valid range
+	    if (page < 1) {
+	        page = 1;
+	    } else if (page > totalPages) {
+	        page = totalPages;
+	    }
+
+	    //paginate the list of assigned forms
+	    List<Generalform> paginatedForms = FilterService.getPaginatedList(assignedForms, page, size);
+
+	    model.addAttribute("totalPages", totalPages); 
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalForms", totalForms);
+	    model.addAttribute("assignedForms", paginatedForms);
 	    return "YourTasks";
 	}
 	

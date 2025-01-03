@@ -83,7 +83,7 @@ public class AdminController {
         int totalUsers = users.size();
         
         //calculate total pages
-        int totalPages = (int) Math.ceil((double) totalUsers / size);
+        int totalPages = FilterService.getTotalPages(users, size);
         
         //ensure the current page is within the valid range
         if (page < 1) {
@@ -93,7 +93,7 @@ public class AdminController {
         }
 
         //paginate the list of users
-        List<User> paginatedUsers = filterService.getPaginatedUsers(users, page, size);
+        List<User> paginatedUsers = FilterService.getPaginatedList(users, page, size);
 
         //add pagination details to the model
         model.addAttribute("users", paginatedUsers);
@@ -124,7 +124,10 @@ public class AdminController {
     
     //navigation to yourTasksPublic page
     @GetMapping("/yourTasksPublic/{userId}")
-    public String yourTasksPublic(@PathVariable("userId") String userId, Model model) {
+    public String yourTasksPublic(@PathVariable("userId") String userId, 
+					    		@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+					    	    @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+					    	    Model model) {
         
     	//fetch user by userId
         User user = userService.getUserById(userId);
@@ -146,10 +149,29 @@ public class AdminController {
                 .collect(Collectors.toList());
             generalForm.setInformationForms(assignedInformationForms); 
         });
+        
+        //pagination logic: Get the total number of tasks
+        int totalForms = assignedForms.size();
+        
+        //calculate total pages
+        int totalPages = FilterService.getTotalPages(assignedForms, size);
+        
+        //ensure the current page is within the valid range
+        if (page < 1) {
+            page = 1;
+        } else if (page > totalPages) {
+            page = totalPages;
+        }
 
+        //paginate the list of assigned forms
+        List<Generalform> paginatedAssignedForms = FilterService.getPaginatedList(assignedForms, page, size);
+        
         //add data to the model
-        model.addAttribute("assignedForms", assignedForms);
+        model.addAttribute("assignedForms", paginatedAssignedForms);
         model.addAttribute("user", user);  
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalForms", totalForms);
 
         return "YourTasksPublic"; 
     }
