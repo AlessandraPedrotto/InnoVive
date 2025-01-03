@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cascinacaccia.entities.Generalform;
-import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.repos.InformationformDAO;
@@ -21,11 +20,11 @@ import com.cascinacaccia.services.UserService;
 public class RequestController {
 	
 	@Autowired
-	GeneralformDAO generalFormDAO;
+	private GeneralformDAO generalFormDAO;
 	@Autowired
-	InformationformDAO informationFormDAO;
+	private InformationformDAO informationFormDAO;
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
 	private FilterService filterService;
 	
@@ -44,7 +43,7 @@ public class RequestController {
         int totalForms = generalForms.size();
         
         //calculate total pages
-        int totalPages = (int) Math.ceil((double) totalForms / size);
+        int totalPages = FilterService.getTotalPages(generalForms, size);
         
         //ensure the current page is within the valid range
         if (page < 1) {
@@ -54,7 +53,7 @@ public class RequestController {
         }
 
         //paginate the list of users
-        List<Generalform> paginatedForms = filterService.getPaginatedRequest(generalForms, page, size);
+        List<Generalform> paginatedForms = FilterService.getPaginatedList(generalForms, page, size);
         
         //add the form lists to the model
         model.addAttribute("query", query);

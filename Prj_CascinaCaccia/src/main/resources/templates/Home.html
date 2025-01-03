@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="ISO-8859-1">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/styles/style.css?v=1.0">
 
     <!-- Stylesheet con percorso relativo (scommentare per vedere lo stile) -->
-    <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
 
 <body>
@@ -20,9 +20,9 @@
         </div>
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
-            <li><a href="./Attivita.html">Attività</a></li>
-            <li><a href="./Struttura.html">Struttura</a></li>
-            <li><a href="./Prenota.html">Prenota</a></li>
+            <li><a href="/attivita">Attività</a></li>
+            <li><a href="/struttura">Struttura</a></li>
+            <li><a href="/prenota">Prenota</a></li>
             <li><a href="/informationForm">Informazioni</a></li>
             <li><a href="/login" class="area-riservata">Area riservata</a></li>
             <!--   <li><a href="/informationform" class="information-form">Modulo informazioni</a></li>-->
@@ -46,9 +46,9 @@
             </div>
             <ul>
                 <li><a href="#">Home</a></li>
-                <li><a href="./Attivita.html">Attività</a></li>
-                <li><a href="./Struttura.html">Struttura</a></li>
-                <li><a href="./Prenota.html">Prenota</a></li>
+                <li><a href="/attivita">Attività</a></li>
+                <li><a href="/struttura">Struttura</a></li>
+                <li><a href="/prenota">Prenota</a></li>
                 <!-- Anchor links for Login and Registration -->
                 <li><a href="/login" class="area-riservata">Area riservata</a></li>
             </ul>
@@ -58,7 +58,7 @@
         </div>
     </nav>
     <!-- NAVBAR ENDS -->
-    <script src="../static/scripts/main.js"></script>
+    <script src="/scripts/main.js"></script>
 
     <!-- main starts -->
     <main>
@@ -151,25 +151,25 @@
             <div class="footer-content">
                 <h3>EducatiON Cascina&nbsp;Caccia</h3>
                 <div class="links">
-                    <a href="#">Attivita'</a>
-                    <a href="#">Struttura</a>
-                    <a href="#">Prenota</a>
+                    <a href="/attivita">Attivita'</a>
+                    <a href="/struttura">Struttura</a>
+                    <a href="/prenota">Prenota</a>
                 </div>
             </div>
             <div class="footer-content">
                 <h3>SOCIAL</h3>
                 <div class="social-links-container">
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/facebook-logo.svg"
-                            alt="facebook"></a>
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/instagram-logo.svg"
-                            alt="instagram"></a>
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/youtube-logo.svg"
-                            alt="twitter"></a>
+                    <a class="social-links" href="https://www.facebook.com/cascinacaccia/?locale=it_IT"
+                        target="_blank"><img class="social-icons" src="/img/facebook-logo.svg" alt="facebook"></a>
+                    <a class="social-links" href="https://www.instagram.com/cascina_caccia/" target="_blank"><img
+                            class="social-icons" src="/img/instagram-logo.svg" alt="instagram"></a>
+                    <a class="social-links" href="https://www.youtube.com/@AcmosNet99" target="_blank"><img
+                            class="social-icons" src="/img/youtube-logo.svg" alt="twitter"></a>
                 </div>
             </div>
         </div>
         <div class="footer-logo">
-            <p>EDUCATION</p>
+            <img src="img/footer-logo.png" alt="Education logo">
         </div>
     </footer>
     <script src="/scripts/main.js"></script>

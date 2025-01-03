@@ -1,15 +1,20 @@
 package com.cascinacaccia.services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
+import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.repos.InformationformDAO;
+import com.cascinacaccia.repos.UserDAO;
 
 import jakarta.mail.MessagingException;
 
@@ -29,6 +34,10 @@ public class InformationFormService {
 	private InformationformDAO informationFormDAO;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private GeneralformDAO generalFormDAO;
+	@Autowired
+	private UserDAO userDAO;
 	
 	//method that sends an email to the company when a new form is submitted
     public void sendEmailToAdmin(String adminEmail, String name, String surname, String email, String categoryName, String content) throws MessagingException {
@@ -78,10 +87,10 @@ public class InformationFormService {
             Informationform informationFormFound = informationForm.get();
             User user = userService.getUserById(userId);
             
-            // Check if the user is already assigned to this form
+            //check if the user is already assigned to this form
             if (informationFormFound.getAssignedUser() != null && informationFormFound.getAssignedUser().equals(user)) {
                 
-            	// Remove the user from the assignedUser field
+            	//remove the user from the assignedUser field
                 informationFormFound.setAssignedUser(null); 
                 informationFormDAO.save(informationFormFound); 
             } else {
@@ -90,6 +99,25 @@ public class InformationFormService {
         } else {
             throw new RuntimeException("Information Form not found with ID: " + informationFormId);
         }
+    }
+    
+    //method to get all the assigned tasks (forms) to a user
+    public List<Generalform> getAssignedFormsByUser(String userId) {
+    	
+        //fetch the User entity using the userId from the user repository
+        User user = userDAO.findById(userId)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+        //fetch the assigned Informationforms for that user
+        List<Informationform> assignedInformationForms = informationFormDAO.findByAssignedUser(user);
+
+        //extract the IDs of the related Generalform entries
+        List<String> generalFormIds = assignedInformationForms.stream()
+                .map(informationform -> informationform.getGeneralFormId())
+                .collect(Collectors.toList());
+
+        //fetch and return the Generalform entries by their IDs
+        return generalFormDAO.findAllById(generalFormIds);  
     }
     
     //method to assign a status to a task (form)
@@ -102,5 +130,10 @@ public class InformationFormService {
         } else {
             throw new RuntimeException("Information Form not found with ID: " + informationFormId);
         }
+    }
+    
+    //method to save the information forms
+    public void saveInformationForm(Informationform informationForm) {
+        informationFormDAO.save(informationForm);
     }
 }

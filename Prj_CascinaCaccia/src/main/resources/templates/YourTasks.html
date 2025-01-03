@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+	<title>Your tasks</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-container {
+            padding: 20px;
+        }
+        .arrow {
+            cursor: pointer;
+        }
+        .hidden-row {
+            display: none;
+        }
+        .modal-open .modal {
+        overflow-x: hidden;
+        overflow-y: auto;
+	    }
+		.profile-image {
+		    width: 70px;  
+		    height: 70px;
+		    object-fit: cover; 
+		    border: 1px solid #ddd; 
+		}
+	    .modal-body .form-control {
+	        z-index: 1050;
+	    }
+    </style>
+</head>
+<body>
+	
+	<!-- Display assigned forms for the user -->
+ 
+        <!-- Table for the requests -->
+        <div class="table-container"><h3>Assigned Forms:</h3>
+        	
+        	<!-- Exit page button -->
+        	<a href="/profile" class="btn btn-secondary">Back</a>
+		    <div th:each="generalForm : ${assignedForms}" class="card mb-3">
+					    <div class="card-header">
+					        <div class="d-flex justify-content-between align-items-center">
+					            <div>
+					                <strong th:text="${generalForm.name ?: 'N/A'}"></strong>
+					                <span th:text="${generalForm.surname ?: 'N/A'}"></span> |
+					                <span th:text="${generalForm.email ?: 'N/A'}"></span>
+					            </div>
+					            
+					            <!-- Arrow to expand/collapse -->
+					            <button class="btn btn-link" type="button" data-toggle="collapse" th:data-target="'#details-' + ${generalForm.id}">
+					                ➤
+					            </button>
+					        </div>
+					    </div>
+					    <!-- Collapsible content for InformationForms -->
+			    <div th:id="'details-' + ${generalForm.id}" class="collapse">
+			        <div class="card-body">
+			            <table class="table">
+			                <thead>
+			                    <tr>
+			                    	<th>Category</th>
+			                        <th>Content</th>
+			                        <th>Date</th>
+			                        <th>Status</th>
+			                        <th>Action</th>
+			                    </tr>
+			                </thead>
+			                <tbody>
+			                
+			                    <!-- Loop through InformationForms -->
+			                    <tr th:each="informationForm : ${generalForm.informationForms}">
+			                    	<td th:text="${generalForm.category.name ?: 'No category'}"></td> <!-- Display Category -->
+			                        <td th:text="${informationForm.getContent() ?: 'No content'}"></td>
+			                        <td th:text="${generalForm.submissionDate ?: 'No date'}"></td>
+			                        <td th:text="${informationForm.getStatus() ?: 'TO DO'}">
+							        <td>
+							        	
+							        	<!-- Button to open the assignment modal for status-->
+							            <button 
+							                class="btn btn-primary btn-sm" 
+							                type="button" 
+							                data-toggle="modal" 
+							                th:data-target="'#assignStatusModal-' + ${informationForm.id}">
+							                Assign Status
+							            </button>
+							            
+							            <!-- Modal for status assignment -->
+										<div 
+										    th:id="'assignStatusModal-' + ${informationForm.id}" 
+										    class="modal fade" 
+										    tabindex="-1" 
+										    role="dialog" 
+										    aria-labelledby="assignStatusModalLabel" 
+										    aria-hidden="true">
+										    <div class="modal-dialog" role="document">
+										        <div class="modal-content">
+										            <div class="modal-header">
+										                <h5 class="modal-title">Assign Status</h5>
+										                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										                    <span aria-hidden="true">&times;</span>
+										                </button>
+										            </div>
+										            <div class="modal-body">
+										                <form action="/assignStatusProfile" method="post">
+										                    <input 
+										                        type="hidden" 
+										                        th:name="informationFormId" 
+										                        th:value="${informationForm.id}">
+										                    
+										                    <!-- Status dropdown list -->
+										                    <div class="form-group">
+										                        <label for="statusSelect">Select a status</label>
+										                        <select class="form-control" id="statusSelect" name="informationFormStatus" required>
+										                            <option value="" disabled selected>Select a status</option>
+										                            <option value="TO DO">To do</option>
+										                            <option value="IN PROGRESS">In progress</option>
+										                            <option value="DONE">Done</option>
+										                        </select>
+										                    </div>
+										                    <button type="submit" class="btn btn-success">Assign</button>
+										                </form>
+										            </div>
+										        </div>
+										    </div>
+										</div>
+									</td>        
+			                    </tr>
+			                </tbody>
+			            </table>
+			        </div>
+			    </div>
+			</div>
+		</div>
+		
+	<!-- Pagination Controls -->
+	<div class="pagination">
+	    <!-- First Page -->
+	    <a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}" 
+	       th:href="@{/yourTasks(page=1, size=${size})}">First</a>
+	
+	    <!-- Previous Page -->
+	    <a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}" 
+	       th:href="@{/yourTasks(page=${currentPage - 1}, size=${size})}">Previous</a>
+	
+	    <!-- Page Numbers -->
+	    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+	        <a class="btn btn-sm" th:href="@{/yourTasks(page=${i}, size=${size})}" 
+	           th:classappend="${i == currentPage ? 'btn-primary text-white' : 'btn-light'}" 
+	           th:text="${i}"></a>
+	    </span>
+	
+	    <!-- Next Page -->
+	    <a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}" 
+	       th:href="@{/yourTasks(page=${currentPage + 1}, size=${size})}">Next</a>
+	
+	    <!-- Last Page -->
+	    <a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}" 
+	       th:href="@{/yourTasks(page=${totalPages}, size=${size})}">Last</a>
+	</div>
+	
+	<!-- Script to toggle arrow direction -->
+    <script>
+        $(document).ready(function () {
+            $(".arrow").click(function () {
+                $(this).text($(this).text() === '➤' ? '▼' : '➤');
+            });
+        });
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+</body>
+</html>
