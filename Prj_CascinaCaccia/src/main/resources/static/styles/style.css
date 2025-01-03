@@ -338,6 +338,7 @@
   max-height: 70%;
   border-radius: 20px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.363);
+  margin-bottom: 0.5rem;
 }
 
 .social-links-container {
