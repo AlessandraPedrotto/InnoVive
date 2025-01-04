@@ -48,7 +48,7 @@ public class ForgotPasswordService {
                     "  <div style='background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E); padding: 20px; text-align: center;'>" +
                     "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Logo' style='width: 300px;'/>" +
                     "  </div>" +
-                    "  <div style='padding: 20px; color: black;'>" +
+                    "  <div style='padding: 20px; color: black; font-size: 14px;'>" +
                     "    <p>Ciao <strong>%s %s</strong>,</p>" +
                     "    <p>Abbiamo ricevuto la tua richiesta per il reset della password. Per favore clicca qui sotto per accedere alla pagina per il reset:</p>" +
                     "    <p style='font-size: 14px; font-weight: bold; color: #007bff;'>" +
@@ -92,6 +92,7 @@ public class ForgotPasswordService {
         
         Optional<PasswordResetToken> oldToken = tokenDAO.findByUser(user);
         if (oldToken.isPresent()) {
+        	oldToken.get().setUser(null);
         	deleteAndFlushPasswordResetToken(oldToken.get());
         }
         
@@ -108,10 +109,9 @@ public class ForgotPasswordService {
         return endpointUrl + resetToken.getToken();
     }
 	
-	//method to delete the old password reset token
-	@Transactional
+
 	public void deleteAndFlushPasswordResetToken(PasswordResetToken token) {
-		tokenDAO.delete(token); 
+		tokenDAO.deleteById(token.getId()); 
 	}
     //method to check if a token has expired
     public boolean hasExpired(LocalDateTime expiryDateTime) {

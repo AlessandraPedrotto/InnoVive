@@ -65,6 +65,12 @@
 		    </tbody>
 		</table>
 	</div>
+	
+	<!-- Check if there's a message -->
+	<div th:if="${message != null}">
+	    <p th:text="${message}"></p> 
+	</div>
+	
 	<!-- Pagination Controls -->
 	<div>
 	

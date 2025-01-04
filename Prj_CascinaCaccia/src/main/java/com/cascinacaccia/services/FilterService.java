@@ -106,7 +106,7 @@ public class FilterService {
 
         //handle empty list case
         if (list == null || list.isEmpty()) {
-            return new ArrayList<>();
+        	return null;
         }
 
         //calculate indices for pagination

@@ -100,7 +100,12 @@ public class UserController {
 	            .collect(Collectors.toList());
 	        generalForm.setInformationForms(assignedInformationForms); 
 	    });
-	 
+	    
+	    // If no forms are assigned, add a "noResults" message to the model
+	    if (assignedForms.isEmpty()) {
+	        model.addAttribute("noResults", "No tasks assigned to you.");
+	    }
+	    
 	    //pagination logic: Get the total number of forms
 	    int totalForms = assignedForms.size();
 
