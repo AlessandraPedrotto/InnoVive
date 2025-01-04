@@ -1097,3 +1097,62 @@ select:focus {
 }
 
 /* PASSWORD DIMENTICATA ENDS */
+
+/* BACKOFFICE REQUESTS STARTS */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+}
+
+.request-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.397);
+}
+
+.request {
+  width: 90%;
+}
+
+.request-header:hover {
+  cursor: pointer;
+  background-color: rgba(240, 147, 33, 0.42);
+}
+
+.form-control {
+  width: 200px;
+}
+
+.form-button {
+  background-color: rgba(240, 147, 33, 0.42);
+  border-radius: 5px;
+  padding: 5px;
+  width: 200px;
+  margin: 0.1rem;
+}
+
+.assign-status-submit-button,
+.assign-user-submit-button {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  background-color: rgba(240, 147, 33, 0.42);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.request-body-table {
+  max-width: 80%;
+}
+
+.assignment-form {
+  margin-top: 1.3rem;
+}
+
+.request-table-header th {
+  background-color: white;
+  color: black
+}
