@@ -162,6 +162,11 @@ public class AdminController {
             generalForm.setInformationForms(assignedInformationForms); 
         });
         
+        // If no tasks are assigned, add a "noResults" message to the model
+        if (assignedForms.isEmpty()) {
+            model.addAttribute("noResults", "No tasks assigned to this user.");
+        }
+        
         //pagination logic: Get the total number of tasks
         int totalForms = assignedForms.size();
         

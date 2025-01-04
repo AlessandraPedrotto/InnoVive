@@ -34,6 +34,11 @@ public class RequestController {
     	
     	List<Generalform> generalForms = generalFormDAO.findAll(Sort.by(Sort.Order.desc("submissionDate")));
     	
+    	// Check if no forms are found
+        if (generalForms.isEmpty()) {
+            model.addAttribute("message", "No results found");
+        }
+        
     	//pagination logic: Get the total number of users
         int totalForms = generalForms.size();
         

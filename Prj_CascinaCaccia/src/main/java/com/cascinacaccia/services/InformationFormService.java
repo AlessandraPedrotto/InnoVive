@@ -52,7 +52,7 @@ public class InformationFormService {
             "  <div style='background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E); padding: 20px; text-align: center;'>" +
             "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Logo' style='width: 300px;'/>" +
             "  </div>" +
-            "  <div style='padding: 20px; color: black;'>" +
+            "  <div style='padding: 20px; color: black; font-size: 14px;'>" +
             "    <p>Ciao,</p>" +
             "    <p>Un nuovo modulo per la richiesta di informazioni è stato appena inviato. Qua sotto puoi trovare i dettagli:</p>" +
             "    <table style='width: 100%%; border-collapse: collapse; margin-top: 10px;'>" +
@@ -86,7 +86,7 @@ public class InformationFormService {
             "  <div style='background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E); padding: 20px; text-align: center;'>" +
             "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Logo' style='width: 300px;'/>" +
             "  </div>" +
-            "  <div style='padding: 20px; color: black;'>" +
+            "  <div style='padding: 20px; color: black; font-size: 14px;'>" +
             "    <p>Ciao <strong>%s %s</strong>,</p>" +
             "    <p>Grazie per averci contattato! Abbiamo ricevuto la tua richiesta, qualcuno provvederà a contattarti il più presto possibile.</p>" +
             "    <p>Qua sotto puoi trovare il riepilogo della tua richiesta:</p>" +
@@ -122,7 +122,7 @@ public class InformationFormService {
                 "  <div style='background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E); padding: 20px; text-align: center;'>" +
                 "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Logo' style='width: 300px;'/>" +
                 "  </div>" +
-                "  <div style='padding: 20px; color: black;'>" +
+                "  <div style='padding: 20px; color: black; font-size: 14px;'>" +
                 "    <p>Ciao <strong>%s %s</strong>,</p>" +
                 "    <p>Sei stato assegnato ad un nuovo form. Qua sotto puoi trovare i dettagli per contattare il cliente:</p>" +
                 "    <table style='width: 100%%; border-collapse: collapse; margin-top: 10px;'>" +
@@ -132,7 +132,7 @@ public class InformationFormService {
                 "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Categoria:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
                 "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Messaggio:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
                 "    </table>" +
-                "    <p style='margin-top: 20px;'><a href='http://localhost:8080/login' style='color: #007bff;'>Accedi al tuo account </a>per aggiornare lo stato della richiesta.</p></br>" +
+                "    <p style='margin-top: 20px;'><a href='http://localhost:8080/login' style='color: #007bff;'>Accedi al tuo account</a> per aggiornare lo stato della richiesta.</p></br>" +
                 "    <p style='margin-top: 20px;'>Grazie e buon proseguimento di giornata.</p>" +
                 "    <p style='margin-top: 20px;'>Team Cascina Caccia</p>" +
                 "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cascinaCaccia_logo_footer.png' alt='Company Logo' style='width: 150px;'/>" +
@@ -204,7 +204,7 @@ public class InformationFormService {
 	            "  <div style='background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E); padding: 20px; text-align: center;'>" +
 	            "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Logo' style='width: 300px;'/>" +
 	            "  </div>" +
-	            "  <div style='padding: 20px; color: black;'>" +
+	            "  <div style='padding: 20px; color: black; font-size: 14px;'>" +
 	            "    <p>Ciao <strong>%s %s</strong>,</p>" +
 	            "    <p>Sei stato rimosso da un task, quindi ora non te ne dovrai più occupare. Qua sotto puoi trovare i dettagli della richiesta:</p>" +
 	            "    <table style='width: 100%%; border-collapse: collapse; margin-top: 10px;'>" +
