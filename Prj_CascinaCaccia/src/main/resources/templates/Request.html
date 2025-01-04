@@ -5,12 +5,12 @@
 	<meta charset="UTF-8">
 	<title>Form Requests</title>
 	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-	<link rel="stylesheet" href="../static/styles/style.css">
+	<link rel="stylesheet" href="/styles/style.css">
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script src="../static/scripts/request.js"></script>
+	<script src="/scripts/request.js"></script>
 	<style>
 		table {
 			width: 100%;
@@ -66,15 +66,14 @@
 
 		<!-- Table for the requests -->
 		<div class="request-container">
+			<h3>Le tue richieste</h3>
 
 			<!-- Loop through GeneralForms -->
 			<div th:each="generalForm : ${generalForms}" class="request">
 				<div class="request-header">
-					<div>
-						<strong th:text="${generalForm.name ?: 'N/A'}"></strong>
-						<span th:text="${generalForm.surname ?: 'N/A'}"></span> |
-						<span th:text="${generalForm.email ?: 'N/A'}"></span>
-					</div>
+					<strong th:text="${generalForm.name ?: 'N/A'}"></strong>
+					<span th:text="${generalForm.surname ?: 'N/A'}"></span> |
+					<span th:text="${generalForm.email ?: 'N/A'}"></span>
 				</div>
 
 				<!-- Collapsible content for InformationForms -->
