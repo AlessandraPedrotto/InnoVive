@@ -639,6 +639,9 @@
   gap: 10px;
 }
 
+#hidden-datepicker{
+  display: none;
+}
 
 input,
 textarea,
