@@ -5,30 +5,30 @@
 	<meta charset="UTF-8">
 	<title>List Users</title>
 	<link rel="stylesheet" href="/styles/normalize.css">
-    <link rel="stylesheet" href="/styles/style.css?v=1.0">
-    <link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
+	<link rel="stylesheet" href="/styles/style.css?v=1.0">
+	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
 </head>
 
 <body>
 	<div class="backoffice-container">
-        <div class="sidebar">
-            <div class="sidebar-logo">
-                <img src="/img/logo.png" alt="education logo">
-            </div>
-            <!-- Admin-specific buttons -->
-            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
-            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
+		<div class="sidebar">
+			<div class="sidebar-logo">
+				<img src="/img/logo.png" alt="education logo">
+			</div>
+			<!-- Admin-specific buttons -->
+			<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
+			<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
 
-            <!-- Buttons for every user -->
-            <a href="/yourTasks">Your tasks</a>
-            <a href="/changePassword">Change password</a>
-            <a href="/request">View all requests</a>
-            <a href="/profileImage">Profile image</a>
+			<!-- Buttons for every user -->
+			<a href="/yourTasks">Your tasks</a>
+			<a href="/changePassword">Change password</a>
+			<a href="/request">View all requests</a>
+			<a href="/profileImage">Profile image</a>
 
-            <!-- Logout link -->
-            <a id="logoutBtn" th:href="@{/logout}">Logout</a>
+			<!-- Logout link -->
+			<a id="logoutBtn" th:href="@{/logout}">Logout</a>
 
-        </div>
+		</div>
 		<div class="backoffice-content">
 			<h2>List Users</h2>
 
@@ -97,31 +97,34 @@
 				<p th:text="${message}"></p>
 			</div>
 
-			<!-- Pagination Controls -->
-			<div>
+			<div th:if="${users != null and users.size() > 0}">
+				<!-- Pagination Controls -->
+				<div>
 
-				<!-- First Page -->
-				<a th:if="${currentPage > 1}" th:href="@{/admin/listUsers(page=1, query=${query}, sort=${sort})}">First
-					Page</a>
+					<!-- First Page -->
+					<a th:if="${currentPage > 1}"
+						th:href="@{/admin/listUsers(page=1, query=${query}, sort=${sort})}">First Page</a>
 
-				<!-- Previous Page -->
-				<a th:if="${currentPage > 1}"
-					th:href="@{/admin/listUsers(page=${currentPage - 1}, query=${query}, sort=${sort})}">Previous
-					Page</a>
+					<!-- Previous Page -->
+					<a th:if="${currentPage > 1}"
+						th:href="@{/admin/listUsers(page=${currentPage - 1}, query=${query}, sort=${sort})}">Previous
+						Page</a>
 
-				<!-- Display page numbers -->
-				<span th:each="i : ${#numbers.sequence(1, totalPages)}">
-					<a th:href="@{/admin/listUsers(page=${i}, query=${query}, sort=${sort})}" th:text="${i}"
-						th:classappend="${i == currentPage ? 'btn-primary text-white' : ''}"></a>
-				</span>
+					<!-- Display page numbers -->
+					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+						<a th:href="@{/admin/listUsers(page=${i}, query=${query}, sort=${sort})}" th:text="${i}"
+							th:classappend="${i == currentPage ? 'btn-primary text-white' : ''}"></a>
+					</span>
 
-				<!-- Next Page -->
-				<a th:if="${currentPage < totalPages}"
-					th:href="@{/admin/listUsers(page=${currentPage + 1}, query=${query}, sort=${sort})}">Next Page</a>
+					<!-- Next Page -->
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{/admin/listUsers(page=${currentPage + 1}, query=${query}, sort=${sort})}">Next
+						Page</a>
 
-				<!-- Last Page -->
-				<a th:if="${currentPage < totalPages}"
-					th:href="@{/admin/listUsers(page=${totalPages}, query=${query}, sort=${sort})}">Last Page</a>
+					<!-- Last Page -->
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{/admin/listUsers(page=${totalPages}, query=${query}, sort=${sort})}">Last Page</a>
+				</div>
 			</div>
 		</div>
 	</div>
