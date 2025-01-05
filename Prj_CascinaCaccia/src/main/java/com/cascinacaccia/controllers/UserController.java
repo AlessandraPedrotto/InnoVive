@@ -77,6 +77,8 @@ public class UserController {
 	//navigation to yourTasks page
 	@GetMapping("/yourTasks")
 	public String userTasks(@AuthenticationPrincipal Object principal,
+						@RequestParam(name = "sort", required = false) Boolean sortAscending,
+			            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
 						@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 			            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
 			            Model model) throws Exception{
@@ -100,6 +102,24 @@ public class UserController {
 	            .collect(Collectors.toList());
 	        generalForm.setInformationForms(assignedInformationForms); 
 	    });
+	    
+	    // Sort forms based on the selected option
+	    switch (sortBy) {
+		    case "surnameAsc":
+		        assignedForms = FilterService.sortBySurname(assignedForms, true);
+		        break;
+		    case "surnameDesc":
+		        assignedForms = FilterService.sortBySurname(assignedForms, false);
+		        break;
+		    case "newest":
+		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, false);
+		        break;
+		    case "oldest":
+		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, true);
+		        break;
+		    default:
+		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, false);
+		}
 	    
 	    // If no forms are assigned, add a "noResults" message to the model
 	    if (assignedForms.isEmpty()) {
@@ -125,6 +145,8 @@ public class UserController {
 	    model.addAttribute("totalPages", totalPages); 
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("totalForms", totalForms);
+	    model.addAttribute("sort", sortAscending);
+        model.addAttribute("sortBy", sortBy);
 	    model.addAttribute("assignedForms", paginatedForms);
 	    return "YourTasks";
 	}

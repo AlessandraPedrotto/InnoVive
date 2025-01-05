@@ -52,7 +52,8 @@ public class AdminController {
     //list of all the existing accounts
     @GetMapping("/listUsers")
     public String listUsers(@RequestParam(name = "query", required = false, defaultValue = "") String query,
-            				@RequestParam(name = "sort", required = false) Boolean sortAscending,
+				    		@RequestParam(name = "sort", required = false) Boolean sortAscending,
+				            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
             				@RequestParam(name = "page", required = false, defaultValue = "1") int page,
             		        @RequestParam(name = "size", required = false, defaultValue = "3") int size,
             		        @AuthenticationPrincipal org.springframework.security.core.userdetails.User loggedInUser, 
@@ -69,10 +70,6 @@ public class AdminController {
     	
         List<User> users;
         
-        if (sortAscending == null) {
-            sortAscending = true;
-        }
-        
         //if there's a query, search the users; otherwise, get all users
         if (query == null || query.isEmpty()) {
         	users = filterService.getAllUsers();
@@ -85,9 +82,25 @@ public class AdminController {
             }
         }
         
-        //if sorting is required, call the sorting method
-        if (sortAscending != null) {
-            users = filterService.sortUsersBySurname(users, sortAscending);
+        // Handle null sortAscending
+        if (sortAscending == null) {
+            sortAscending = true; // Default to ascending order
+        }
+        
+        // Apply sorting logic after filtering
+        if (users != null && !users.isEmpty()) {
+            switch (sortBy) {
+                case "surnameAsc":
+                    users = FilterService.sortUsersBySurname(users, true); // Sort ascending
+                    break;
+                case "surnameDesc":
+                    users = FilterService.sortUsersBySurname(users, false); // Sort descending
+                    break;
+                default:
+                    // Default sort logic
+                    users = FilterService.sortUsersBySurname(users, sortAscending);
+                    break;
+            }
         }
 
         //pagination logic: Get the total number of users
@@ -113,6 +126,7 @@ public class AdminController {
         model.addAttribute("currentPage", page); 
         model.addAttribute("totalUsers", totalUsers); 
         model.addAttribute("sort", sortAscending);
+        model.addAttribute("sortBy", sortBy);
         model.addAttribute("hasUsers", !users.isEmpty()); 
         model.addAttribute("loggedInUserId", userFromDb.getId());
         return "ListUsers";
@@ -137,6 +151,8 @@ public class AdminController {
     //navigation to yourTasksPublic page
     @GetMapping("/yourTasksPublic/{userId}")
     public String yourTasksPublic(@PathVariable("userId") String userId, 
+					    		@RequestParam(name = "sort", required = false) Boolean sortAscending,
+					            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
 					    		@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 					    	    @RequestParam(name = "size", required = false, defaultValue = "5") int size,
 					    	    Model model) {
@@ -162,6 +178,23 @@ public class AdminController {
             generalForm.setInformationForms(assignedInformationForms); 
         });
         
+        switch (sortBy) {
+		    case "surnameAsc":
+		        assignedForms = FilterService.sortBySurname(assignedForms, true);
+		        break;
+		    case "surnameDesc":
+		        assignedForms = FilterService.sortBySurname(assignedForms, false);
+		        break;
+		    case "newest":
+		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, false);
+		        break;
+		    case "oldest":
+		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, true);
+		        break;
+		    default:
+		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, false);
+		}
+        
         // If no tasks are assigned, add a "noResults" message to the model
         if (assignedForms.isEmpty()) {
             model.addAttribute("noResults", "No tasks assigned to this user.");
@@ -186,6 +219,8 @@ public class AdminController {
         //add data to the model
         model.addAttribute("assignedForms", paginatedAssignedForms);
         model.addAttribute("user", user);  
+        model.addAttribute("sort", sortAscending);
+        model.addAttribute("sortBy", sortBy);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalForms", totalForms);

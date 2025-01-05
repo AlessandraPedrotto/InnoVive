@@ -3,7 +3,6 @@ package com.cascinacaccia.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +26,32 @@ public class RequestController {
     @GetMapping("/request")
     public String getAllFormRequests(
     		@RequestParam(name = "query", required = false, defaultValue = "") String query,
-			@RequestParam(name = "sort", required = false) Boolean sortAscending,
+    		@RequestParam(name = "sort", required = false) Boolean sortAscending,
+            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
 			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 	        @RequestParam(name = "size", required = false, defaultValue = "5") int size,
 	        Model model) {
     	
-    	List<Generalform> generalForms = generalFormDAO.findAll(Sort.by(Sort.Order.desc("submissionDate")));
-    	
+    	List<Generalform> generalForms = generalFormDAO.findAll();
+        
+    	// Sort forms based on the selected option
+        switch (sortBy) {
+            case "surnameAsc":
+                generalForms = FilterService.sortBySurname(generalForms, true);
+                break;
+            case "surnameDesc":
+                generalForms = FilterService.sortBySurname(generalForms, false);
+                break;
+            case "newest":
+                generalForms = FilterService.sortBySubmissionDate(generalForms, false);
+                break;
+            case "oldest":
+                generalForms = FilterService.sortBySubmissionDate(generalForms, true);
+                break;
+            default:
+                // Default to newest
+                generalForms = FilterService.sortBySubmissionDate(generalForms, false);
+        }
     	// Check if no forms are found
         if (generalForms.isEmpty()) {
             model.addAttribute("message", "No results found");
@@ -60,7 +78,8 @@ public class RequestController {
         model.addAttribute("totalPages", totalPages); 
         model.addAttribute("currentPage", page); 
         model.addAttribute("totalForms", totalForms); 
-        model.addAttribute("sort", sortAscending); 
+        model.addAttribute("sort", sortAscending);
+        model.addAttribute("sortBy", sortBy);
         model.addAttribute("generalForms", paginatedForms);
         
         List<User> users = userService.getAllUsers();
