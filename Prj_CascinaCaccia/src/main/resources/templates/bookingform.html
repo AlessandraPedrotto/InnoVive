@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="ISO-8859-1">
+<title>Booking form</title>
+</head>
+<body>
+	<h2>Booking form</h2>
+	
+	<!-- Error messages -->
+	<div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+	<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+	
+	<!-- Booking form -->
+	<form action="/submitform" method="post">
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" name="surname" required><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br>
+        
+        <label for="categoryId">Category:</label>
+	    <select id="categoryId" name="categoryId" required>
+	        <option value="" disabled selected>Select a category</option>
+	        <th:block th:each="category : ${categories}">
+	            <option th:value="${category.id}" th:text="${category.name}"></option>
+	        </th:block>
+	    </select><br>
+        
+        <label for="content">Content:</label>
+        <input type="text" id="content" name="content" required><br>
+		
+        <button type="submit">Send</button>
+    </form>
+    
+    <!-- Exit page button -->
+    <a href="/">Back</a>
+</body>
+</html>
