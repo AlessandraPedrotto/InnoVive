@@ -1,12 +1,14 @@
 package com.cascinacaccia.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.UserDAO;
 
@@ -31,7 +33,7 @@ public class FilterService {
     }
 	
     //method to sort users by surname in ascending or descending order
-    public List<User> sortUsersBySurname(List<User> users, boolean ascending) {
+    public static List<User> sortUsersBySurname(List<User> users, boolean ascending) {
         return users.stream()
                 .sorted((user1, user2) -> ascending 
                     ? user1.getSurname().compareToIgnoreCase(user2.getSurname()) 
@@ -131,5 +133,29 @@ public class FilterService {
     public static int getEndPage(int currentPage, int blockSize, int totalPages) {
         int endPage = (currentPage / blockSize) * blockSize + blockSize;
         return Math.min(endPage, totalPages);
+    }
+    
+    // Method to sort forms by surname (A-Z or Z-A)
+    public static List<Generalform> sortBySurname(List<Generalform> forms, boolean ascending) {
+        return forms.stream()
+                .sorted((form1, form2) -> ascending
+                        ? form1.getSurname().compareToIgnoreCase(form2.getSurname())
+                        : form2.getSurname().compareToIgnoreCase(form1.getSurname()))
+                .collect(Collectors.toList());
+    }
+
+    public static List<Generalform> sortBySubmissionDate(List<Generalform> forms, boolean ascending) {
+        return forms.stream()
+                .sorted((form1, form2) -> ascending
+                        ? form1.getSubmissionDate().compareTo(form2.getSubmissionDate())
+                        : form2.getSubmissionDate().compareTo(form1.getSubmissionDate()))
+                .collect(Collectors.toList());
+    }
+
+    // Generic method to sort by any property using a comparator
+    public <T> List<T> sortList(List<T> list, Comparator<T> comparator, boolean ascending) {
+        return list.stream()
+                .sorted(ascending ? comparator : comparator.reversed())
+                .collect(Collectors.toList());
     }
 }
