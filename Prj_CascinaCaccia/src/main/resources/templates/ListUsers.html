@@ -1,101 +1,134 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-    <meta charset="UTF-8">
-    <title>List Users</title>
+	<meta charset="UTF-8">
+	<title>List Users</title>
+	<link rel="stylesheet" href="/styles/normalize.css">
+	<link rel="stylesheet" href="/styles/style.css?v=1.0">
+	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
 </head>
+
 <body>
-	<h2>List Users</h2>
-	
-	<!-- Form for searching users -->
-	<form method="get" th:action="@{/admin/listUsers}">
-	    <input type="text" name="query" th:value="${query}" placeholder="Search by email, name, or surname" />
-	    <button type="submit">Search</button>
-	    <button type="button" th:onclick="'window.location.href=\'' + @{/admin/listUsers} + '\''">View All Users</button>
-	</form>
-	
-	<!-- Buttons for order a-z or z-a -->
-	<form method="get" th:action="@{/admin/listUsers}">
-	    <input type="hidden" name="query" th:value="${query}" />
-	    <button type="submit" name="sort" value="true">Sort A to Z</button>
-	    <button type="submit" name="sort" value="false">Sort Z to A</button>
-	</form>
-	
-	<!-- Exit page button -->
-	<a href="/profile">Back</a>
-	
-	<!-- If no results -->
-	<div th:if="${noResults}" class="alert alert-info">
-	    <p th:text="${noResults}"></p>
-	</div>
-	<div th:if="${hasUsers}">
-	
-		<!-- Table with all users -->
-		<table>
-		    <thead>
-		        <tr>
-		            <!-- <th>ID</th>-->
-		            <th>Name</th>
-		            <th>Surname</th>
-		            <th>Email</th>
-		            <th>Actions</th>
-		        </tr>
-		    </thead>
-		    <tbody>
-		        <tr th:each="user : ${users}">
-		            <!--  <td th:text="${user.id}"></td>-->
-		            <td th:text="${user.name}"></td>
-		            <td th:text="${user.surname}"></td>
-		            <td th:text="${user.email}"></td>
-		            <td>
-		            
-		            	<!-- Button to view Public Profile -->
-	                    <a th:href="@{/admin/publicProfile/{userId}(userId=${user.id})}">
-	                        <button type="button">View Profile</button>
-	                    </a>
-	                    
-	                    <!-- Button to delete profile -->
-		                <form th:action="@{/admin/deleteUser}" method="get"
-		                	th:if="${user.id != loggedInUserId}">
-		                    <input type="hidden" name="userId" th:value="${user.id}" />
-		                    <button sec:authorize="hasRole('ADMIN')" type="submit">Delete</button>
-		                </form>
-		            </td>
-		        </tr>
-		    </tbody>
-		</table>
-	</div>
-	
-	<!-- Check if there's a message -->
-	<div th:if="${message != null}">
-	    <p th:text="${message}"></p> 
-	</div>
-	
-	<div th:if="${users != null and users.size() > 0}">
-		<!-- Pagination Controls -->
-		<div>
-		
-		    <!-- First Page -->
-		    <a th:if="${currentPage > 1}" th:href="@{/admin/listUsers(page=1, query=${query}, sort=${sort})}">First Page</a>
-		
-		    <!-- Previous Page -->
-		    <a th:if="${currentPage > 1}" 
-		       th:href="@{/admin/listUsers(page=${currentPage - 1}, query=${query}, sort=${sort})}" >Previous Page</a>
-		
-		    <!-- Display page numbers -->
-		    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-		        <a th:href="@{/admin/listUsers(page=${i}, query=${query}, sort=${sort})}" 
-		           th:text="${i}" 
-		           th:classappend="${i == currentPage ? 'btn-primary text-white' : ''}"></a>
-		    </span>
-		
-		    <!-- Next Page -->
-		    <a th:if="${currentPage < totalPages}" 
-		       th:href="@{/admin/listUsers(page=${currentPage + 1}, query=${query}, sort=${sort})}">Next Page</a>
-		    
-		    <!-- Last Page -->
-		    <a th:if="${currentPage < totalPages}" th:href="@{/admin/listUsers(page=${totalPages}, query=${query}, sort=${sort})}">Last Page</a>
+	<div class="backoffice-container">
+		<div class="sidebar">
+			<div class="sidebar-logo">
+				<img src="/img/logo.png" alt="education logo">
+			</div>
+			<!-- Admin-specific buttons -->
+			<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
+			<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
+
+			<!-- Buttons for every user -->
+			<a href="/yourTasks">Your tasks</a>
+			<a href="/changePassword">Change password</a>
+			<a href="/request">View all requests</a>
+			<a href="/profileImage">Profile image</a>
+
+			<!-- Logout link -->
+			<a id="logoutBtn" th:href="@{/logout}">Logout</a>
+
+		</div>
+		<div class="backoffice-content">
+			<h2>List Users</h2>
+
+			<!-- Form for searching users -->
+			<form method="get" th:action="@{/admin/listUsers}">
+				<input type="text" name="query" th:value="${query}" placeholder="Search by email, name, or surname" />
+				<button type="submit">Search</button>
+				<button type="button" th:onclick="'window.location.href=\'' + @{/admin/listUsers} + '\''">View All
+					Users</button>
+			</form>
+
+			<!-- Buttons for order a-z or z-a -->
+			<form method="get" th:action="@{/admin/listUsers}">
+				<input type="hidden" name="query" th:value="${query}" />
+				<button type="submit" name="sort" value="true">Sort A to Z</button>
+				<button type="submit" name="sort" value="false">Sort Z to A</button>
+			</form>
+
+			<!-- Exit page button -->
+			<a href="/profile">Back</a>
+
+			<!-- If no results -->
+			<div th:if="${noResults}" class="alert alert-info">
+				<p th:text="${noResults}"></p>
+			</div>
+			<div th:if="${hasUsers}">
+
+				<!-- Table with all users -->
+				<table>
+					<thead>
+						<tr>
+							<!-- <th>ID</th>-->
+							<th>Name</th>
+							<th>Surname</th>
+							<th>Email</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="user : ${users}">
+							<!--  <td th:text="${user.id}"></td>-->
+							<td th:text="${user.name}"></td>
+							<td th:text="${user.surname}"></td>
+							<td th:text="${user.email}"></td>
+							<td>
+
+								<!-- Button to view Public Profile -->
+								<a th:href="@{/admin/publicProfile/{userId}(userId=${user.id})}">
+									<button type="button">View Profile</button>
+								</a>
+
+								<!-- Button to delete profile -->
+								<form th:action="@{/admin/deleteUser}" method="get"
+									th:if="${user.id != loggedInUserId}">
+									<input type="hidden" name="userId" th:value="${user.id}" />
+									<button sec:authorize="hasRole('ADMIN')" type="submit">Delete</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- Check if there's a message -->
+			<div th:if="${message != null}">
+				<p th:text="${message}"></p>
+			</div>
+
+			<div th:if="${users != null and users.size() > 0}">
+				<!-- Pagination Controls -->
+				<div>
+
+					<!-- First Page -->
+					<a th:if="${currentPage > 1}"
+						th:href="@{/admin/listUsers(page=1, query=${query}, sort=${sort})}">First Page</a>
+
+					<!-- Previous Page -->
+					<a th:if="${currentPage > 1}"
+						th:href="@{/admin/listUsers(page=${currentPage - 1}, query=${query}, sort=${sort})}">Previous
+						Page</a>
+
+					<!-- Display page numbers -->
+					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+						<a th:href="@{/admin/listUsers(page=${i}, query=${query}, sort=${sort})}" th:text="${i}"
+							th:classappend="${i == currentPage ? 'btn-primary text-white' : ''}"></a>
+					</span>
+
+					<!-- Next Page -->
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{/admin/listUsers(page=${currentPage + 1}, query=${query}, sort=${sort})}">Next
+						Page</a>
+
+					<!-- Last Page -->
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{/admin/listUsers(page=${totalPages}, query=${query}, sort=${sort})}">Last Page</a>
+				</div>
+			</div>
 		</div>
 	</div>
+
 </body>
+
 </html>

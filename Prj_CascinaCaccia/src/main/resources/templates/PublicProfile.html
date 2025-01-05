@@ -1,22 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+	<link rel="stylesheet" href="/styles/normalize.css">
+	<link rel="stylesheet" href="/styles/style.css?v=1.0">
+	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
 </head>
+
 <body>
-	<h2>User Profile</h2>
-	
-	<!-- User personal details -->
-	<div>
-	    <p><strong>Name:</strong> <span th:text="${fullName}"></span></p>
-	    <p><strong>Surname:</strong> <span th:text="${surname}"></span></p>
-	    <p><strong>Email:</strong> <span th:text="${email}"></span></p>
-	    <p><strong>Profile Image:</strong> <img th:src="@{${profileImageUrl}}" alt="Profile Image" width="100" height="100" /></p>
+	<div class="backoffice-container">
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <img src="/img/logo.png" alt="education logo">
+            </div>
+            <!-- Admin-specific buttons -->
+            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
+            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
+
+            <!-- Buttons for every user -->
+            <a href="/yourTasks">Your tasks</a>
+            <a href="/changePassword">Change password</a>
+            <a href="/request">View all requests</a>
+            <a href="/profileImage">Profile image</a>
+
+            <!-- Logout link -->
+            <a id="logoutBtn" th:href="@{/logout}">Logout</a>
+
+        </div>
+		<div class="backoffice-content">
+			<h2>User Profile</h2>
+
+			<!-- User personal details -->
+			<div>
+				<p><strong>Name:</strong> <span th:text="${fullName}"></span></p>
+				<p><strong>Surname:</strong> <span th:text="${surname}"></span></p>
+				<p><strong>Email:</strong> <span th:text="${email}"></span></p>
+				<p><strong>Profile Image:</strong> <img th:src="@{${profileImageUrl}}" alt="Profile Image" width="100"
+						height="100" /></p>
+			</div>
+
+			<!-- Exit page button -->
+			<a th:href="@{/admin/yourTasksPublic/{userId}(userId=${userId})}">View Tasks</a>
+			<a href="/admin/listUsers" class="button">Back</a>
+		</div>
 	</div>
-	
-	<!-- Exit page button -->
-    <a th:href="@{/admin/yourTasksPublic/{userId}(userId=${userId})}">View Tasks</a>
-	<a href="/admin/listUsers" class="button">Back</a>
+
 </body>
+
 </html>
