@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 03, 2025 alle 00:03
+-- Creato il: Gen 05, 2025 alle 13:29
 -- Versione del server: 10.4.28-MariaDB
 -- Versione PHP: 8.2.4
 
@@ -20,6 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `caccia`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `booking_form`
+--
+
+CREATE TABLE `booking_form` (
+  `id` varchar(255) NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `general_form_id` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -265,6 +280,13 @@ INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 --
 -- Indici per le tabelle scaricate
 --
+
+--
+-- Indici per le tabelle `booking_form`
+--
+ALTER TABLE `booking_form`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `general_form_id` (`general_form_id`);
 
 --
 -- Indici per le tabelle `category`
