@@ -59,6 +59,33 @@ public class ForgotPasswordService {
                     "    <p style='margin-top: 20px;'>Team Cascina Caccia</p>" +
                     "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cascinaCaccia_logo_footer.png' alt='Company Footer Logo' style='width: 150px;'/>" +
                     "  </div>" +
+                    "  <div style='width: 100%%; height: 10px; background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E);'></div>" +
+                    "  <div style='background-color: rgba(255, 119, 0, 0.56); display: flex; flex-direction: column; align-items: center; padding: 20px; color: black; text-align: center;'>" +
+                    "    <div class='footer-content' style='max-width: 800px; text-align: center; margin: 0 auto;'>" +
+                    "      <h3 style='margin-bottom: 10px;'>SOCIAL</h3>" +
+                    "      <table style='width: 100%%; text-align: center;'>" +
+                    "        <tr>" +
+                    "          <td>" +
+        	        "				<a href=\"https://www.facebook.com/cascinacaccia/?locale=it_IT\" target=\"_blank\">\r\n" +
+        			"    				<img class=\"social-icons\" src=\"https://cdn-icons-png.freepik.com/256/2111/2111564.png?ga=GA1.1.272991371.1726556643&semt=ais_hybrid\" alt=\"facebook\" style=\"width: 50px; height: 50px;\"/>\r\n" +
+        			"				</a>" +
+        			"		   </td>" +
+        			"          <td>" +
+        			"				<a href=\"https://www.instagram.com/cascina_caccia/\" target=\"_blank\">\r\n" +
+        			"    				<img class=\"social-icons\" src=\"https://cdn-icons-png.freepik.com/256/2111/2111679.png?ga=GA1.1.272991371.1726556643\" alt=\"instagram\" style=\"width: 50px; height: 50px;\"/>\r\n" +
+        			"				</a>" +
+        			"		   </td>" +
+                    "          <td>" +
+                    "				<a href=\"https://www.youtube.com/@AcmosNet99\" target=\"_blank\">\r\n" +
+                    "    				<img class=\"social-icons\" src=\"https://cdn-icons-png.freepik.com/256/2111/2111839.png?ga=GA1.1.272991371.1726556643\" alt=\"youtube\" style=\"width: 50px; height: 50px;\"/>\r\n" +
+                    "				</a>" +
+                    "		   </td>" +
+                    "        </tr>" +
+                    "      </table>" +
+                    "      <p style='margin-top: 20px; font-size: 13px;'>Copyright © 2025 Libera Piemonte - Tutti i diritti riservati.</p>" +
+                    "      <p style='font-size: 13px;'>Via Serra Alta, 6, San Sebastiano da Po (TO)</p>" +
+                    "    </div>" +
+                    "  </div>" +
                     "</div>", 
                     userName, userSurname, resetLink);
 
