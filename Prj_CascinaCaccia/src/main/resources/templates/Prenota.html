@@ -58,25 +58,26 @@
     <!-- PRENOTA STARTS -->
     <div class="prenota-container">
 
-        <div class="form-info">
-            <form>
+        <div class="form-info" >
+            <form id="prenota-form" method="POST" action="" > 
                 <div class="form-field">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" placeholder="Il tuo nome">
+                    <input type="text" id="nome" placeholder="Il tuo nome" name="">
                 </div>
                 <div class="form-field">
                     <label for="cognome">Cognome</label>
-                    <input type="text" id="cognome" placeholder="Il tuo cognome">
+                    <input type="text" id="cognome" placeholder="Il tuo cognome" name="">
                 </div>
                 <div class="form-field">
                     <label for="email">E-mail</label>
-                    <input type="email" id="email" placeholder="La tua email">
+                    <input type="email" id="email" placeholder="La tua email" name="">
                 </div>
                 <div class="form-field">
                     <label for="messaggio">Messaggio</label>
                     <textarea rows="10" cols="5" name="messaggio" id="messaggio"
-                        placeholder="Raccontaci chi sei, cosa ti aspetti da questa visita e dicci le tue esigenze"></textarea>
+                        placeholder="Raccontaci chi sei, cosa ti aspetti da questa visita e dicci le tue esigenze" name=""></textarea>
                 </div>
+                <input type="date" id="hidden-datepicker" name="selected_date" />
             </form>
         </div>
         <div class="calendar-container">
@@ -124,7 +125,7 @@
             Conferma la richiesta di prenotazione per il giorno:
             <div id="selected-date"></div>
         </div>
-        <button class="conferma-button">Prenota</button>
+        <button id="submit" class="conferma-button">Prenota</button>
     </div>
 
 
