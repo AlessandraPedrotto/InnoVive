@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 05, 2025 alle 13:29
+-- Creato il: Gen 05, 2025 alle 15:52
 -- Versione del server: 10.4.28-MariaDB
 -- Versione PHP: 8.2.4
 
@@ -32,8 +32,8 @@ CREATE TABLE `booking_form` (
   `content` varchar(255) NOT NULL,
   `general_form_id` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date NOT NULL
+  `date` date NOT NULL,
+  `generalform_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -87,6 +87,7 @@ INSERT INTO `general_form` (`id`, `email`, `name`, `surname`, `category_id`, `su
 ('39444dbe-bd7c-4221-b2cd-4853d5247963', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '1', NULL),
 ('4ecd7d09-7608-4ee1-b40e-e23743c2b654', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '7', NULL),
 ('59c1df89-df61-48f8-979a-d51ea0b41f0d', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '4', '2024-12-28 14:22:12.344034'),
+('5c9d640e-bbbe-47cc-8a0c-ea183285626d', 'balmaneayoub3@gmail.com', 'prova', 'prova', '3', '2025-01-05 15:26:08.074883'),
 ('656c0d3a-9810-4d65-af08-de7cd16a665f', 'alessandra.pedrotto@edu.itspiemonte.it', 'Sara', 'Pittelli', '5', '2024-12-28 14:28:20.776137'),
 ('80dbd23f-a069-4f31-8e28-7f28d32a1d75', 'alessandra.pedrotto@edu.itspiemonte.it', 'Sara', 'jkn ', '1', '2024-12-30 14:51:57.690358'),
 ('a59d7083-1c31-436b-805b-0b43b94a0df3', 'alessandra.pedrotto@edu.itspiemonte.it', 'pika', 'Pedrotto', '1', '2024-12-30 15:17:18.242001'),
@@ -119,6 +120,7 @@ INSERT INTO `information_form` (`id`, `content`, `generalform_id`, `user_id`, `s
 ('0daee361-0cc1-4e15-a2aa-ccd01f0ae9b8', 'Quali attività si possono fare?', '0c038a07-8960-4294-9a33-00e199838423', '5e0c5595-32e1-40b0-8b1f-4f9ffb2afc87', 'TO DO', NULL),
 ('1dbc8636-190f-4e7e-953d-502a4c1a5623', 'Siamo dell\'accademia militare, vorremmo portare i nostri ragazzi da voi per imparare di più sull\'argomento mafia, quando costa?', 'e454dc00-bd2a-4856-955e-d5d87a5abb5d', NULL, '', NULL),
 ('203b8182-b9e0-46c7-898f-518cba8d30bd', 'ciaouuu', 'e175f8bc-a0f4-4b97-a78d-61d5c291c4c3', '5e0c5595-32e1-40b0-8b1f-4f9ffb2afc87', 'IN PROGRESS', NULL),
+('25e01fd9-f2a2-4c59-abb2-beb81028eb42', 'prova', '5c9d640e-bbbe-47cc-8a0c-ea183285626d', NULL, 'TO DO', NULL),
 ('3af7ca9b-0c20-4952-bb81-2e42b1568dbd', 'La cascina dove si trova?', 'b68a14c5-a3ed-4f64-b27b-273e5f8f04ee', NULL, 'TO_DO', NULL),
 ('3c180bad-827f-4a53-80fa-2e7559b64a4f', 'Per quante notti si può stare in cascina?', 'dcbf528c-1fca-493f-8945-7a486ad2413e', NULL, '', NULL),
 ('5c19d302-f6bd-4b47-8794-ebad67e7903c', 'ciaouuu', '39444dbe-bd7c-4221-b2cd-4853d5247963', 'dccf76d3-1a94-4076-88d3-e3d447441d30', 'IN PROGRESS', NULL),
@@ -286,7 +288,8 @@ INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 --
 ALTER TABLE `booking_form`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `general_form_id` (`general_form_id`);
+  ADD KEY `general_form_id` (`general_form_id`),
+  ADD KEY `FKpxfjm648qs5befywlmht3h4tq` (`generalform_id`);
 
 --
 -- Indici per le tabelle `category`
@@ -362,6 +365,12 @@ ALTER TABLE `user_image`
 --
 -- Limiti per le tabelle scaricate
 --
+
+--
+-- Limiti per la tabella `booking_form`
+--
+ALTER TABLE `booking_form`
+  ADD CONSTRAINT `FKpxfjm648qs5befywlmht3h4tq` FOREIGN KEY (`generalform_id`) REFERENCES `general_form` (`id`);
 
 --
 -- Limiti per la tabella `general_form`
