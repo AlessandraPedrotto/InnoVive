@@ -30,6 +30,10 @@ public class Generalform {
 	@JoinColumn(name = "generalform_id")
 	public List<Informationform> informationForms;
 	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "generalform_id")
+	public List<BookingForm> bookingForms;
+	
 	private LocalDateTime submissionDate;
 	
 	//default constructor
@@ -102,5 +106,12 @@ public class Generalform {
 	public void setInformationForms(List<Informationform> informationForms) {
 		this.informationForms = informationForms;
 	}
-    
+
+	public List<BookingForm> getBookingForms() {
+		return bookingForms;
+	}
+
+	public void setBookingForms(List<BookingForm> bookingForms) {
+		this.bookingForms = bookingForms;
+	}
 }

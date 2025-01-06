@@ -1,5 +1,6 @@
 package com.cascinacaccia.controllers;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserDAO;
+import com.cascinacaccia.services.BookingFormService;
 import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
@@ -47,6 +49,8 @@ public class AdminController {
 	private InformationformDAO informationFormDAO;
 	@Autowired
 	private CategoryDAO categoryDAO;
+	@Autowired
+	private BookingFormService bookingFormService;
 	
 	
 	//regular expressions for validating email and password
@@ -186,37 +190,46 @@ public class AdminController {
                 .collect(Collectors.toList());
             generalForm.setInformationForms(assignedInformationForms); 
         });
-        assignedForms = FilterService.filterFormsByCategories(assignedForms, categoryIds);
         
-        assignedForms = FilterService.filterFormsByStatuses(assignedForms, statuses);
+     // Fetch assigned booking forms
+        List<Generalform> assignedBookingForms = bookingFormService.getAssignedFormsByUserBooking(user.getId());
+
+        // Combine information forms and booking forms
+        List<Generalform> allAssignedForms = new ArrayList<>();
+        allAssignedForms.addAll(assignedForms);
+        allAssignedForms.addAll(assignedBookingForms);
         
+        allAssignedForms = FilterService.filterFormsByCategories(assignedForms, categoryIds);
+        
+        allAssignedForms = FilterService.filterFormsByStatuses(assignedForms, statuses);
+
         switch (sortBy) {
 		    case "surnameAsc":
-		        assignedForms = FilterService.sortBySurname(assignedForms, true);
+		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, true);
 		        break;
 		    case "surnameDesc":
-		        assignedForms = FilterService.sortBySurname(assignedForms, false);
+		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, false);
 		        break;
 		    case "newest":
-		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, false);
+		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, false);
 		        break;
 		    case "oldest":
-		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, true);
+		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, true);
 		        break;
 		    default:
-		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, false);
+		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, false);
 		}
-        
+
         // If no tasks are assigned, add a "noResults" message to the model
-        if (assignedForms.isEmpty()) {
+        if (allAssignedForms.isEmpty()) {
             model.addAttribute("noResults", "No tasks assigned to this user.");
         }
         
         //pagination logic: Get the total number of tasks
-        int totalForms = assignedForms.size();
+        int totalForms = allAssignedForms.size();
         
         //calculate total pages
-        int totalPages = FilterService.getTotalPages(assignedForms, size);
+        int totalPages = FilterService.getTotalPages(allAssignedForms, size);
         
         //ensure the current page is within the valid range
         if (page < 1) {
@@ -226,8 +239,9 @@ public class AdminController {
         }
 
         //paginate the list of assigned forms
-        List<Generalform> paginatedAssignedForms = FilterService.getPaginatedList(assignedForms, page, size);
+        List<Generalform> paginatedAssignedForms = FilterService.getPaginatedList(allAssignedForms, page, size);
         List<Category> categories = categoryDAO.findAll();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         
         //add data to the model
         model.addAttribute("assignedForms", paginatedAssignedForms);
@@ -240,7 +254,8 @@ public class AdminController {
         model.addAttribute("categoriesSelected", categoryIds != null ? categoryIds : List.of());
 	    model.addAttribute("statusesSelected", statuses);
 	    model.addAttribute("categories", categories);
-
+	    model.addAttribute("formatter", formatter);
+	    
         return "YourTasksPublic"; 
     }
     

@@ -436,7 +436,7 @@ public class BookingFormService {
     }
     
     //method to get all the assigned tasks (forms) to a user
-    public List<Generalform> getAssignedFormsByUser(String userId) {
+    public List<Generalform> getAssignedFormsByUserBooking(String userId) {
     	
         //fetch the User entity using the userId from the user repository
         User user = userDAO.findById(userId)
