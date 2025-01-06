@@ -1099,12 +1099,25 @@ select:focus {
 /* PASSWORD DIMENTICATA ENDS */
 
 /* BACKOFFICE REQUESTS STARTS */
+
+.requests-welcome {
+  margin-bottom: 2rem;
+}
+
 .content {
   margin: 20px auto;
 }
 
 .request-page-header {
   margin: 4rem 0 8rem 8rem;
+}
+
+.requests-back-button {
+  background: linear-gradient(90deg, #fcdd11, #e1097e);
+  padding: 10px 15px;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: 500;
 }
 
 .request-container {
@@ -1165,6 +1178,7 @@ select:focus {
   background-color: rgba(240, 147, 33, 0.42);
   border-radius: 5px;
   padding: 5px;
+  cursor: pointer;
 }
 
 .request-body {
@@ -1187,6 +1201,7 @@ select:focus {
   background-color: rgba(240, 147, 33, 0.42);
   border-radius: 5px;
   padding: 5px 9px;
+  cursor: pointer;
 }
 
 .request-table-header th {

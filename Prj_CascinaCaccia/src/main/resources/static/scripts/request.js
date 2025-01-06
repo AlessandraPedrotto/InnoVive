@@ -1,10 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     //toggle della classe 'hidden' sugli header delle richieste
+    const body = document.querySelector('body');
     const headers = document.querySelectorAll('.request-header');
     const bodies = document.querySelectorAll('.request-body');
 
     for (let i = 0; i < headers.length; i++) {
         headers[i].addEventListener('click', () => {
+            for (let j = 0; j < headers.length; j++) {
+                if (headers[j].classList.contains('request-header-selected') && j !== i) {
+                    // if (headers[j].classList.contains('request-header-selected')) { <---usare questa linea per l' apertura della request alternativa
+                    headers[j].classList.toggle('request-header-selected');
+                    bodies[j].classList.toggle('hidden');
+                }
+            }
             bodies[i].classList.toggle('hidden');
             headers[i].classList.toggle('request-header-selected');
         });

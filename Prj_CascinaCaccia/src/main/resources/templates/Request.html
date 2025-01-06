@@ -8,9 +8,9 @@
 	<link rel="stylesheet" href="/styles/style.css">
 	<!-- <link rel="stylesheet" href="../static/styles/style.css"> -->
 
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script> -->
+	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 	<script src="/scripts/request.js"></script>
 	<!-- <script src="../static/scripts/request.js"></script> -->
 
@@ -20,10 +20,10 @@
 	<div class="content">
 
 		<div class="request-page-header">
-			<h2>Benvenuto, Admin</h2>
+			<h2 class="requests-welcome">Benvenuto, Admin</h2>
 
 			<!-- Exit page button -->
-			<a href="/profile" class="btn btn-secondary">Back</a>
+			<a href="/profile" class="requests-back-button">Back</a>
 		</div>
 
 
@@ -109,9 +109,7 @@
 										</button>
 
 										<!-- Modal for user assignment -->
-										<div th:id="'assignUserModal-' + ${informationForm.id}" class="modal fade"
-											tabindex="-1" role="dialog" aria-labelledby="assignUserModalLabel"
-											aria-hidden="true">
+										<div th:id="'assignUserModal-' + ${informationForm.id}">
 											<div class="modal-dialog" role="document">
 												<div class="assign-user-content hidden">
 													<div class="modal-body">
@@ -224,17 +222,6 @@
 		</div>
 	</div>
 
-	<!-- Script to toggle arrow direction -->
-	<script>
-		$(document).ready(function () {
-			$(".arrow").click(function () {
-				$(this).text($(this).text() === '➤' ? '▼' : '➤');
-			});
-		});
-		$(document).ready(function () {
-			$('[data-toggle="tooltip"]').tooltip();
-		});
-	</script>
 </body>
 
 </html>
