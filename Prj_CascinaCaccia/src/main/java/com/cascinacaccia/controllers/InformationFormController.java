@@ -83,11 +83,11 @@ public class InformationFormController {
             informationFormService.sendConfirmationEmail(email, name, surname, email, categoryName, content);
 
             redirectAttributes.addFlashAttribute("message", "Form submitted successfully!");
-            return "redirect:/informationForm";
+            return "redirect:/chatbot";
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error processing form: " + e.getMessage());
-            return "redirect:/informationForm";
+            return "redirect:/chatbot";
         }
     }
     

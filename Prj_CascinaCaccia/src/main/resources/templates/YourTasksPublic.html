@@ -121,6 +121,16 @@
 				            <option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Surname: Z to A</option>
 				        </select>
 				        
+				        <!-- Form Type Filter (Information Form or Booking Form) -->
+					    <div class="form-group mr-2">
+					        <label for="formType">Form Type:</label>
+					        <select class="form-control" name="formType">
+					            <option value="all" th:selected="${formType == 'all'}">All</option>
+					            <option value="informationForm" th:selected="${formType == 'informationForm'}">Information Form</option>
+					            <option value="bookingForm" th:selected="${formType == 'bookingForm'}">Booking Form</option>
+					        </select>
+					    </div>
+					    
 				        <button type="submit" class="btn btn-primary">Apply</button>
 				        
 				        <a th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id})}" class="btn btn-secondary ml-2">Reset</a>
@@ -383,27 +393,27 @@
 				<div class="pagination">
 					<!-- First Page -->
 					<a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}"
-						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=1, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}">First</a>
+						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=1, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">First</a>
 
 					<!-- Previous Page -->
 					<a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}"
-						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage - 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}">Previous</a>
+						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage - 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">Previous</a>
 
 					<!-- Page Numbers -->
 					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
 						<a class="btn btn-sm"
-							th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${i}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}"
+							th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${i}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}"
 							th:classappend="${i == currentPage ? 'btn-primary text-white' : 'btn-light'}"
 							th:text="${i}"></a>
 					</span>
 
 					<!-- Next Page -->
 					<a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}"
-						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}">Next</a>
+						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">Next</a>
 
 					<!-- Last Page -->
 					<a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}"
-						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${totalPages}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}">Last</a>
+						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${totalPages}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">Last</a>
 				</div>
 			</div>
 
