@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="ISO-8859-1">
+<title>Booking form</title>
+</head>
+<body>
+	<h2>Booking form</h2>
+	
+	<!-- Error messages -->
+	<div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+	<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+	
+	<!-- Booking form -->
+	<form action="/submit-booking" method="post">
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" name="surname" required><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        
+        <label for="categoryId">Category:</label>
+	    <select id="categoryId" name="categoryId" required>
+	        <option value="" disabled selected>Select a category</option>
+	        <th:block th:each="category : ${categories}">
+	            <option th:value="${category.id}" th:text="${category.name}"></option>
+	        </th:block>
+	    </select><br>
+	    
+        <label for="checkIn">check in:</label>
+        <input type="date" id="checkIn" name="checkIn" required><br>
+        
+        <label for="checkOut">check out:</label>
+        <input type="date" id="checkOut" name="checkOut" required><br>
+        
+        <label for="content">Content:</label>
+        <input type="text" id="content" name="content" required><br>
+		
+        <button type="submit">Send</button>
+    </form>
+    
+    <!-- Exit page button -->
+    <a href="/">Back</a>
+    <script>
+		// This script sets the minimum date to tomorrow's date for both check-in and check-out fields
+		document.addEventListener("DOMContentLoaded", function() {
+		    var today = new Date();
+		    today.setDate(today.getDate() + 1); // Set to the next day
+		    var tomorrow = today.toISOString().split('T')[0]; // Format as yyyy-mm-dd
+		
+		    document.getElementById("checkIn").setAttribute("min", tomorrow); // Set minimum date for check-in
+		    document.getElementById("checkOut").setAttribute("min", tomorrow); // Set minimum date for check-out
+		
+		    // Event listener to check if check-out date is after check-in date
+		    document.getElementById("checkIn").addEventListener("change", validateDates);
+		    document.getElementById("checkOut").addEventListener("change", validateDates);
+		});
+		
+		function validateDates() {
+		    var checkInDate = document.getElementById("checkIn").value;
+		    var checkOutDate = document.getElementById("checkOut").value;
+		
+		    if (checkInDate && checkOutDate) {
+		        if (checkOutDate < checkInDate) {
+		            alert("Check-out date cannot be before check-in date.");
+		            document.getElementById("checkOut").setCustomValidity("Check-out date cannot be before check-in date.");
+		        } else {
+		            document.getElementById("checkOut").setCustomValidity("");
+		        }
+		    }
+		}
+	</script>
+</body>
+</html>
