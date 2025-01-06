@@ -1,5 +1,6 @@
 package com.cascinacaccia.controllers;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cascinacaccia.entities.Category;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
+import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserImageDAO;
 import com.cascinacaccia.services.FilterService;
@@ -42,6 +45,8 @@ public class UserController {
 	private InformationformDAO informationFormDAO;
 	@Autowired
 	private InformationFormService informationFormService;
+	@Autowired
+	private CategoryDAO categoryDAO;
 	
 	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
 	
@@ -81,10 +86,14 @@ public class UserController {
 			            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
 						@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 			            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+			            @RequestParam(name = "categories", required = false) List<String> categoryIds,
+                        @RequestParam(name = "statuses", required = false) List<String> statuses,
 			            Model model) throws Exception{
 		
 		User user = userService.getUserByEmail(principal);
-		
+		if (statuses == null) {
+            statuses = new ArrayList<>();
+        }
 		//fetch the assigned requests for the logged-in user
 	    List<Generalform> assignedForms = informationFormService.getAssignedFormsByUser(user.getId())
 	    		.stream()
@@ -103,6 +112,11 @@ public class UserController {
 	        generalForm.setInformationForms(assignedInformationForms); 
 	    });
 	    
+	 // Filter by selected categories if available
+        assignedForms = FilterService.filterFormsByCategories(assignedForms, categoryIds);
+        
+        assignedForms = FilterService.filterFormsByStatuses(assignedForms, statuses);
+        
 	    // Sort forms based on the selected option
 	    switch (sortBy) {
 		    case "surnameAsc":
@@ -141,13 +155,17 @@ public class UserController {
 
 	    //paginate the list of assigned forms
 	    List<Generalform> paginatedForms = FilterService.getPaginatedList(assignedForms, page, size);
-
+	    List<Category> categories = categoryDAO.findAll();
+	    
 	    model.addAttribute("totalPages", totalPages); 
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("totalForms", totalForms);
 	    model.addAttribute("sort", sortAscending);
         model.addAttribute("sortBy", sortBy);
 	    model.addAttribute("assignedForms", paginatedForms);
+	    model.addAttribute("categoriesSelected", categoryIds != null ? categoryIds : List.of());
+	    model.addAttribute("statusesSelected", statuses);
+	    model.addAttribute("categories", categories);
 	    return "YourTasks";
 	}
 	

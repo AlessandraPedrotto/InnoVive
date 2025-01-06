@@ -88,20 +88,43 @@
 				<!-- Exit page button -->
 				<a href="/admin/listUsers" class="btn btn-secondary">Back</a>
 				
-				<!-- Sorting Dropdown -->
+				<!-- Category Filter Form -->
 				<div class="d-flex justify-content-between align-items-center mb-3">
 				    <form method="get" th:action="@{/admin/yourTasksPublic/{userId}(userId=${user.id})}" class="form-inline">
-				        <input type="hidden" name="page" th:value="${currentPage}" />
+				        <input type="hidden" name="page" th:value="1" />
 				        <input type="hidden" name="size" th:value="${size}" />
-				        <select class="form-control mr-2" name="sortBy" onchange="this.form.submit()">
+				        
+				        <!-- Category Checkbox Filters -->
+		                <div class="form-group mr-2">
+		                    <label for="categories">Categories:</label><br />
+		                    <div th:each="category : ${categories}">
+		                        <input type="checkbox" name="categories" th:value="${category.id}" th:checked="${selectedCategories != null and selectedCategories.contains(category.id)}" />
+		                        <span th:text="${category.name}"></span><br />
+		                    </div>
+		                </div>
+		                
+		                <!-- Status Checkbox Filters -->
+				        <div class="form-group mr-2">
+				            <label for="statuses">Status:</label><br />
+				            <div>
+				                <input type="checkbox" name="statuses" value="TO DO" th:checked="${statusesSelected != null and statusesSelected.contains('TO DO')}" /> TO DO<br />
+				                <input type="checkbox" name="statuses" value="IN PROGRESS" th:checked="${statusesSelected != null and statusesSelected.contains('IN PROGRESS')}" /> IN PROGRESS<br />
+				                <input type="checkbox" name="statuses" value="DONE" th:checked="${statusesSelected != null and statusesSelected.contains('DONE')}" /> DONE<br />
+				            </div>
+				        </div>
+				        
+				        <!-- Sorting Dropdown -->
+				        <select class="form-control mr-2" name="sortBy">
 				            <option value="newest" th:selected="${sortBy == 'newest'}">Date: Newest to Oldest</option>
 				            <option value="oldest" th:selected="${sortBy == 'oldest'}">Date: Oldest to Newest</option>
 				            <option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Surname: A to Z</option>
 				            <option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Surname: Z to A</option>
 				        </select>
-				        <noscript>
-				            <button type="submit" class="btn btn-primary">Sort</button>
-				        </noscript>
+				        
+				        <button type="submit" class="btn btn-primary">Apply</button>
+				        
+				        <a th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id})}" class="btn btn-secondary ml-2">Reset</a>
+				    
 				    </form>
 				</div>
 				
@@ -210,27 +233,27 @@
 				<div class="pagination">
 					<!-- First Page -->
 					<a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}"
-						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=1, sortBy=${sortBy})}">First</a>
+						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=1, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}">First</a>
 
 					<!-- Previous Page -->
 					<a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}"
-						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage - 1}, sortBy=${sortBy})}">Previous</a>
+						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage - 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}">Previous</a>
 
 					<!-- Page Numbers -->
 					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
 						<a class="btn btn-sm"
-							th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${i}, sortBy=${sortBy})}"
+							th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${i}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}"
 							th:classappend="${i == currentPage ? 'btn-primary text-white' : 'btn-light'}"
 							th:text="${i}"></a>
 					</span>
 
 					<!-- Next Page -->
 					<a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}"
-						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage + 1}, sortBy=${sortBy})}">Next</a>
+						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${currentPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}">Next</a>
 
 					<!-- Last Page -->
 					<a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}"
-						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${totalPages}, sortBy=${sortBy})}">Last</a>
+						th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id}, page=${totalPages}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')})}">Last</a>
 				</div>
 			</div>
 
