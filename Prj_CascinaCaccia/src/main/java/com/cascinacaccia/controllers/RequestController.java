@@ -1,5 +1,6 @@
 package com.cascinacaccia.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cascinacaccia.entities.Category;
 import com.cascinacaccia.entities.Generalform;
+import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
+import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.GeneralformDAO;
+import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.UserService;
 
@@ -20,7 +25,11 @@ public class RequestController {
 	@Autowired
 	private GeneralformDAO generalFormDAO;
 	@Autowired
+	private InformationformDAO informationFormDAO;
+	@Autowired
 	private UserService userService;
+	@Autowired
+	private CategoryDAO categoryDAO;
 	
 	//mapping to display all form submissions
     @GetMapping("/request")
@@ -30,10 +39,22 @@ public class RequestController {
             @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
 			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 	        @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+	        @RequestParam(name = "categories", required = false) List<String> categoryIds,
+	        @RequestParam(name = "statuses", required = false) List<String> statuses,
 	        Model model) {
     	
-    	List<Generalform> generalForms = generalFormDAO.findAll();
+    	// Ensure statuses is never null
+        if (statuses == null) {
+            statuses = new ArrayList<>();
+        }
         
+    	List<Generalform> generalForms = generalFormDAO.findAll();
+        List<Informationform> informationForms = informationFormDAO.findAll();
+        
+    	// Filter by selected categories if available
+        generalForms = FilterService.filterFormsByCategories(generalForms, categoryIds);
+        
+        generalForms = FilterService.filterFormsByStatuses(generalForms, statuses);
     	// Sort forms based on the selected option
         switch (sortBy) {
             case "surnameAsc":
@@ -72,6 +93,8 @@ public class RequestController {
 
         //paginate the list of users
         List<Generalform> paginatedForms = FilterService.getPaginatedList(generalForms, page, size);
+        List<User> users = userService.getAllUsers();
+        List<Category> categories = categoryDAO.findAll();
         
         //add the form lists to the model
         model.addAttribute("query", query);
@@ -81,9 +104,11 @@ public class RequestController {
         model.addAttribute("sort", sortAscending);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("generalForms", paginatedForms);
-        
-        List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
+        model.addAttribute("categories", categories);
+        model.addAttribute("categoriesSelected", categoryIds != null ? categoryIds : List.of());
+        model.addAttribute("informationForms", informationForms);
+        model.addAttribute("statusesSelected", statuses);
         
         return "Request";
     }

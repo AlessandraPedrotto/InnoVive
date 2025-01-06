@@ -1,5 +1,6 @@
 package com.cascinacaccia.controllers;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cascinacaccia.entities.Category;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
+import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.services.FilterService;
@@ -42,6 +45,8 @@ public class AdminController {
 	private InformationFormService informationFormService;
 	@Autowired
 	private InformationformDAO informationFormDAO;
+	@Autowired
+	private CategoryDAO categoryDAO;
 	
 	
 	//regular expressions for validating email and password
@@ -155,11 +160,15 @@ public class AdminController {
 					            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
 					    		@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 					    	    @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+					    	    @RequestParam(name = "categories", required = false) List<String> categoryIds,
+		                        @RequestParam(name = "statuses", required = false) List<String> statuses,
 					    	    Model model) {
         
     	//fetch user by userId
         User user = userService.getUserById(userId);
-
+        if (statuses == null) {
+            statuses = new ArrayList<>();
+        }
         //fetch tasks assigned to this user and sort by submissionDate
         List<Generalform> assignedForms = informationFormService.getAssignedFormsByUser(user.getId())
         		.stream()
@@ -177,6 +186,9 @@ public class AdminController {
                 .collect(Collectors.toList());
             generalForm.setInformationForms(assignedInformationForms); 
         });
+        assignedForms = FilterService.filterFormsByCategories(assignedForms, categoryIds);
+        
+        assignedForms = FilterService.filterFormsByStatuses(assignedForms, statuses);
         
         switch (sortBy) {
 		    case "surnameAsc":
@@ -215,6 +227,7 @@ public class AdminController {
 
         //paginate the list of assigned forms
         List<Generalform> paginatedAssignedForms = FilterService.getPaginatedList(assignedForms, page, size);
+        List<Category> categories = categoryDAO.findAll();
         
         //add data to the model
         model.addAttribute("assignedForms", paginatedAssignedForms);
@@ -224,6 +237,9 @@ public class AdminController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalForms", totalForms);
+        model.addAttribute("categoriesSelected", categoryIds != null ? categoryIds : List.of());
+	    model.addAttribute("statusesSelected", statuses);
+	    model.addAttribute("categories", categories);
 
         return "YourTasksPublic"; 
     }

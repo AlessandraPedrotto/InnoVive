@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cascinacaccia.entities.Generalform;
+import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.UserDAO;
 
@@ -156,6 +157,44 @@ public class FilterService {
     public <T> List<T> sortList(List<T> list, Comparator<T> comparator, boolean ascending) {
         return list.stream()
                 .sorted(ascending ? comparator : comparator.reversed())
+                .collect(Collectors.toList());
+    }
+    
+    // Method to filter forms by category String IDs
+    public static List<Generalform> filterFormsByCategories(List<Generalform> generalForms, List<String> categoryIds) {
+        if (categoryIds == null || categoryIds.isEmpty()) {
+            return generalForms; // No filtering, return all forms
+        }
+
+        return generalForms.stream()
+                .filter(form -> categoryIds.contains(form.getCategory().getId())) // Assuming each Generalform has a 'category' field with 'getId()' returning a String
+                .collect(Collectors.toList());
+    }
+    
+ // Filter Generalforms by related Informationform statuses
+    public static List<Generalform> filterFormsByStatuses(List<Generalform> generalForms, List<String> statuses) {
+        if (statuses == null || statuses.isEmpty()) {
+            return generalForms; // Return all if no statuses are selected
+        }
+
+        // Debugging: Print out statuses to see what we are filtering by
+        System.out.println("Filtering Generalforms with statuses: " + statuses);
+
+        return generalForms.stream()
+                .filter(form -> {
+                    // Assuming Generalform has a method to retrieve related Informationform list
+                    List<Informationform> informationForms = form.getInformationForms(); // Get the list of related Informationforms
+                    
+                    if (informationForms != null) {
+                        // Check the status of each Informationform in the list
+                        return informationForms.stream()
+                                .anyMatch(informationform -> 
+                                    statuses.stream().anyMatch(status -> status.equalsIgnoreCase(informationform.getStatus()))
+                                );
+                    }
+                    
+                    return false; // If no related Informationforms, return false
+                })
                 .collect(Collectors.toList());
     }
 }
