@@ -139,6 +139,7 @@ function showInitialMessage() {
 function disableAllButtons() {
     const allButtons = document.querySelectorAll('.buttons-container button');
     allButtons.forEach(button => button.disabled = true);
+    allButtons.forEach(button => button.classList.add('hidden'));
 }
 
 // Bot response based on user input
