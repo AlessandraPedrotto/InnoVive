@@ -1214,7 +1214,8 @@ select:focus {
 
 @media (max-width: 768px) {
   #informationFormContainer {
-    right: 5%;
+    top: 10%;
+    right: 2.5%;
     width: 95%; 
     height: 90%;
     padding: 15px; 
@@ -1225,7 +1226,6 @@ select:focus {
 
 @media (max-width: 480px) {
   #informationFormContainer {
-    bottom: 2%;
     right: 2%;
     width: 96%; 
     height: 95%; 
