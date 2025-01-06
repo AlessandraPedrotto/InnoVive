@@ -200,24 +200,24 @@
 		<!-- Pagination Controls -->
 		<div class="pagination">
 			<!-- First Page -->
-			<a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}" th:href="@{/request(page=1)}">First</a>
+			<a class="pagination-button" th:if="${currentPage > 1}" th:href="@{/request(page=1)}">First</a>
 
 			<!-- Previous Page -->
-			<a class="btn btn-sm btn-secondary" th:if="${currentPage > 1}"
+			<a class="pagination-button" th:if="${currentPage > 1}"
 				th:href="@{/request(page=${currentPage - 1})}">Previous</a>
 
 			<!-- Page Numbers -->
 			<span th:each="i : ${#numbers.sequence(1, totalPages)}">
-				<a class="btn btn-sm" th:href="@{/request(page=${i})}"
+				<a class="pagination-button" th:href="@{/request(page=${i})}"
 					th:classappend="${i == currentPage ? 'btn-primary text-white' : 'btn-light'}" th:text="${i}"></a>
 			</span>
 
 			<!-- Next Page -->
-			<a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}"
+			<a class="pagination-button" th:if="${currentPage < totalPages}"
 				th:href="@{/request(page=${currentPage + 1})}">Next</a>
 
 			<!-- Last Page -->
-			<a class="btn btn-sm btn-secondary" th:if="${currentPage < totalPages}"
+			<a class="pagination-button" th:if="${currentPage < totalPages}"
 				th:href="@{/request(page=${totalPages})}">Last</a>
 		</div>
 	</div>

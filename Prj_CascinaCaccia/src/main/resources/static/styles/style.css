@@ -1120,6 +1120,14 @@ select:focus {
   font-weight: 500;
 }
 
+.pagination-button {
+  background: linear-gradient(90deg, #fcdd11, #e1097e);
+  padding: 10px 15px;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: 500;
+}
+
 .request-container {
   display: flex;
   flex-direction: column;
