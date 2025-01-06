@@ -1100,19 +1100,22 @@ select:focus {
 
 /* BACKOFFICE REQUESTS STARTS */
 .content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin: 20px auto;
+}
+
+.request-page-header {
+  margin: 4rem 0 8rem 8rem;
 }
 
 .request-container {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   border-radius: 20px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.397);
   width: 80%;
+  margin-top: 2rem;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .request-container h3 {
@@ -1121,6 +1124,11 @@ select:focus {
 
 .request-header {
   padding: 20px;
+  border-top: 1px solid black;
+}
+
+.request-header-selected {
+  background-color: rgba(240, 147, 33, 0.42);
 }
 
 .request-header:hover {
@@ -1128,8 +1136,17 @@ select:focus {
   background-color: rgba(240, 147, 33, 0.42);
 }
 
+.request-body-table {
+  margin: 0 auto;
+}
+
+.request-table-row th,
+.request-table-row td {
+  padding: 0 1rem;
+}
+
 .form-control {
-  width: 200px;
+  max-width: 200px;
 }
 
 .form-button {
@@ -1160,9 +1177,28 @@ select:focus {
 
 .assignment-form {
   margin-top: 1.3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.request-action-close-modal {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  background-color: rgba(240, 147, 33, 0.42);
+  border-radius: 5px;
+  padding: 5px 9px;
 }
 
 .request-table-header th {
   background-color: rgba(255, 255, 255, 0);
   color: black
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+}
+
+.pagination {
+  margin-left: 8rem;
 }

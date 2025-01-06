@@ -6,67 +6,30 @@
 	<title>Form Requests</title>
 	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" href="/styles/style.css">
+	<!-- <link rel="stylesheet" href="../static/styles/style.css"> -->
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="/scripts/request.js"></script>
-	<style>
-		table {
-			width: 100%;
-			margin-top: 20px;
-		}
+	<!-- <script src="../static/scripts/request.js"></script> -->
 
-		th,
-		td {
-			padding: 10px;
-			text-align: left;
-		}
-
-		th {
-			background-color: #f2f2f2;
-		}
-
-		.table-container {
-			padding: 20px;
-		}
-
-		.arrow {
-			cursor: pointer;
-		}
-
-		.hidden-row {
-			display: none;
-		}
-
-		.modal-open .modal {
-			overflow-x: hidden;
-			overflow-y: auto;
-		}
-
-		.profile-image {
-			width: 70px;
-			height: 70px;
-			object-fit: cover;
-			border: 1px solid #ddd;
-		}
-
-		.modal-body .form-control {
-			z-index: 1050;
-		}
-	</style>
 </head>
 
 <body>
 	<div class="content">
-		<h2>Benvenuto, Admin</h2>
 
-		<!-- Exit page button -->
-		<a href="/profile" class="btn btn-secondary">Back</a>
+		<div class="request-page-header">
+			<h2>Benvenuto, Admin</h2>
+
+			<!-- Exit page button -->
+			<a href="/profile" class="btn btn-secondary">Back</a>
+		</div>
+
 
 		<!-- Table for the requests -->
 		<div class="request-container">
-			<h3>Le tue richieste</h3>
+			<h3>Richieste Informazioni recenti</h3>
 
 			<!-- Loop through GeneralForms -->
 			<div th:each="generalForm : ${generalForms}" class="request">
@@ -77,7 +40,7 @@
 				</div>
 
 				<!-- Collapsible content for InformationForms -->
-				<div th:id="'details-' + ${generalForm.id}" class="collapse">
+				<div th:id="'details-' + ${generalForm.id}">
 					<div class="request-body hidden">
 						<table class="request-body-table">
 							<thead class="request-table-header">
@@ -93,7 +56,8 @@
 							<tbody>
 
 								<!-- Loop through InformationForms -->
-								<tr th:each="informationForm : ${generalForm.informationForms}">
+								<tr class="request-table-row"
+									th:each="informationForm : ${generalForm.informationForms}">
 									<td th:text="${generalForm.category.name ?: 'No category'}"></td>
 									<!-- Display Category -->
 									<td th:text="${informationForm.getContent() ?: 'No content'}"></td>
@@ -150,12 +114,6 @@
 											aria-hidden="true">
 											<div class="modal-dialog" role="document">
 												<div class="assign-user-content hidden">
-													<div class="modal-header">
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<span aria-hidden="true">&times;</span>
-														</button>
-													</div>
 													<div class="modal-body">
 														<form action="/assignUser" method="post">
 															<input type="hidden" th:name="informationFormId"
@@ -174,8 +132,13 @@
 																	</option>
 																</select>
 															</div>
-															<button type="submit"
-																class="assign-user-submit-button">Assign User</button>
+															<div class="request-action-button-container">
+																<button type="submit"
+																	class="assign-user-submit-button">Assign
+																	User</button>
+																<button type="button"
+																	class="request-action-close-modal close-user-assignment">x</button>
+															</div>
 														</form>
 													</div>
 												</div>
@@ -183,15 +146,12 @@
 										</div>
 
 										<!-- Modal for status assignment -->
-										<div th:id="'assignStatusModal-' + ${informationForm.id}" class="modal fade"
-											tabindex="-1" role="dialog" aria-labelledby="assignStatusModalLabel"
-											aria-hidden="true">
+										<div th:id="'assignStatusModal-' + ${informationForm.id}">
 											<div class="modal-dialog" role="document">
 												<div class="assign-status-content hidden">
 													<div class="modal-header">
 														<button type="button" class="close" data-dismiss="modal"
 															aria-label="Close">
-															<span aria-hidden="true">&times;</span>
 														</button>
 													</div>
 													<div class="modal-body">
@@ -211,9 +171,13 @@
 																	<option value="DONE">Done</option>
 																</select>
 															</div>
-															<button type="submit"
-																class="assign-status-submit-button">Assign
-																Status</button>
+															<div class="request-action-button-container">
+																<button type="submit"
+																	class="assign-status-submit-button">Assign
+																	Status</button>
+																<button type="button"
+																	class="request-action-close-modal close-status-assignment">x</button>
+															</div>
 														</form>
 													</div>
 												</div>
