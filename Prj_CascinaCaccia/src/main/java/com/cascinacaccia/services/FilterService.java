@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cascinacaccia.entities.BookingForm;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
@@ -171,7 +172,7 @@ public class FilterService {
                 .collect(Collectors.toList());
     }
     
- // Filter Generalforms by related Informationform statuses
+    // Filter Generalforms by related Informationform statuses
     public static List<Generalform> filterFormsByStatuses(List<Generalform> generalForms, List<String> statuses) {
         if (statuses == null || statuses.isEmpty()) {
             return generalForms; // Return all if no statuses are selected
@@ -184,16 +185,30 @@ public class FilterService {
                 .filter(form -> {
                     // Assuming Generalform has a method to retrieve related Informationform list
                     List<Informationform> informationForms = form.getInformationForms(); // Get the list of related Informationforms
+                    List<BookingForm> bookingForms = form.getBookingForms();
+                    
+                    // Check if the statuses match in either the informationForms or bookingForms
+                    boolean matchesInformationformStatus = false;
+                    boolean matchesBookingformStatus = false;
                     
                     if (informationForms != null) {
                         // Check the status of each Informationform in the list
-                        return informationForms.stream()
+                    	matchesInformationformStatus = informationForms.stream()
                                 .anyMatch(informationform -> 
                                     statuses.stream().anyMatch(status -> status.equalsIgnoreCase(informationform.getStatus()))
                                 );
                     }
                     
-                    return false; // If no related Informationforms, return false
+                    // Check statuses in the Bookingforms list
+                    if (bookingForms != null) {
+                    	matchesBookingformStatus = bookingForms.stream()
+                            .anyMatch(bookingform -> 
+                                statuses.stream().anyMatch(status -> status.equalsIgnoreCase(bookingform.getStatus())
+                                )
+                            );
+                    }
+                    
+                    return matchesInformationformStatus || matchesBookingformStatus; // If no related Informationforms, return false
                 })
                 .collect(Collectors.toList());
     }

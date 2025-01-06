@@ -1,5 +1,6 @@
 package com.cascinacaccia.controllers;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cascinacaccia.entities.BookingForm;
 import com.cascinacaccia.entities.Category;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
+import com.cascinacaccia.repos.BookingFormDAO;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.repos.InformationformDAO;
@@ -30,6 +33,8 @@ public class RequestController {
 	private UserService userService;
 	@Autowired
 	private CategoryDAO categoryDAO;
+	@Autowired
+	private BookingFormDAO bookingFormDAO;
 	
 	//mapping to display all form submissions
     @GetMapping("/request")
@@ -50,6 +55,7 @@ public class RequestController {
         
     	List<Generalform> generalForms = generalFormDAO.findAll();
         List<Informationform> informationForms = informationFormDAO.findAll();
+        List<BookingForm> bookingForms = bookingFormDAO.findAll();
         
     	// Filter by selected categories if available
         generalForms = FilterService.filterFormsByCategories(generalForms, categoryIds);
@@ -95,7 +101,7 @@ public class RequestController {
         List<Generalform> paginatedForms = FilterService.getPaginatedList(generalForms, page, size);
         List<User> users = userService.getAllUsers();
         List<Category> categories = categoryDAO.findAll();
-        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         //add the form lists to the model
         model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages); 
@@ -108,8 +114,9 @@ public class RequestController {
         model.addAttribute("categories", categories);
         model.addAttribute("categoriesSelected", categoryIds != null ? categoryIds : List.of());
         model.addAttribute("informationForms", informationForms);
+        model.addAttribute("bookingForms", bookingForms);
         model.addAttribute("statusesSelected", statuses);
-        
+        model.addAttribute("formatter", formatter);
         return "Request";
     }
 }

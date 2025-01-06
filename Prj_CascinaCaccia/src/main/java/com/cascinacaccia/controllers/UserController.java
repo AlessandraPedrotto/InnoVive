@@ -1,5 +1,6 @@
 package com.cascinacaccia.controllers;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cascinacaccia.entities.BookingForm;
 import com.cascinacaccia.entities.Category;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
@@ -26,6 +28,7 @@ import com.cascinacaccia.entities.UserImage;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserImageDAO;
+import com.cascinacaccia.services.BookingFormService;
 import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
@@ -47,6 +50,8 @@ public class UserController {
 	private InformationFormService informationFormService;
 	@Autowired
 	private CategoryDAO categoryDAO;
+	@Autowired
+	private BookingFormService bookingFormService;
 	
 	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
 	
@@ -112,39 +117,45 @@ public class UserController {
 	        generalForm.setInformationForms(assignedInformationForms); 
 	    });
 	    
+	    List<Generalform> assignedBookingForms = bookingFormService.getAssignedFormsByUserBooking(user.getId());
+	    
+	    List<Generalform> allAssignedForms = new ArrayList<>();
+	    allAssignedForms.addAll(assignedForms);
+	    allAssignedForms.addAll(assignedBookingForms);
+	    
 	 // Filter by selected categories if available
-        assignedForms = FilterService.filterFormsByCategories(assignedForms, categoryIds);
+	    allAssignedForms = FilterService.filterFormsByCategories(allAssignedForms, categoryIds);
         
-        assignedForms = FilterService.filterFormsByStatuses(assignedForms, statuses);
+	    allAssignedForms = FilterService.filterFormsByStatuses(allAssignedForms, statuses);
         
 	    // Sort forms based on the selected option
 	    switch (sortBy) {
 		    case "surnameAsc":
-		        assignedForms = FilterService.sortBySurname(assignedForms, true);
+		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, true);
 		        break;
 		    case "surnameDesc":
-		        assignedForms = FilterService.sortBySurname(assignedForms, false);
+		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, false);
 		        break;
 		    case "newest":
-		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, false);
+		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, false);
 		        break;
 		    case "oldest":
-		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, true);
+		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, true);
 		        break;
 		    default:
-		        assignedForms = FilterService.sortBySubmissionDate(assignedForms, false);
+		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, false);
 		}
 	    
 	    // If no forms are assigned, add a "noResults" message to the model
-	    if (assignedForms.isEmpty()) {
+	    if (allAssignedForms.isEmpty()) {
 	        model.addAttribute("noResults", "No tasks assigned to you.");
 	    }
 	    
 	    //pagination logic: Get the total number of forms
-	    int totalForms = assignedForms.size();
+	    int totalForms = allAssignedForms.size();
 
 	    //calculate total pages
-	    int totalPages = FilterService.getTotalPages(assignedForms, size);
+	    int totalPages = FilterService.getTotalPages(allAssignedForms, size);
 
 	    //ensure the current page is within the valid range
 	    if (page < 1) {
@@ -154,8 +165,9 @@ public class UserController {
 	    }
 
 	    //paginate the list of assigned forms
-	    List<Generalform> paginatedForms = FilterService.getPaginatedList(assignedForms, page, size);
+	    List<Generalform> paginatedForms = FilterService.getPaginatedList(allAssignedForms, page, size);
 	    List<Category> categories = categoryDAO.findAll();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 	    
 	    model.addAttribute("totalPages", totalPages); 
 	    model.addAttribute("currentPage", page);
@@ -166,6 +178,8 @@ public class UserController {
 	    model.addAttribute("categoriesSelected", categoryIds != null ? categoryIds : List.of());
 	    model.addAttribute("statusesSelected", statuses);
 	    model.addAttribute("categories", categories);
+	    model.addAttribute("assignedBookingForms", assignedBookingForms); 
+	    model.addAttribute("formatter", formatter);
 	    return "YourTasks";
 	}
 	

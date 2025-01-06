@@ -63,7 +63,7 @@ public class BookingFormController {
 
         try {
         	
-        	// Parse the input dates from 'dd-MM-yyyy' format
+        	// Parse the input dates 
         	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedCheckIn = dateFormat.parse(checkIn);
             Date parsedCheckOut = dateFormat.parse(checkOut);
@@ -90,7 +90,7 @@ public class BookingFormController {
                 generalFormDAO.save(generalform);
             }
 
-            //create InformationForm
+            //create BookingForm
             BookingForm bookingForm = new BookingForm(UUID.randomUUID().toString(), generalform, content);
             bookingForm.setStatus("TO DO");
             bookingForm.setCheckIn(parsedCheckIn);  
@@ -108,5 +108,42 @@ public class BookingFormController {
             redirectAttributes.addFlashAttribute("error", "Error processing form: " + e.getMessage());
             return "redirect:/bookingForm";
         }
+    }
+    
+    //assign a user to a task
+    @PostMapping("/assignUserBooking")
+    public String assignUserToBooking(@RequestParam String bookingFormId, @RequestParam String userId, RedirectAttributes redirectAttributes) {
+        try {
+            bookingFormService.assignUser(userId, bookingFormId);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to assign user: " + e.getMessage());
+            return "redirect:/request";
+        }
+        return "redirect:/request";
+    }
+    
+    //remove a user from a task
+    @PostMapping("/removeUserFromBookingForm")
+    public String removeUserFromBooking(@RequestParam String bookingFormId, @RequestParam String userId, RedirectAttributes redirectAttributes) {
+        try {
+        	bookingFormService.removeUser(userId, bookingFormId);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to remove user: " + e.getMessage());
+            return "redirect:/request";
+        }
+        redirectAttributes.addFlashAttribute("success", "User removed successfully.");
+        return "redirect:/request";
+    }
+    
+    //assign a status to a task
+    @PostMapping("/assignStatusBooking")
+    public String assignStatusToBooking(@RequestParam String bookingFormStatus, @RequestParam String bookingFormId, RedirectAttributes redirectAttributes) {
+        try {
+        	bookingFormService.assignStatus(bookingFormStatus, bookingFormId);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to assign status: " + e.getMessage());
+            return "redirect:/request";
+        }
+        return "redirect:/request";
     }
 }
