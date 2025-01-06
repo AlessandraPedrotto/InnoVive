@@ -1,6 +1,12 @@
 package com.cascinacaccia.controllers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -8,9 +14,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cascinacaccia.entities.Bookingform;
-import com.cascinacaccia.repos.BookingformDAO;
+import com.cascinacaccia.entities.BookingForm;
+import com.cascinacaccia.entities.Category;
+import com.cascinacaccia.entities.Generalform;
+import com.cascinacaccia.entities.Informationform;
+import com.cascinacaccia.repos.BookingFormDAO;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.services.BookingFormService;
@@ -25,20 +36,77 @@ public class BookingFormController {
     private GeneralformDAO generalFormDAO;
     
     @Autowired
-    private BookingformDAO bookingdao;
+    private BookingFormDAO bookingFormDAO;
     
     @Autowired
-    private BookingFormService bookingservice;
+    private BookingFormService bookingFormService;
     
-    
-    @GetMapping("/bookingform")
+    //navigation to the page booking form
+    @GetMapping("/bookingForm")
     public String showForm(Model model) {
     	model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
         return "BookingForm";
     }
     
-   
+    //submission of the information form
+    @PostMapping("/submit-booking")
+    public String submitForm(
+        @RequestParam String name, 
+        @RequestParam String surname, 
+        @RequestParam String email, 
+        @RequestParam String categoryId,
+        @RequestParam String checkIn, 
+        @RequestParam String checkOut,
+        @RequestParam String content, 
+        RedirectAttributes redirectAttributes) {
 
-    
+        try {
+        	
+        	// Parse the input dates from 'dd-MM-yyyy' format
+        	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedCheckIn = dateFormat.parse(checkIn);
+            Date parsedCheckOut = dateFormat.parse(checkOut);
+            
+            //fetch Category
+            Category category = categoryDAO.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+            
+            //get the category name
+            String categoryName = category.getName();
+            
+            //check for existing Generalform entries
+            List<Generalform> existingForms = generalFormDAO.findByEmailAndCategoryAndNameAndSurname(email, category, name, surname);
+
+            Generalform generalform;
+            if (!existingForms.isEmpty()) {
+            	
+                //reuse the existing Generalform if found
+                generalform = existingForms.get(0); 
+            } else {
+            	
+                //create a new Generalform if no match is found
+                generalform = new Generalform(UUID.randomUUID().toString(), name, surname, email, category);
+                generalFormDAO.save(generalform);
+            }
+
+            //create InformationForm
+            BookingForm bookingForm = new BookingForm(UUID.randomUUID().toString(), generalform, content);
+            bookingForm.setStatus("TO DO");
+            bookingForm.setCheckIn(parsedCheckIn);  
+            bookingForm.setCheckOut(parsedCheckOut);   
+            bookingFormDAO.save(bookingForm);
+
+            //send Emails via service
+            bookingFormService.sendEmailToAdmin("innovive2024@gmail.com", generalform.getName(), generalform.getSurname(), generalform.getEmail(), categoryName, parsedCheckIn, parsedCheckOut, bookingForm.getContent());
+            bookingFormService.sendConfirmationEmail(email, name, surname, email, categoryName, parsedCheckIn, parsedCheckOut, content);
+
+            redirectAttributes.addFlashAttribute("message", "Form submitted successfully!");
+            return "redirect:/bookingForm";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error processing form: " + e.getMessage());
+            return "redirect:/bookingForm";
+        }
+    }
 }
