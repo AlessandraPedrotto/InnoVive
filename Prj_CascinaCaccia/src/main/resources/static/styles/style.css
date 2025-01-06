@@ -1100,3 +1100,157 @@ select:focus {
 }
 
 /* PASSWORD DIMENTICATA ENDS */
+
+
+	/* CHATBOT STARTS */
+
+/* Replay icon for user messages */
+.message.user .text span {
+  color: #888;
+  /* Gray color for the icon */
+}
+
+.message.user .text span:hover {
+  color: #007bff;
+  /* Blue on hover */
+}
+
+/* Chatbot Button at the bottom right */
+#chatbotButton {
+  width: 65px;
+  height: 65px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #F09321;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+#chatbotButton:hover {
+  background-color: #f09321;
+}
+
+/* Chatbot Container */
+#chatbotContainer {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  height: 400px;
+  background-color: #ebebeb;
+  border-radius: 28px;
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+}
+
+/* Chatbot Header */
+#chatbotHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  font-weight: bold;
+  background-color: #F09321;
+  padding: 10px;
+}
+
+#closeChatbot{
+  background-color: transparent;
+  border: none;
+}
+#closeChatbot:hover{
+  cursor: pointer;
+}
+
+/* Messages */
+#chatMessages {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#chatMessages::-webkit-scrollbar {
+  display: none;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 10px;
+  flex-direction: column;
+  border-radius: 28px;
+}
+
+.message.user {
+  align-items: flex-end;
+}
+
+.message.bot {
+  align-items: flex-start;
+}
+
+.message .text {
+  max-width: 75%;
+  padding: 15px;
+  font-size: 14px;
+  word-wrap: break-word;
+  border-radius: 28px;
+}
+
+.message.user .text {
+  background-color: #F09321;
+  color: #fff;
+}
+
+.message.bot .text {
+  background-color: #ffffff;
+  color: black;
+}
+
+/* Buttons for chatbot */
+.buttons-container {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.buttons-container button {
+  width:fit-content;
+  background-color: white;
+  color: #F09321;
+  border: 1px solid #F09321;
+  padding: 8px;
+  border-radius: 28px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.buttons-container button:hover {
+  background-color:#fff8f0;
+}
+
+.buttons-container button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.buttons-container .askMoreButton{
+  border: 1.5px solid #F09321;
+  color: #F09321 ;
+}
+
+/* CHATBOT ENDS */
