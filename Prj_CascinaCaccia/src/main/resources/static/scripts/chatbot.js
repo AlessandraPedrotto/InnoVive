@@ -161,3 +161,16 @@ function scrollToBottom() {
     const chatMessages = document.getElementById('chatMessages');
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
+
+
+
+//  INFORMATION FORM
+
+function toggleInformationForm() {
+    const form = document.getElementById('informationFormContainer');
+    if (form.classList.contains('show')) {
+        form.classList.remove('show');
+    }else{
+        form.classList.add('show');
+    }
+}
