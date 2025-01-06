@@ -212,4 +212,18 @@ public class FilterService {
                 })
                 .collect(Collectors.toList());
     }
+    
+ // Filter forms to only include Information Forms
+    public static List<Generalform> filterByInformationForm(List<Generalform> generalForms) {
+        return generalForms.stream()
+                .filter(form -> form.getInformationForms() != null && !form.getInformationForms().isEmpty())  // Assuming the relation is set up
+                .collect(Collectors.toList());
+    }
+
+    // Filter forms to only include Booking Forms
+    public static List<Generalform> filterByBookingForm(List<Generalform> generalForms) {
+        return generalForms.stream()
+                .filter(form -> form.getBookingForms() != null && !form.getBookingForms().isEmpty())  // Assuming the relation is set up
+                .collect(Collectors.toList());
+    }
 }

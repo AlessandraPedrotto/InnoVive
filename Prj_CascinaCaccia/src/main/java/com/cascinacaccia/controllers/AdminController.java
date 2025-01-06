@@ -110,6 +110,16 @@ public class AdminController {
                     users = FilterService.sortUsersBySurname(users, sortAscending);
                     break;
             }
+            
+            //no result found
+            if (users.isEmpty()) {
+                model.addAttribute("noResults", "No users found for the search query: " + query);
+            }
+        }
+        
+        //if sorting is required, call the sorting method
+        if (sortAscending != null) {
+            users = filterService.sortUsersBySurname(users, sortAscending);
         }
 
         //pagination logic: Get the total number of users
@@ -129,11 +139,14 @@ public class AdminController {
         List<User> paginatedUsers = FilterService.getPaginatedList(users, page, size);
 
         //add pagination details to the model
+        //add pagination details to the model
         model.addAttribute("users", paginatedUsers);
         model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages); 
         model.addAttribute("currentPage", page); 
         model.addAttribute("totalUsers", totalUsers); 
+        model.addAttribute("sort", sortAscending); 
+        model.addAttribute("hasUsers", !users.isEmpty());
         model.addAttribute("sort", sortAscending);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("hasUsers", !users.isEmpty()); 
@@ -166,7 +179,8 @@ public class AdminController {
 					    	    @RequestParam(name = "size", required = false, defaultValue = "5") int size,
 					    	    @RequestParam(name = "categories", required = false) List<String> categoryIds,
 		                        @RequestParam(name = "statuses", required = false) List<String> statuses,
-					    	    Model model) {
+		                        @RequestParam(name = "formType", defaultValue = "all") String formType, 
+		                        Model model) {
         
     	//fetch user by userId
         User user = userService.getUserById(userId);
@@ -199,10 +213,17 @@ public class AdminController {
         allAssignedForms.addAll(assignedForms);
         allAssignedForms.addAll(assignedBookingForms);
         
-        allAssignedForms = FilterService.filterFormsByCategories(assignedForms, categoryIds);
+        allAssignedForms = FilterService.filterFormsByCategories(allAssignedForms, categoryIds);
         
-        allAssignedForms = FilterService.filterFormsByStatuses(assignedForms, statuses);
-
+        allAssignedForms = FilterService.filterFormsByStatuses(allAssignedForms, statuses);
+        
+     // Apply form type filter (either Information Form or Booking Form)
+        if ("informationForm".equals(formType)) {
+        	allAssignedForms = FilterService.filterByInformationForm(allAssignedForms);  // This would filter out only Information Forms
+        } else if ("bookingForm".equals(formType)) {
+        	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);  // This would filter out only Booking Forms
+        }
+        
         switch (sortBy) {
 		    case "surnameAsc":
 		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, true);
@@ -255,7 +276,7 @@ public class AdminController {
 	    model.addAttribute("statusesSelected", statuses);
 	    model.addAttribute("categories", categories);
 	    model.addAttribute("formatter", formatter);
-	    
+	    model.addAttribute("formType", formType);
         return "YourTasksPublic"; 
     }
     
@@ -328,6 +349,8 @@ public class AdminController {
     @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam String userId) {
         userService.deleteUserById(userId);
+        
+        //redirect back to the list of users after deletion
         return "redirect:/admin/listUsers"; 
     }
     
@@ -368,9 +391,13 @@ public class AdminController {
             //register the new user
             userService.register(user);
             model.addAttribute("regiSuccess", "Registered successfully");
-            return "redirect:/profile"; 
+            
+            //redirect to profile page after success
+            return "redirect:/profile";  
         } catch (Exception e) {
             model.addAttribute("error", "Registration failed: " + e.getMessage());
+            
+            //stay on the register page if there is an error
             return "UserRegister";  
         }
     }

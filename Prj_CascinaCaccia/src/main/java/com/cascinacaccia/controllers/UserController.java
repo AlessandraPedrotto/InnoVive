@@ -93,7 +93,8 @@ public class UserController {
 			            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
 			            @RequestParam(name = "categories", required = false) List<String> categoryIds,
                         @RequestParam(name = "statuses", required = false) List<String> statuses,
-			            Model model) throws Exception{
+                        @RequestParam(name = "formType", defaultValue = "all") String formType, 
+                        Model model) throws Exception{
 		
 		User user = userService.getUserByEmail(principal);
 		if (statuses == null) {
@@ -127,6 +128,13 @@ public class UserController {
 	    allAssignedForms = FilterService.filterFormsByCategories(allAssignedForms, categoryIds);
         
 	    allAssignedForms = FilterService.filterFormsByStatuses(allAssignedForms, statuses);
+        
+	 // Apply form type filter (either Information Form or Booking Form)
+        if ("informationForm".equals(formType)) {
+        	allAssignedForms = FilterService.filterByInformationForm(allAssignedForms);  // This would filter out only Information Forms
+        } else if ("bookingForm".equals(formType)) {
+        	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);  // This would filter out only Booking Forms
+        }
         
 	    // Sort forms based on the selected option
 	    switch (sortBy) {
@@ -180,6 +188,7 @@ public class UserController {
 	    model.addAttribute("categories", categories);
 	    model.addAttribute("assignedBookingForms", assignedBookingForms); 
 	    model.addAttribute("formatter", formatter);
+	    model.addAttribute("formType", formType);
 	    return "YourTasks";
 	}
 	
@@ -233,7 +242,13 @@ public class UserController {
                 return "redirect:/changePassword";
             }
             
-            //check if the new password you entered is correct
+            //check if the new password matches the old password
+            if (passwordEncoder.matches(newPassword, user.getPassword())) {
+                redirectAttributes.addFlashAttribute("error", "New password cannot be the same as the old password.");
+                return "redirect:/changePassword";
+            }
+            
+            //check if the new password entered is correct
             if (!newPassword.equals(confirmPassword)) {
                 redirectAttributes.addFlashAttribute("error", "New passwords do not match.");
                 return "redirect:/changePassword";

@@ -46,6 +46,7 @@ public class RequestController {
 	        @RequestParam(name = "size", required = false, defaultValue = "5") int size,
 	        @RequestParam(name = "categories", required = false) List<String> categoryIds,
 	        @RequestParam(name = "statuses", required = false) List<String> statuses,
+	        @RequestParam(name = "formType", defaultValue = "all") String formType,
 	        Model model) {
     	
     	// Ensure statuses is never null
@@ -61,7 +62,15 @@ public class RequestController {
         generalForms = FilterService.filterFormsByCategories(generalForms, categoryIds);
         
         generalForms = FilterService.filterFormsByStatuses(generalForms, statuses);
-    	// Sort forms based on the selected option
+    	
+        // Apply form type filter (either Information Form or Booking Form)
+        if ("informationForm".equals(formType)) {
+        	generalForms = FilterService.filterByInformationForm(generalForms);  // This would filter out only Information Forms
+        } else if ("bookingForm".equals(formType)) {
+        	generalForms = FilterService.filterByBookingForm(generalForms);  // This would filter out only Booking Forms
+        }
+        
+        // Sort forms based on the selected option
         switch (sortBy) {
             case "surnameAsc":
                 generalForms = FilterService.sortBySurname(generalForms, true);
@@ -117,6 +126,7 @@ public class RequestController {
         model.addAttribute("bookingForms", bookingForms);
         model.addAttribute("statusesSelected", statuses);
         model.addAttribute("formatter", formatter);
+        model.addAttribute("formType", formType);
         return "Request";
     }
 }
