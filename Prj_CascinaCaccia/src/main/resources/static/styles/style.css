@@ -1407,3 +1407,62 @@ cursor: pointer;
 }
 
 /* CHATBOT ENDS */
+
+/* STRUTTURA STARTS */
+
+#struttura {
+  margin-bottom: 70px;
+  margin-top: 70px;
+}
+
+.card-struttura{
+  display: flex;
+}
+
+.descrizione-struttura{
+  width: 50%;
+  padding: 2rem;
+}
+
+
+.foto-struttura{
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+.foto-struttura img{
+  width: 350px;
+}
+
+@media screen and (max-width: 768px) {
+  .struttura {
+      padding: 10px;
+  }
+
+  .card-struttura {
+      display: flex;
+      flex-direction: column; 
+      align-items: center;
+      text-align: center; 
+      margin-bottom: 20px; 
+      padding: 15px;
+  }
+
+  .foto-struttura img {
+      max-width: 100%; 
+      height: auto;
+      margin-bottom: 10px; 
+  }
+
+  .descrizione-struttura {
+      font-size: 1rem; 
+      padding: 10px;
+      line-height: 1.5; 
+  }
+
+  .card-struttura .foto-struttura {
+    order: -1;
+  }
+}
+
+/* STRUTTURA ENDS */
