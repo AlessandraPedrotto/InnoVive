@@ -51,6 +51,8 @@ const getCalendar = (month, year) => {
 
                     let formattedDate = `${dayNumber} ${monthNames[month]} ${year}`;
                     document.getElementById('selected-date').textContent = formattedDate;
+                    let selectedDate = `${year}-${('0' + (month + 1)).slice(-2)}-${('0' + dayNumber).slice(-2)}`;
+                    document.getElementById('hidden-datepicker').value = selectedDate;
                 };
             }
         }
@@ -97,3 +99,8 @@ nextYear.onclick = () => {
 monthPicker.onclick = () => {
     monthList.classList.add('show');
 };
+
+
+document.getElementById('submitButton').addEventListener('click', function() {
+    document.getElementById('prenota-form').submit();
+  });

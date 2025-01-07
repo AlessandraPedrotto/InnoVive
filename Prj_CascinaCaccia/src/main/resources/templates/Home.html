@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="ISO-8859-1">
@@ -7,21 +7,26 @@
     <title>Home</title>
     <link rel="stylesheet" href="/styles/normalize.css">
     <link rel="stylesheet" href="/styles/style.css?v=1.0">
+
+    <!-- Stylesheet con percorso relativo (scommentare per vedere lo stile) -->
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
+
 <body>
     <!-- NAVBAR STARTS -->
     <nav class="navbar">
         <div class="logo">
-            EDUCATION
+            <img src="/img/logo.png" alt="Education logo">
         </div>
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
-            <li><a href="./Attivita.html">Attività</a></li>
-            <li><a href="./Struttura.html">Struttura</a></li>
-            <li><a href="./Prenota.html">Prenota</a></li>
-            <li><a href="/informationForm">Informazioni</a></li>
+            <li><a href="/attivita">Attività</a></li>
+            <li><a href="/struttura">Struttura</a></li>
+            <li><a href="/prenota">Prenota</a></li>
+            <li><a href="/chatbot">Informazioni</a></li>
+            <li><a href="/bookingForm">Prenotazioni</a></li>
             <li><a href="/login" class="area-riservata">Area riservata</a></li>
-           <!--   <li><a href="/informationform" class="information-form">Modulo informazioni</a></li>-->
+            <!--   <li><a href="/informationform" class="information-form">Modulo informazioni</a></li>-->
         </ul>
         <!-- hamburger menu -->
         <div class="hamburger" onclick="toggleMenu()">
@@ -42,18 +47,91 @@
             </div>
             <ul>
                 <li><a href="#">Home</a></li>
-                <li><a href="./Attivita.html">Attività</a></li>
-                <li><a href="./Struttura.html">Struttura</a></li>
-                <li><a href="./Prenota.html">Prenota</a></li>
+                <li><a href="/attivita">Attività</a></li>
+                <li><a href="/struttura">Struttura</a></li>
+                <li><a href="/prenota">Prenota</a></li>
                 <!-- Anchor links for Login and Registration -->
                 <li><a href="/login" class="area-riservata">Area riservata</a></li>
             </ul>
             <div class="mobile-logo">
-                EDUCATION
+                <img src="/img/logo.png" alt="Education logo">
             </div>
         </div>
     </nav>
     <!-- NAVBAR ENDS -->
+    <script src="/scripts/main.js"></script>
+
+    <!-- main starts -->
+    <main>
+        <div class="hero">
+            <h2 class="hero-title">EducatiON</h2>
+            <h3 class="hero-subtitle">Il portale di educazione di <span>Cascina Caccia</span></h3>
+            <p class="hero-text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec ipsum ex.
+            </p>
+        </div>
+        <div class="boxes-container">
+            <div class="boxes">
+                <div class="boxes-text-content">
+                    <div class="home-text">
+                        <h3 class="activity-title">Attività per le scuole e per tutti</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec ipsum ex. Donec nibh
+                            tellus, elementum ut blandit et, condimentum a lectus.</p>
+                    </div>
+                    <div class="cta-link">
+                        <a class="home-cta-buttons" href="/attivita">Attività</a>
+                    </div>
+                </div>
+                <img class="boxes-image" src="https://picsum.photos/200/150" alt="">
+            </div>
+
+            <div class="boxes">
+                <div class="boxes-text-content">
+                    <div class="home-text">
+                        <h3 class="activity-title">Scopri di più sulla cascina</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec ipsum ex. Donec nibh
+                            tellus, elementum ut blandit et, condimentum a lectus.</p>
+                    </div>
+                    <div class="cta-link">
+                        <a class="home-cta-buttons" href="/struttura">Struttura</a>
+                    </div>
+                </div>
+                <img class="boxes-image" src="https://picsum.photos/200/150" alt="">
+            </div>
+
+            <div class="boxes">
+                <div class="boxes-text-content">
+                    <div class="home-text">
+                        <h3 class="activity-title">Contattaci o prenota</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec ipsum ex. Donec nibh
+                            tellus, elementum ut blandit et, condimentum a lectus.</p>
+                    </div>
+                    <div class="cta-link">
+                        <a class="home-cta-buttons" href="/prenota">Prenota</a>
+                    </div>
+                </div>
+
+                <img class="boxes-image" src="https://picsum.photos/200/150" alt="">
+            </div>
+
+            <div class="boxes">
+                <div class="boxes-text-content">
+                    <div class="home-text">
+                        <h3 class="activity-title">Scarica ora il PDF del Piano Educativo 20XX-20XX</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec ipsum ex. Donec nibh
+                            tellus, elementum ut blandit et, condimentum a lectus.</p>
+                    </div>
+                    <div class="cta-link">
+                        <a class="home-cta-buttons" href="#">PDF</a>
+                    </div>
+                </div>
+                <img class="boxes-image" src="https://picsum.photos/200/150" alt="">
+            </div>
+
+        </div>
+    </main>
+
+
     <!-- footer -->
     <footer>
         <div class="footer">
@@ -63,37 +141,39 @@
                     <iframe class="map"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d34112.41367341239!2d7.929175114028833!3d45.16229478153038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4787d83975557773%3A0xce98a033bd811358!2sCascina%20Caccia!5e0!3m2!1sit!2sit!4v1734621088019!5m2!1sit!2sit"
                         width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <p>
+                        Via Serra Alta, 6, San Sebastiano da Po (TO)
+                    </p>
                 </div>
-                <p>
-                    Via Serra Alta, 6, San Sebastiano da Po (TO)
-                </p>
 
             </div>
             <div class="footer-content">
-                <h3>EducatiON - Cascina Caccia</h3>
+                <h3>EducatiON Cascina&nbsp;Caccia</h3>
                 <div class="links">
-                    <a href="#">Attivita'</a>
-                    <a href="#">Struttura</a>
-                    <a href="#">Prenota</a>
-                </div>
-                <div class="footer-logo">
-                    <p>EDUCATION</p>
+                    <a href="/attivita">Attivita'</a>
+                    <a href="/struttura">Struttura</a>
+                    <a href="/prenota">Prenota</a>
                 </div>
             </div>
             <div class="footer-content">
                 <h3>SOCIAL</h3>
                 <div class="social-links-container">
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/facebook-logo.svg"
-                            alt="facebook"></a>
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/instagram-logo.svg"
-                            alt="instagram"></a>
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/youtube-logo.svg"
-                            alt="twitter"></a>
+                    <a class="social-links" href="https://www.facebook.com/cascinacaccia/?locale=it_IT"
+                        target="_blank"><img class="social-icons" src="/img/facebook-logo.svg" alt="facebook"></a>
+                    <a class="social-links" href="https://www.instagram.com/cascina_caccia/" target="_blank"><img
+                            class="social-icons" src="/img/instagram-logo.svg" alt="instagram"></a>
+                    <a class="social-links" href="https://www.youtube.com/@AcmosNet99" target="_blank"><img
+                            class="social-icons" src="/img/youtube-logo.svg" alt="twitter"></a>
                 </div>
             </div>
         </div>
+        <div class="footer-logo">
+            <img src="img/footer-logo.png" alt="Education logo">
+        </div>
     </footer>
-<script src="../static/scripts/main.js"></script>
+    <script src="/scripts/main.js"></script>
 </body>
+
 </html>

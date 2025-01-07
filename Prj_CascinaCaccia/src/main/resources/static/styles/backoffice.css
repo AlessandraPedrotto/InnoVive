@@ -1,0 +1,132 @@
+.backoffice-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar {
+    position: fixed;
+    width: 15vw;
+    background-color: #ff770098;
+    color: white;
+    padding: 15px;
+    height: 100vh;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease-in-out;
+}
+
+.sidebar-logo {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.sidebar-logo img {
+    width: 100%;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    margin: 15px 0;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.sidebar a:hover {
+    background-color: #f39340;
+    border-radius: 28px;
+}
+
+#logoutBtn {
+    color: red;
+}
+
+.backoffice-content {
+    position: relative;
+    left: 15vw;
+    width: 85vw;
+    flex-grow: 0;
+    padding: 20px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+.profile-image {
+    max-width: 100px;
+    border-radius: 50%;
+}
+
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        box-shadow: none;
+    }
+
+    .backoffice-content {
+        left: 0;
+        width: 100%;
+    }
+
+    .sidebar-logo {
+        width: 100px;
+    }
+
+    .sidebar a {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar a {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .sidebar-logo {
+        width: 80px;
+    }
+
+    .profile-image {
+        max-width: 80px;
+    }
+}
+
+
+
+/* Change profile image style STARTS */
+.image-grid{
+    width: 70%;
+}
+
+/* Style for the image grid */
+.image-grid ul {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Style for individual images */
+.profile-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Optional: Add a hover effect on the images */
+.profile-img:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+/* Change profile image style ENDS */

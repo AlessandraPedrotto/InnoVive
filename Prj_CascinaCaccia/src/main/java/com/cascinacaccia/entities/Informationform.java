@@ -53,6 +53,10 @@ public class Informationform {
         this.generalform = generalform;
     }
 	
+    public String getGeneralFormId() {
+        return generalform != null ? generalform.getId() : null;
+    }
+    
 	public String getContent() {
 		return content;
 	}

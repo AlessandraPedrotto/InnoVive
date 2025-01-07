@@ -9,7 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,8 +25,8 @@ public class User {
     private String password;
     
     //relationship between user and password reset
-    @OneToOne(mappedBy="user", fetch=FetchType.EAGER)
-    private PasswordResetToken passwordResetToken;
+    @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+    private List<PasswordResetToken> passwordResetToken;
     
     //relationship between user and user image
     @ManyToOne
@@ -90,10 +90,10 @@ public class User {
         }
         this.roles = roles;
     }
-	public PasswordResetToken getPasswordResetToken() {
+	public List<PasswordResetToken> getPasswordResetToken() {
 		return passwordResetToken;
 	}
 	public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
-		this.passwordResetToken = passwordResetToken;
+		this.passwordResetToken.add(passwordResetToken);
 	}
 }

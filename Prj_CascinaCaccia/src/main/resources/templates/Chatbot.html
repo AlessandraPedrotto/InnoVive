@@ -1,313 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caccia Chatbot</title>
-<style>
-	/* Replay icon for user messages */
-	.message.user .text span {
-	    color: #888; /* Gray color for the icon */
-	}
-	
-	.message.user .text span:hover {
-	    color: #007bff; /* Blue on hover */
-	}
-	
-    /* Chatbot Button at the bottom right */
-    #chatbotButton {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    
-    #chatbotButton:hover {
-        background-color: #45a049;
-    }
-    
-    /* Chatbot Container */
-    #chatbotContainer {
-        position: fixed;
-        bottom: 80px;
-        right: 20px;
-        width: 300px;
-        height: 400px;
-        background-color: #4CAF50;
-        border-radius: 10px;
-        display: none;
-        flex-direction: column;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        overflow-y: auto;
-        padding: 10px;
-    }
-    
-    /* Chatbot Header */
-    #chatbotHeader {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #ccc;
-        font-weight: bold;
-    }
-    
-    /* Messages */
-    #chatMessages {
-        flex-grow: 1;
-        padding: 10px;
-        overflow-y: scroll;  
-        scrollbar-width: none; 
-        -ms-overflow-style: none; 
-    }
-    
-    #chatMessages::-webkit-scrollbar {
-        display: none;
-    }
-    
-    .message {
-        display: flex;
-        margin-bottom: 10px;
-        flex-direction: column;
-    }
-    
-    .message.user {
-        align-items: flex-end;
-    }
-    
-    .message.bot {
-        align-items: flex-start;
-    }
-    
-    .message .text {
-        max-width: 75%;
-        padding: 10px;
-        border-radius: 10px;
-        font-size: 14px;
-        word-wrap: break-word;
-    }
-    
-    .message.user .text {
-        background-color: white;
-        color: black;
-    }
-    
-    .message.bot .text {
-        background-color: #007bff;
-        color: white;
-    }
-    
-    /* Buttons for chatbot */
-    .buttons-container {
-        margin-top: 10px;
-        display: flex;
-        flex-direction: column; 
-    }
-    
-    .buttons-container button {
-        background-color: white;
-        color: black;
-        border: 1px solid #ccc;
-        padding: 8px;
-        border-radius: 5px;
-        margin-top: 5px;
-        cursor: pointer;
-    }
-    
-    .buttons-container button:hover {
-        background-color: #f0f0f0;
-    }
-    
-    .buttons-container button:disabled {
-        background-color: #e0e0e0;
-        cursor: not-allowed;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caccia Chatbot</title>
+    <link rel="stylesheet" href="/styles/normalize.css">
+    <link rel="stylesheet" href="/styles/style.css?v=1.0">
 </head>
+
 <body>
 
+    <div id="informationButton" onclick="toggleInformationForm()">
+        <svg height="30px" width="30px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke=""><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#f09321;} </style> <g> <path class="st0" d="M290.671,135.434c37.324-3.263,64.949-36.175,61.663-73.498c-3.241-37.324-36.152-64.938-73.476-61.675 c-37.324,3.264-64.949,36.164-61.686,73.488C220.437,111.096,253.348,138.698,290.671,135.434z"></path> <path class="st0" d="M311.31,406.354c-16.134,5.906-43.322,22.546-43.322,22.546s20.615-95.297,21.466-99.446 c8.71-41.829,33.463-100.86-0.069-136.747c-23.35-24.936-53.366-18.225-79.819,7.079c-17.467,16.696-26.729,27.372-42.908,45.322 c-6.55,7.273-9.032,14.065-5.93,24.717c3.332,11.515,16.8,17.226,28.705,12.871c16.134-5.895,43.3-22.534,43.3-22.534 s-12.595,57.997-18.869,87c-0.874,4.137-36.06,113.292-2.505,149.18c23.35,24.949,53.343,18.226,79.819-7.066 c17.467-16.698,26.729-27.373,42.908-45.334c6.55-7.263,9.009-14.054,5.93-24.706C336.66,407.733,323.215,402.01,311.31,406.354z"></path> </g> </g></svg>
+    </div>
+
+    <div id="informationFormContainer">
+        <!-- Error messages -->
+	<div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+	<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    
+    <h3>Invia una richiesta di informazioni</h3>
+	
+	<!-- Information form -->
+	<form action="/submit-form" method="post">
+        <div class="info-form-field">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+        </div>
+        <div class="info-form-field">
+            <label for="surname">Surname:</label>
+            <input type="text" id="surname" name="surname" required><br>
+        </div>
+        
+        <div class="info-form-field">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+        </div>
+        <div class="info-form-field">
+
+            <label for="categoryId">Category:</label>
+            <select id="categoryId" name="categoryId" required>
+                <option value="" disabled selected>Select a category</option>
+                <th:block th:each="category : ${categories}">
+                    <option th:value="${category.id}" th:text="${category.name}"></option>
+                </th:block>
+            </select><br>
+        </div>
+        <div class="info-form-field">
+            <label for="content">Content:</label>
+            <input type="text" id="content" name="content" required><br>
+        </div>
+		
+        <button id="sendInfoButton" type="submit">Send</button>
+    </form>
+    </div>
+
     <!-- Chatbot Button -->
-    <div id="chatbotButton" onclick="toggleChatbot()">Chat with Caccia</div>
+    <div id="chatbotButton" onclick="toggleChatbot()"><svg width="40px" viewBox="0 0 24 24" fill="none"
+            xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path
+                    d="M16 10H16.01M12 10H12.01M8 10H8.01M3 10C3 4.64706 5.11765 3 12 3C18.8824 3 21 4.64706 21 10C21 15.3529 18.8824 17 12 17C11.6592 17 11.3301 16.996 11.0124 16.9876L7 21V16.4939C4.0328 15.6692 3 13.7383 3 10Z"
+                    stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </svg></div>
 
     <!-- Chatbot Container -->
     <div id="chatbotContainer">
         <div id="chatbotHeader">
             <span>Chat with Caccia</span>
-            <button onclick="toggleChatbot()">X</button>
+            <button id="closeChatbot" onclick="toggleChatbot()"><svg width="30px" height="30px" viewBox="0 0 24 24"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M5.70711 9.71069C5.31658 10.1012 5.31658 10.7344 5.70711 11.1249L10.5993 16.0123C11.3805 16.7927 12.6463 16.7924 13.4271 16.0117L18.3174 11.1213C18.708 10.7308 18.708 10.0976 18.3174 9.70708C17.9269 9.31655 17.2937 9.31655 16.9032 9.70708L12.7176 13.8927C12.3271 14.2833 11.6939 14.2832 11.3034 13.8927L7.12132 9.71069C6.7308 9.32016 6.09763 9.32016 5.70711 9.71069Z"
+                        fill="#0F0F0F" />
+                </svg></button>
         </div>
         <div id="chatMessages"></div>
     </div>
-
-<script>
-//Toggle the visibility of the chatbot container
-function toggleChatbot() {
-    const chatbotContainer = document.getElementById('chatbotContainer');
-    chatbotContainer.style.display = (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '') ? 'flex' : 'none';
-
-    // If chatbot is shown for the first time, display the initial message
-    if (chatbotContainer.style.display === 'flex' && document.getElementById('chatMessages').childElementCount === 0) {
-        showInitialMessage();
-    }
-}
-
-function handleQuestionClick(question, buttonsContainer) {
-    // Disable all buttons in the current group when a button is clicked
-    disableAllButtons();
-
-    // Add user message with replay icon
-    const userMessage = document.createElement('div');
-    userMessage.classList.add('message', 'user');
-
-    const userText = document.createElement('div');
-    userText.classList.add('text');
-    userText.textContent = question;
-
-    // Add replay icon
-    const replayIcon = document.createElement('span');
-    replayIcon.innerHTML = "&#x21ba;"; // Unicode for refresh icon
-    replayIcon.style.cursor = "pointer";
-    replayIcon.style.marginLeft = "10px";
-    replayIcon.style.fontSize = "12px";
-    replayIcon.title = "Replay this question";
-
-    replayIcon.onclick = () => {
-        handleQuestionClick(question, buttonsContainer);
-    };
-
-    userText.appendChild(replayIcon); // Add the icon next to the text
-    userMessage.appendChild(userText);
-    document.getElementById('chatMessages').appendChild(userMessage);
-
-    // Simulate bot response
-    setTimeout(() => {
-        const botMessage = document.createElement('div');
-        botMessage.classList.add('message', 'bot');
-
-        const botText = document.createElement('div');
-        botText.classList.add('text');
-        botText.textContent = getBotResponse(question);
-
-        const buttonsContainer = document.createElement('div');
-        buttonsContainer.classList.add('buttons-container');
-
-        // Handle additional questions for "What can you do?"
-        if (question === "What can you do?") {
-            const followUpQuestions = [
-                "How do you help with tasks?",
-                "Can you provide examples?",
-                "What makes you unique?"
-            ];
-
-            followUpQuestions.forEach(followUp => {
-                const followUpButton = document.createElement('button');
-                followUpButton.textContent = followUp;
-                followUpButton.onclick = () => handleQuestionClick(followUp, buttonsContainer);
-                buttonsContainer.appendChild(followUpButton);
-            });
-        }
-
-        // Add "Ask something else" button
-        const askMoreButton = document.createElement('button');
-        askMoreButton.textContent = "Ask something else";
-        askMoreButton.onclick = function () {
-            // Disable all buttons in the current group
-            disableAllButtons();
-
-            // Add "Ask something else" as a user message
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('message', 'user');
-
-            const userText = document.createElement('div');
-            userText.classList.add('text');
-            userText.textContent = "Ask something else";
-            userMessage.appendChild(userText);
-            document.getElementById('chatMessages').appendChild(userMessage);
-
-            // Show the initial message after user message is added
-            showInitialMessage();
-
-            // Scroll to the bottom of the chat
-            scrollToBottom();
-        };
-        buttonsContainer.appendChild(askMoreButton);
-
-        botMessage.appendChild(botText);
-        botMessage.appendChild(buttonsContainer);
-        document.getElementById('chatMessages').appendChild(botMessage);
-
-        // Scroll to the bottom of the chat
-        scrollToBottom();
-    }, 500);
-}
-
-// When showing initial message, disable all buttons if they are already shown
-function showInitialMessage() {
-    // Disable all previous buttons before rendering new ones
-    disableAllButtons();
-
-    const botMessage = document.createElement('div');
-    botMessage.classList.add('message', 'bot');
-    
-    const botText = document.createElement('div');
-    botText.classList.add('text');
-    botText.textContent = "How can I help you?";
-    
-    const buttonsContainer = document.createElement('div');
-    buttonsContainer.classList.add('buttons-container');
-    
-    const questions = [
-        "What is your name?",
-        "What can you do?",
-        "Tell me a joke!"
-    ];
-
-    questions.forEach(question => {
-        const button = document.createElement('button');
-        button.textContent = question;
-        button.onclick = () => handleQuestionClick(question, buttonsContainer);
-        buttonsContainer.appendChild(button);
-    });
-
-    botMessage.appendChild(botText);
-    botMessage.appendChild(buttonsContainer);
-    document.getElementById('chatMessages').appendChild(botMessage);
-
-    // Scroll to the bottom of the chat
-    scrollToBottom();
-}
-
-// Disable all buttons from previous responses
-function disableAllButtons() {
-    const allButtons = document.querySelectorAll('.buttons-container button');
-    allButtons.forEach(button => button.disabled = true);
-}
-
-// Bot response based on user input
-function getBotResponse(userMessage) {
-    const responses = {
-        "What is your name?": "I am Caccia, your friendly chatbot!",
-        "What can you do?": "I can answer your questions, tell jokes, and assist with tasks! Here's more I can do:",
-        "Tell me a joke!": "Why don't skeletons fight each other? They don't have the guts!",
-        "How do you help with tasks?": "I provide step-by-step guidance to help you complete your tasks efficiently.",
-        "Can you provide examples?": "Sure! I can assist with coding, answering questions, and even creative writing.",
-        "What makes you unique?": "I’m fast, adaptive, and always ready to help!"
-    };
-
-    return responses[userMessage] || "I'm sorry, I didn't understand that.";
-}
-
-// Scroll to the bottom of the chat
-function scrollToBottom() {
-    const chatMessages = document.getElementById('chatMessages');
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-</script>
-
+    <script src="/scripts/chatbot.js"></script>
 </body>
+
 </html>

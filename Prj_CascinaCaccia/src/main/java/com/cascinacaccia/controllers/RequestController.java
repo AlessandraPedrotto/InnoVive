@@ -1,17 +1,22 @@
 package com.cascinacaccia.controllers;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cascinacaccia.entities.BookingForm;
+import com.cascinacaccia.entities.Category;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
+import com.cascinacaccia.repos.BookingFormDAO;
+import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.services.FilterService;
@@ -21,30 +26,78 @@ import com.cascinacaccia.services.UserService;
 public class RequestController {
 	
 	@Autowired
-	GeneralformDAO generalFormDAO;
+	private GeneralformDAO generalFormDAO;
 	@Autowired
-	InformationformDAO informationFormDAO;
+	private InformationformDAO informationFormDAO;
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	private FilterService filterService;
+	private CategoryDAO categoryDAO;
+	@Autowired
+	private BookingFormDAO bookingFormDAO;
 	
 	//mapping to display all form submissions
     @GetMapping("/request")
     public String getAllFormRequests(
     		@RequestParam(name = "query", required = false, defaultValue = "") String query,
-			@RequestParam(name = "sort", required = false) Boolean sortAscending,
+    		@RequestParam(name = "sort", required = false) Boolean sortAscending,
+            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
 			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 	        @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+	        @RequestParam(name = "categories", required = false) List<String> categoryIds,
+	        @RequestParam(name = "statuses", required = false) List<String> statuses,
+	        @RequestParam(name = "formType", defaultValue = "all") String formType,
 	        Model model) {
     	
-    	List<Generalform> generalForms = generalFormDAO.findAll(Sort.by(Sort.Order.desc("submissionDate")));
+    	// Ensure statuses is never null
+        if (statuses == null) {
+            statuses = new ArrayList<>();
+        }
+        
+    	List<Generalform> generalForms = generalFormDAO.findAll();
+        List<Informationform> informationForms = informationFormDAO.findAll();
+        List<BookingForm> bookingForms = bookingFormDAO.findAll();
+        
+    	// Filter by selected categories if available
+        generalForms = FilterService.filterFormsByCategories(generalForms, categoryIds);
+        
+        generalForms = FilterService.filterFormsByStatuses(generalForms, statuses);
     	
+        // Apply form type filter (either Information Form or Booking Form)
+        if ("informationForm".equals(formType)) {
+        	generalForms = FilterService.filterByInformationForm(generalForms);  // This would filter out only Information Forms
+        } else if ("bookingForm".equals(formType)) {
+        	generalForms = FilterService.filterByBookingForm(generalForms);  // This would filter out only Booking Forms
+        }
+        
+        // Sort forms based on the selected option
+        switch (sortBy) {
+            case "surnameAsc":
+                generalForms = FilterService.sortBySurname(generalForms, true);
+                break;
+            case "surnameDesc":
+                generalForms = FilterService.sortBySurname(generalForms, false);
+                break;
+            case "newest":
+                generalForms = FilterService.sortBySubmissionDate(generalForms, false);
+                break;
+            case "oldest":
+                generalForms = FilterService.sortBySubmissionDate(generalForms, true);
+                break;
+            default:
+                // Default to newest
+                generalForms = FilterService.sortBySubmissionDate(generalForms, false);
+        }
+    	// Check if no forms are found
+        if (generalForms.isEmpty()) {
+            model.addAttribute("message", "No results found");
+        }
+        
     	//pagination logic: Get the total number of users
         int totalForms = generalForms.size();
         
         //calculate total pages
-        int totalPages = (int) Math.ceil((double) totalForms / size);
+        int totalPages = FilterService.getTotalPages(generalForms, size);
         
         //ensure the current page is within the valid range
         if (page < 1) {
@@ -54,19 +107,26 @@ public class RequestController {
         }
 
         //paginate the list of users
-        List<Generalform> paginatedForms = filterService.getPaginatedRequest(generalForms, page, size);
-        
+        List<Generalform> paginatedForms = FilterService.getPaginatedList(generalForms, page, size);
+        List<User> users = userService.getAllUsers();
+        List<Category> categories = categoryDAO.findAll();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         //add the form lists to the model
         model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages); 
         model.addAttribute("currentPage", page); 
         model.addAttribute("totalForms", totalForms); 
-        model.addAttribute("sort", sortAscending); 
+        model.addAttribute("sort", sortAscending);
+        model.addAttribute("sortBy", sortBy);
         model.addAttribute("generalForms", paginatedForms);
-        
-        List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
-        
+        model.addAttribute("categories", categories);
+        model.addAttribute("categoriesSelected", categoryIds != null ? categoryIds : List.of());
+        model.addAttribute("informationForms", informationForms);
+        model.addAttribute("bookingForms", bookingForms);
+        model.addAttribute("statusesSelected", statuses);
+        model.addAttribute("formatter", formatter);
+        model.addAttribute("formType", formType);
         return "Request";
     }
 }

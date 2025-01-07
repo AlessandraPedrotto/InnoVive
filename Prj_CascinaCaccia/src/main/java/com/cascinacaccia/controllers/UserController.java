@@ -1,9 +1,13 @@
 package com.cascinacaccia.controllers;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,11 +19,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cascinacaccia.entities.BookingForm;
+import com.cascinacaccia.entities.Category;
+import com.cascinacaccia.entities.Generalform;
+import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
-import com.cascinacaccia.repos.UserDAO;
+import com.cascinacaccia.repos.CategoryDAO;
+import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserImageDAO;
-import com.cascinacaccia.services.ForgotPasswordService;
+import com.cascinacaccia.services.BookingFormService;
+import com.cascinacaccia.services.FilterService;
+import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,15 +39,19 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 	
 	@Autowired
-	ForgotPasswordService forgotPasswordService;
+	private UserService userService;
 	@Autowired
-	UserService userService;
+	private UserImageDAO userImageDAO;
 	@Autowired
-	UserImageDAO userImageDAO;
+	private PasswordEncoder passwordEncoder;
 	@Autowired
-	UserDAO userDAO;
+	private InformationformDAO informationFormDAO;
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private InformationFormService informationFormService;
+	@Autowired
+	private CategoryDAO categoryDAO;
+	@Autowired
+	private BookingFormService bookingFormService;
 	
 	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
 	
@@ -48,12 +63,151 @@ public class UserController {
 
 	    String profileImageUrl = user.getUserImage() != null ? user.getUserImage().getImgPath() : "/default-image.png";
 	    
+	    //fetch the assigned requests for the logged-in user
+	    List<Generalform> assignedForms = informationFormService.getAssignedFormsByUser(user.getId());
+	    
+	    //filter the InformationForms to only include those assigned to the user
+	    assignedForms.forEach(generalForm -> {
+	        List<Informationform> assignedInformationForms = generalForm.getInformationForms().stream()
+	            .filter(informationForm -> informationForm.getAssignedUser() != null && 
+	                informationForm.getAssignedUser().getId().equals(user.getId()))
+	            .collect(Collectors.toList());
+	        generalForm.setInformationForms(assignedInformationForms); 
+	    });
+	    
 	    //pass the user's name, surname and email to the model
 	    model.addAttribute("fullName", user.getName()); //add name
 	    model.addAttribute("email", user.getEmail());  //add email
 	    model.addAttribute("profileImageUrl", profileImageUrl); //add image
 	    model.addAttribute("surname", user.getSurname()); //add surname
+	    model.addAttribute("assignedForms", assignedForms);
 	    return "profile";
+	}
+	
+	//navigation to yourTasks page
+	@GetMapping("/yourTasks")
+	public String userTasks(@AuthenticationPrincipal Object principal,
+						@RequestParam(name = "sort", required = false) Boolean sortAscending,
+			            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
+						@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+			            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+			            @RequestParam(name = "categories", required = false) List<String> categoryIds,
+                        @RequestParam(name = "statuses", required = false) List<String> statuses,
+                        @RequestParam(name = "formType", defaultValue = "all") String formType, 
+                        Model model) throws Exception{
+		
+		User user = userService.getUserByEmail(principal);
+		if (statuses == null) {
+            statuses = new ArrayList<>();
+        }
+		//fetch the assigned requests for the logged-in user
+	    List<Generalform> assignedForms = informationFormService.getAssignedFormsByUser(user.getId())
+	    		.stream()
+	    	    .sorted(Comparator.comparing(
+	    	        Generalform::getSubmissionDate,
+	    	        Comparator.nullsLast(Comparator.naturalOrder())
+	    	    ))
+	    	    .collect(Collectors.toList());
+		    
+	    //filter the InformationForms to only include those assigned to the user
+	    assignedForms.forEach(generalForm -> {
+	        List<Informationform> assignedInformationForms = generalForm.getInformationForms().stream()
+	            .filter(informationForm -> informationForm.getAssignedUser() != null && 
+	                informationForm.getAssignedUser().getId().equals(user.getId()))
+	            .collect(Collectors.toList());
+	        generalForm.setInformationForms(assignedInformationForms); 
+	    });
+	    
+	    List<Generalform> assignedBookingForms = bookingFormService.getAssignedFormsByUserBooking(user.getId());
+	    
+	    List<Generalform> allAssignedForms = new ArrayList<>();
+	    allAssignedForms.addAll(assignedForms);
+	    allAssignedForms.addAll(assignedBookingForms);
+	    
+	 // Filter by selected categories if available
+	    allAssignedForms = FilterService.filterFormsByCategories(allAssignedForms, categoryIds);
+        
+	    allAssignedForms = FilterService.filterFormsByStatuses(allAssignedForms, statuses);
+        
+	 // Apply form type filter (either Information Form or Booking Form)
+        if ("informationForm".equals(formType)) {
+        	allAssignedForms = FilterService.filterByInformationForm(allAssignedForms);  // This would filter out only Information Forms
+        } else if ("bookingForm".equals(formType)) {
+        	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);  // This would filter out only Booking Forms
+        }
+        
+	    // Sort forms based on the selected option
+	    switch (sortBy) {
+		    case "surnameAsc":
+		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, true);
+		        break;
+		    case "surnameDesc":
+		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, false);
+		        break;
+		    case "newest":
+		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, false);
+		        break;
+		    case "oldest":
+		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, true);
+		        break;
+		    default:
+		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, false);
+		}
+	    
+	    // If no forms are assigned, add a "noResults" message to the model
+	    if (allAssignedForms.isEmpty()) {
+	        model.addAttribute("noResults", "No tasks assigned to you.");
+	    }
+	    
+	    //pagination logic: Get the total number of forms
+	    int totalForms = allAssignedForms.size();
+
+	    //calculate total pages
+	    int totalPages = FilterService.getTotalPages(allAssignedForms, size);
+
+	    //ensure the current page is within the valid range
+	    if (page < 1) {
+	        page = 1;
+	    } else if (page > totalPages) {
+	        page = totalPages;
+	    }
+
+	    //paginate the list of assigned forms
+	    List<Generalform> paginatedForms = FilterService.getPaginatedList(allAssignedForms, page, size);
+	    List<Category> categories = categoryDAO.findAll();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	    
+	    model.addAttribute("totalPages", totalPages); 
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalForms", totalForms);
+	    model.addAttribute("sort", sortAscending);
+        model.addAttribute("sortBy", sortBy);
+	    model.addAttribute("assignedForms", paginatedForms);
+	    model.addAttribute("categoriesSelected", categoryIds != null ? categoryIds : List.of());
+	    model.addAttribute("statusesSelected", statuses);
+	    model.addAttribute("categories", categories);
+	    model.addAttribute("assignedBookingForms", assignedBookingForms); 
+	    model.addAttribute("formatter", formatter);
+	    model.addAttribute("formType", formType);
+	    return "YourTasks";
+	}
+	
+	//process to change the status of a form
+	@PostMapping("/assignStatusProfile")
+	public String assignStatus(@RequestParam("informationFormId") String informationFormId,
+	                            @RequestParam("informationFormStatus") String status) {
+	    //fetch the Informationform using the ID
+	    Informationform informationForm = informationFormDAO.findById(informationFormId)
+	        .orElseThrow(() -> new RuntimeException("InformationForm not found"));
+
+	    //update the status of the Informationform
+	    informationForm.setStatus(status);
+	    
+	    //save the updated Informationform
+	    informationFormDAO.save(informationForm);
+
+	    //redirect back to the profile page
+	    return "redirect:/yourTasks";
 	}
 	
 	//navigation to change password page
@@ -88,7 +242,13 @@ public class UserController {
                 return "redirect:/changePassword";
             }
             
-            //check if the new password you entered is correct
+            //check if the new password matches the old password
+            if (passwordEncoder.matches(newPassword, user.getPassword())) {
+                redirectAttributes.addFlashAttribute("error", "New password cannot be the same as the old password.");
+                return "redirect:/changePassword";
+            }
+            
+            //check if the new password entered is correct
             if (!newPassword.equals(confirmPassword)) {
                 redirectAttributes.addFlashAttribute("error", "New passwords do not match.");
                 return "redirect:/changePassword";

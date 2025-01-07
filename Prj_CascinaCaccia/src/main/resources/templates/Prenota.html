@@ -14,12 +14,12 @@
     <!-- NAVBAR STARTS -->
     <nav class="navbar">
         <div class="logo">
-            EDUCATION
+            <img src="/img/logo.png" alt="Education logo">
         </div>
         <ul class="nav-links">
-            <li><a href="./Home.html">Home</a></li>
-            <li><a href="./Attivita.html">Attività</a></li>
-            <li><a href="./Struttura.html">Struttura</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/attivita">Attività</a></li>
+            <li><a href="/struttura">Struttura</a></li>
             <li><a href="#">Prenota</a></li>
             <li><a href="/login" class="area-riservata">Area riservata</a></li>
         </ul>
@@ -41,80 +41,82 @@
                 </svg>
             </div>
             <ul>
-                <li><a href="./Home.html">Home</a></li>
-                <li><a href="./Attivita.html">Attività</a></li>
-                <li><a href="./Struttura.html">Struttura</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/attivita">Attività</a></li>
+                <li><a href="/struttura">Struttura</a></li>
                 <li><a href="#">Prenota</a></li>
                 <!-- Anchor links for Login and Registration -->
                 <li><a href="/login" class="area-riservata">Area riservata</a></li>
             </ul>
             <div class="mobile-logo">
-                EDUCATION
+                <img src="/img/logo.png" alt="Education logo">
             </div>
         </div>
     </nav>
     <!-- NAVBAR ENDS -->
     <h1 class="page-title">Prenota</h1>
     <!-- PRENOTA STARTS -->
-     <div class="prenota-container">
+    <div class="prenota-container">
 
-         <div class="form-info" >
-            <form>
-              <div class="form-field">
-                <label for="nome"">Nome</label>
-                <input type="text" id="nome" placeholder="Il tuo nome">
-              </div>
-              <div class="form-field">
-                <label for="cognome"">Cognome</label>
-                <input type="text" id="cognome" placeholder="Il tuo cognome">
-              </div>
-              <div class="form-field">
-                <label for="email"">E-mail</label>
-                <input type="email" id="email" placeholder="La tua email">
-              </div>
-              <div class="form-field">
-                <label for="messaggio">Messaggio</label>
-                <textarea rows="10" cols="5" name="messaggio" id="messaggio" placeholder="Raccontaci chi sei, cosa ti aspetti da questa visita e dicci le tue esigenze"></textarea>
-              </div>
+        <div class="form-info" >
+            <form id="prenota-form" method="POST" action="" > 
+                <div class="form-field">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" placeholder="Il tuo nome" name="">
+                </div>
+                <div class="form-field">
+                    <label for="cognome">Cognome</label>
+                    <input type="text" id="cognome" placeholder="Il tuo cognome" name="">
+                </div>
+                <div class="form-field">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="La tua email" name="">
+                </div>
+                <div class="form-field">
+                    <label for="messaggio">Messaggio</label>
+                    <textarea rows="10" cols="5" name="messaggio" id="messaggio"
+                        placeholder="Raccontaci chi sei, cosa ti aspetti da questa visita e dicci le tue esigenze" ></textarea>
+                </div>
+                <input type="date" id="hidden-datepicker" name="selected_date" />
             </form>
-     </div>
-     <div class="calendar-container">
+        </div>
+        <div class="calendar-container">
 
-     <div class="calendar">
-        <!-- calendar header -->
-        <div class="calendar-header">
-            <span class="month-picker" id="month-picker">January</span>
-            <div class="year-picker" id="year-picker">
-                <span class="year-change" id="prev-year"><</span>
-                <span id="year">2025</span>
-                <span class="year-change" id="next-year">></span>
+            <div class="calendar">
+                <!-- calendar header -->
+                <div class="calendar-header">
+                    <span class="month-picker" id="month-picker">January</span>
+                    <div class="year-picker" id="year-picker">
+                        <span class="year-change" id="prev-year">&lt;</span>
+                        <span id="year">2025</span>
+                        <span class="year-change" id="next-year">></span>
+                    </div>
+                </div>
+
+                <!-- calendar body -->
+                <div class="calendar-body">
+                    <div class="calendar-week-day">
+                        <div class="domenica">Dom</div>
+                        <div>Lun</div>
+                        <div>Mar</div>
+                        <div>Mer</div>
+                        <div>Gio</div>
+                        <div>Ven</div>
+                        <div>Sab</div>
+                    </div>
+                    <div class="calendar-days">
+
+                    </div>
+                </div>
+
+
+                <div class="month-list"></div>
+
+
+
+
             </div>
         </div>
-
-        <!-- calendar body -->
-         <div class="calendar-body">
-            <div class="calendar-week-day">
-                <div class="domenica">Dom</div>
-                <div>Lun</div>
-                <div>Mar</div>
-                <div>Mer</div>
-                <div>Gio</div>
-                <div>Ven</div>
-                <div>Sab</div>
-            </div>
-            <div class="calendar-days">
-            
-            </div>
-         </div>
-
-
-         <div class="month-list"></div>
-
-
-
-
-     </div>
-    </div>
 
     </div>
 
@@ -123,12 +125,12 @@
             Conferma la richiesta di prenotazione per il giorno:
             <div id="selected-date"></div>
         </div>
-        <button class="conferma-button">Prenota</button>
+        <button id="submit" class="conferma-button">Prenota</button>
     </div>
 
 
     <!-- PRENOTA ENDS -->
-     <!-- footer -->
+    <!-- FOOTER STARTS -->
     <footer>
         <div class="footer">
             <div class="footer-content">
@@ -137,40 +139,42 @@
                     <iframe class="map"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d34112.41367341239!2d7.929175114028833!3d45.16229478153038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4787d83975557773%3A0xce98a033bd811358!2sCascina%20Caccia!5e0!3m2!1sit!2sit!4v1734621088019!5m2!1sit!2sit"
                         width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <p>
+                        Via Serra Alta, 6, San Sebastiano da Po (TO)
+                    </p>
                 </div>
-                <p>
-                    Via Serra Alta, 6, San Sebastiano da Po (TO)
-                </p>
 
             </div>
             <div class="footer-content">
-                <h3>EducatiON - Cascina Caccia</h3>
+                <h3>EducatiON Cascina&nbsp;Caccia</h3>
                 <div class="links">
-                    <a href="#">Attivita'</a>
-                    <a href="#">Struttura</a>
-                    <a href="#">Prenota</a>
-                </div>
-                <div class="footer-logo">
-                    <p>EDUCATION</p>
+                    <a href="/attivita">Attivita'</a>
+                    <a href="/struttura">Struttura</a>
+                    <a href="/prenota">Prenota</a>
                 </div>
             </div>
             <div class="footer-content">
                 <h3>SOCIAL</h3>
                 <div class="social-links-container">
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/facebook-logo.svg"
-                            alt="facebook"></a>
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/instagram-logo.svg"
-                            alt="instagram"></a>
-                    <a class="social-links" href="#"><img class="social-icons" src="/img/youtube-logo.svg"
-                            alt="twitter"></a>
+                    <a class="social-links" href="https://www.facebook.com/cascinacaccia/?locale=it_IT"
+                        target="_blank"><img class="social-icons" src="/img/facebook-logo.svg" alt="facebook"></a>
+                    <a class="social-links" href="https://www.instagram.com/cascina_caccia/" target="_blank"><img
+                            class="social-icons" src="/img/instagram-logo.svg" alt="instagram"></a>
+                    <a class="social-links" href="https://www.youtube.com/@AcmosNet99" target="_blank"><img
+                            class="social-icons" src="/img/youtube-logo.svg" alt="twitter"></a>
                 </div>
             </div>
         </div>
+        <div class="footer-logo">
+            <img class="logo" src="/img/footer-logo.png" alt="Education logo">
+        </div>
     </footer>
+    <!-- FOOTER ENDS -->
 
-<script src="/scripts/prenota.js"></script>
-<script src="/scripts/main.js"></script>
+    <script src="/scripts/prenota.js"></script>
+    <script src="/scripts/main.js"></script>
 </body>
 
 </html>
