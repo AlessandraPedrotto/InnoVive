@@ -298,4 +298,24 @@ public class UserService implements UserDetailsService{
     public List<User> getAllUsers() {
         return userDAO.findAll(); 
     }
+    
+    /*
+     * Updates the name and surname of a user.
+     * 
+     * @param userId   The ID of the user whose name and surname need to be updated.
+     * @param newName  The new name to be set for the user.
+     * @param newSurname The new surname to be set for the user.
+     * 
+     * @throws RuntimeException if the user with the specified ID is not found.
+     */
+    public void updateNameAndSurname(String userId, String newName, String newSurname) {
+        User user = userDAO.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setName(newName);
+        user.setSurname(newSurname);
+        
+        //save updated user details in the database
+        userDAO.save(user);
+    }
 }

@@ -84,6 +84,20 @@ public class UserController {
 	    return "profile";
 	}
 	
+	@PostMapping("/profile/update-name")
+    public String updateNameAndSurname(@AuthenticationPrincipal Object principal, 
+                                       @RequestParam("name") String name, 
+                                       @RequestParam("surname") String surname) {
+
+        // Get the logged-in user's email or ID
+        User user = userService.getUserByEmail(principal);
+
+        // Update the user's name and surname
+        userService.updateNameAndSurname(user.getId(), name, surname);
+
+        return "redirect:/profile"; // Redirect back to the profile page
+    }
+	
 	//navigation to yourTasks page
 	@GetMapping("/yourTasks")
 	public String userTasks(@AuthenticationPrincipal Object principal,
