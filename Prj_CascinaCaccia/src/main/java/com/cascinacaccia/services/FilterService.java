@@ -29,12 +29,22 @@ public class FilterService {
 	@Autowired
 	private UserDAO userDAO;
 	
-	//method to get all users from the database
+	/*
+     * Method to retrieve all users from the database.
+     *
+     * @return A list of all users in the database
+     */
     public List<User> getAllUsers() {
         return userDAO.findAll();  
     }
 	
-    //method to sort users by surname in ascending or descending order
+    /*
+     * Method to sort a list of users by surname in ascending or descending order.
+     *
+     * @param users The list of users to sort
+     * @param ascending A boolean flag indicating whether the sort should be in ascending order (true) or descending order (false)
+     * @return A sorted list of users based on surname
+     */
     public static List<User> sortUsersBySurname(List<User> users, boolean ascending) {
         return users.stream()
                 .sorted((user1, user2) -> ascending 
@@ -43,7 +53,13 @@ public class FilterService {
                 .collect(Collectors.toList());
     }
     
-	//method to search users by email or name/surname
+    /*
+     * Method to search for users by email, name, surname, or full name.
+     * If the query contains a space, it's treated as a full name search.
+     *
+     * @param query The search query, which could be a name, surname, or email, or a full name
+     * @return A list of users that match the search query
+     */
     public List<User> searchUsers(String query) {
         
     	List<User> users = new ArrayList<>();
@@ -84,7 +100,12 @@ public class FilterService {
         return users;
     }
 
-    //method for handling single-part queries (name, surname, or email)
+    /*
+     * Helper method to handle single-part queries such as name, surname, or email.
+     *
+     * @param query The single-part query (name, surname, or email)
+     * @return A list of users that match the single-part query
+     */
     private List<User> handleSinglePartQuery(String query) {
         List<User> users = new ArrayList<>();
         List<User> usersByEmail = userDAO.findByEmailContainingIgnoreCase(query);
@@ -98,7 +119,15 @@ public class FilterService {
         return users.stream().distinct().collect(Collectors.toList());
     }
     
-    //generic method for paginating any list
+    /*
+     * Method to paginate a list of any type, returning a subset of the list for the current page.
+     *
+     * @param <T> The type of elements in the list
+     * @param list The full list to paginate
+     * @param page The current page number
+     * @param size The number of results per page
+     * @return A paginated sublist of the input list
+     */
     public static <T> List<T> getPaginatedList(List<T> list, int page, int size) {
 
         if (size <= 0) {
@@ -121,23 +150,49 @@ public class FilterService {
         return list.subList(fromIndex, toIndex);
     }
 
-    //generic method to get total pages
+    /*
+     * Method to calculate the total number of pages required for pagination.
+     *
+     * @param <T> The type of elements in the list
+     * @param list The full list to paginate
+     * @param resultsPerPage The number of results per page
+     * @return The total number of pages required to display the list
+     */
     public static <T> int getTotalPages(List<T> list, int resultsPerPage) {
         return (int) Math.ceil((double) list.size() / resultsPerPage);
     }
 
-    //generic method to get the start page for pagination block
+    /*
+     * Method to calculate the start page number for a pagination block.
+     *
+     * @param currentPage The current page number
+     * @param blockSize The size of each pagination block (e.g., 10 pages per block)
+     * @return The start page number for the current pagination block
+     */
     public static int getStartPage(int currentPage, int blockSize) {
         return (currentPage - 1) / blockSize * blockSize + 1;
     }
 
-    //generic method to get the end page for pagination block
+    /*
+     * Method to calculate the end page number for a pagination block.
+     *
+     * @param currentPage The current page number
+     * @param blockSize The size of each pagination block (e.g., 10 pages per block)
+     * @param totalPages The total number of pages available
+     * @return The end page number for the current pagination block
+     */
     public static int getEndPage(int currentPage, int blockSize, int totalPages) {
         int endPage = (currentPage / blockSize) * blockSize + blockSize;
         return Math.min(endPage, totalPages);
     }
     
-    // Method to sort forms by surname (A-Z or Z-A)
+    /*
+     * Method to sort forms by surname (A-Z or Z-A).
+     *
+     * @param forms The list of Generalform objects to sort
+     * @param ascending A boolean flag indicating whether the sort should be in ascending order (true) or descending order (false)
+     * @return A sorted list of Generalform objects based on surname
+     */
     public static List<Generalform> sortBySurname(List<Generalform> forms, boolean ascending) {
         return forms.stream()
                 .sorted((form1, form2) -> ascending
@@ -145,7 +200,14 @@ public class FilterService {
                         : form2.getSurname().compareToIgnoreCase(form1.getSurname()))
                 .collect(Collectors.toList());
     }
-
+    
+    /*
+     * Method to sort forms by submission date (ascending or descending).
+     *
+     * @param forms The list of Generalform objects to sort
+     * @param ascending A boolean flag indicating whether the sort should be in ascending order (true) or descending order (false)
+     * @return A sorted list of Generalform objects based on submission date
+     */
     public static List<Generalform> sortBySubmissionDate(List<Generalform> forms, boolean ascending) {
         return forms.stream()
                 .sorted((form1, form2) -> ascending
@@ -154,17 +216,32 @@ public class FilterService {
                 .collect(Collectors.toList());
     }
 
-    // Generic method to sort by any property using a comparator
+    /*
+     * Generic method to sort a list of any type using a comparator and sorting order.
+     *
+     * @param <T> The type of elements in the list
+     * @param list The list of elements to sort
+     * @param comparator The comparator to use for sorting
+     * @param ascending A boolean flag indicating whether the sort should be in ascending order (true) or descending order (false)
+     * @return A sorted list of elements
+     */
     public <T> List<T> sortList(List<T> list, Comparator<T> comparator, boolean ascending) {
         return list.stream()
                 .sorted(ascending ? comparator : comparator.reversed())
                 .collect(Collectors.toList());
     }
     
-    // Method to filter forms by category String IDs
+    /*
+     * Method to filter a list of forms based on category IDs.
+     * Only forms with a category ID present in the provided list will be included.
+     *
+     * @param generalForms The list of Generalform objects to filter
+     * @param categoryIds A list of category IDs to filter by
+     * @return A filtered list of Generalform objects that belong to the specified categories
+     */
     public static List<Generalform> filterFormsByCategories(List<Generalform> generalForms, List<String> categoryIds) {
         if (categoryIds == null || categoryIds.isEmpty()) {
-            return generalForms; // No filtering, return all forms
+            return generalForms;
         }
 
         return generalForms.stream()
@@ -172,34 +249,42 @@ public class FilterService {
                 .collect(Collectors.toList());
     }
     
-    // Filter Generalforms by related Informationform statuses
+    /*
+     * Method to filter forms by their associated Informationform or Bookingform statuses.
+     * The status list is matched against the statuses of related Informationforms or Bookingforms.
+     *
+     * @param generalForms The list of Generalform objects to filter
+     * @param statuses A list of statuses to filter by
+     * @return A filtered list of Generalform objects that match the given statuses
+     */
     public static List<Generalform> filterFormsByStatuses(List<Generalform> generalForms, List<String> statuses) {
         if (statuses == null || statuses.isEmpty()) {
             return generalForms; // Return all if no statuses are selected
         }
 
-        // Debugging: Print out statuses to see what we are filtering by
         System.out.println("Filtering Generalforms with statuses: " + statuses);
 
         return generalForms.stream()
                 .filter(form -> {
-                    // Assuming Generalform has a method to retrieve related Informationform list
-                    List<Informationform> informationForms = form.getInformationForms(); // Get the list of related Informationforms
+                	
+                	//check related Informationforms and Bookingforms statuses
+                    List<Informationform> informationForms = form.getInformationForms(); 
                     List<BookingForm> bookingForms = form.getBookingForms();
                     
-                    // Check if the statuses match in either the informationForms or bookingForms
+                    //check if the statuses match in either the informationForms or bookingForms
                     boolean matchesInformationformStatus = false;
                     boolean matchesBookingformStatus = false;
                     
                     if (informationForms != null) {
-                        // Check the status of each Informationform in the list
+                        
+                    	//check the status of each Informationform in the list
                     	matchesInformationformStatus = informationForms.stream()
                                 .anyMatch(informationform -> 
                                     statuses.stream().anyMatch(status -> status.equalsIgnoreCase(informationform.getStatus()))
                                 );
                     }
                     
-                    // Check statuses in the Bookingforms list
+                    //check statuses in the Bookingforms list
                     if (bookingForms != null) {
                     	matchesBookingformStatus = bookingForms.stream()
                             .anyMatch(bookingform -> 
@@ -208,19 +293,29 @@ public class FilterService {
                             );
                     }
                     
-                    return matchesInformationformStatus || matchesBookingformStatus; // If no related Informationforms, return false
+                    return matchesInformationformStatus || matchesBookingformStatus;
                 })
                 .collect(Collectors.toList());
     }
     
- // Filter forms to only include Information Forms
+    /*
+     * Method to filter a list of Generalform objects to include only those that have associated Informationforms.
+     *
+     * @param generalForms The list of Generalform objects to filter
+     * @return A filtered list of Generalform objects that have associated Informationforms
+     */
     public static List<Generalform> filterByInformationForm(List<Generalform> generalForms) {
         return generalForms.stream()
                 .filter(form -> form.getInformationForms() != null && !form.getInformationForms().isEmpty())  // Assuming the relation is set up
                 .collect(Collectors.toList());
     }
 
-    // Filter forms to only include Booking Forms
+    /*
+     * Method to filter a list of Generalform objects to include only those that have associated Bookingforms.
+     *
+     * @param generalForms The list of Generalform objects to filter
+     * @return A filtered list of Generalform objects that have associated Bookingforms
+     */
     public static List<Generalform> filterByBookingForm(List<Generalform> generalForms) {
         return generalForms.stream()
                 .filter(form -> form.getBookingForms() != null && !form.getBookingForms().isEmpty())  // Assuming the relation is set up

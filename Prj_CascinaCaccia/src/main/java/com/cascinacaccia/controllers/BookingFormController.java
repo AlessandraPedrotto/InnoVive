@@ -63,7 +63,7 @@ public class BookingFormController {
 
         try {
         	
-        	// Parse the input dates 
+        	//parse the input dates 
         	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedCheckIn = dateFormat.parse(checkIn);
             Date parsedCheckOut = dateFormat.parse(checkOut);
