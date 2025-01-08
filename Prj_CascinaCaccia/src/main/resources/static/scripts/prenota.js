@@ -1,3 +1,15 @@
+let dateSelection = {
+    checkIn: null,
+    checkOut: null,
+    reset() {
+        this.checkIn = null;
+        this.checkOut = null;
+    },
+    isDateSelected(date) {
+        return this.checkIn === date || this.checkOut === date;
+    },
+};
+
 const isBisestile = (year) => {
     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
 };
@@ -11,16 +23,18 @@ const monthNames = [
     'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
 ];
 
+let moreDays = false;
+
 const getCalendar = (month, year) => {
     let calendarDays = document.querySelector('.calendar-days');
-    calendarDays.textContent = ''; // Svuota il calendario
+    calendarDays.textContent = ''; // reset calendar
     let calendarYear = document.querySelector('#year');
 
     let monthDays = [31, setFebruaryDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     let currentDate = new Date();
 
-    // Setta mese e anno
+    // set month and year
     monthPicker.textContent = monthNames[month];
     calendarYear.textContent = year;
 
@@ -35,24 +49,82 @@ const getCalendar = (month, year) => {
             let dateToCheck = new Date(year, month, dayNumber);
 
             if (dateToCheck < currentDate.setHours(0, 0, 0, 0)) {
-                day.classList.add('disabled'); // Giorno passato
+                day.classList.add('disabled'); // past day
             } else {
                 day.classList.add('calendar-day-hover');
 
                 if (dateToCheck.getDay() == 0) {
-                    day.classList.add('domenica'); // Colore arancione per la domenica
+                    day.classList.add('domenica'); // domenica
                 }
 
                 day.onclick = () => {
-                    let allDays = document.querySelectorAll('.calendar-day-hover');
-                    allDays.forEach((day) => day.classList.remove('selected'));
-
-                    day.classList.add('selected');
-
                     let formattedDate = `${dayNumber} ${monthNames[month]} ${year}`;
-                    document.getElementById('selected-date').textContent = formattedDate;
                     let selectedDate = `${year}-${('0' + (month + 1)).slice(-2)}-${('0' + dayNumber).slice(-2)}`;
-                    document.getElementById('hidden-datepicker').value = selectedDate;
+                console.log(selectedDate.slice(-2));
+                
+                    if (!dateSelection.checkIn) {
+                        // check-in
+                        dateSelection.checkIn = selectedDate;
+                        day.classList.add('selected');
+                        document.getElementById('selected-check-in').textContent = formattedDate;
+                        document.getElementById('check-in-confirm').textContent = formattedDate;
+                    } else if (!dateSelection.checkOut && selectedDate > dateSelection.checkIn) {
+                        // check-out
+                        dateSelection.checkOut = selectedDate;
+                        day.classList.add('selected');
+                        document.getElementById('selected-check-out').textContent = formattedDate;
+                        document.getElementById('check-out-confirm').textContent = formattedDate;
+
+                        // raccolgo tutti i div
+                        Array.from(document.querySelectorAll('.calendar-days div')).forEach((div)=>{
+                            let checkInDate = dateSelection.checkIn;
+                            let checkOutDate = dateSelection.checkOut;
+
+                            if (div.textContent > checkInDate.slice(-2) && div.textContent < checkOutDate.slice(-2)) {
+                                console.log('range div');
+                                
+                                div.classList.add('range');
+
+                            }
+                        })
+
+
+
+
+                    } else if (dateSelection.isDateSelected(selectedDate)) {
+                        // deseleziona data
+                        if (dateSelection.checkIn === selectedDate) {
+                            dateSelection.checkIn = null;
+                            Array.from(document.querySelectorAll('.calendar-days div')).forEach((div)=>{
+                                div.classList.remove('range')
+                            })
+                        } else if (dateSelection.checkOut === selectedDate) {
+                            dateSelection.checkOut = null;
+                            Array.from(document.querySelectorAll('.calendar-days div')).forEach((div)=>{
+                                div.classList.remove('range')
+                            })
+                        }
+                        day.classList.remove('selected');
+                        if (!dateSelection.checkIn && !dateSelection.checkOut) {
+                            // reset
+                            dateSelection.reset();
+                            document.getElementById('selected-check-in').textContent = '';
+                            document.getElementById('check-in-confirm').textContent = '';
+                            document.getElementById('selected-check-out').textContent = '';
+                            document.getElementById('check-out-confirm').textContent = '';
+                            Array.from(document.querySelectorAll('.calendar-days div')).forEach((div)=>{
+                                div.classList.remove('range')
+                            })
+                        }
+                    } else {
+                        console.warn('Azione non valida o reset richiesto.');
+                    }
+                
+                    // input value hidden
+                    let hiddenDateValue = dateSelection.checkOut 
+                        ? `${dateSelection.checkIn} to ${dateSelection.checkOut}`
+                        : dateSelection.checkIn || '';
+                    document.getElementById('hidden-datepicker').value = hiddenDateValue;
                 };
             }
         }
