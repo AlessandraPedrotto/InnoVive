@@ -3,6 +3,7 @@
     flex-direction: column;
 }
 
+
 .sidebar {
     position: fixed;
     width: 15vw;
@@ -14,14 +15,17 @@
     transition: width 0.3s ease-in-out;
 }
 
+
 .sidebar-logo {
     width: 50%;
     margin: 0 auto;
 }
 
+
 .sidebar-logo img {
     width: 100%;
 }
+
 
 .sidebar a {
     color: white;
@@ -33,14 +37,17 @@
     font-weight: bold;
 }
 
+
 .sidebar a:hover {
     background-color: #f39340;
     border-radius: 28px;
 }
 
+
 #logoutBtn {
     color: red;
 }
+
 
 .backoffice-content {
     position: relative;
@@ -53,10 +60,13 @@
     transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
 }
 
+
 .profile-image {
     max-width: 100px;
     border-radius: 50%;
 }
+
+
 
 
 @media (max-width: 768px) {
@@ -67,14 +77,17 @@
         box-shadow: none;
     }
 
+
     .backoffice-content {
         left: 0;
         width: 100%;
     }
 
+
     .sidebar-logo {
         width: 100px;
     }
+
 
     .sidebar a {
         font-size: 14px;
@@ -82,15 +95,18 @@
     }
 }
 
+
 @media (max-width: 480px) {
     .sidebar a {
         font-size: 12px;
         padding: 8px;
     }
 
+
     .sidebar-logo {
         width: 80px;
     }
+
 
     .profile-image {
         max-width: 80px;
@@ -99,10 +115,14 @@
 
 
 
+
+
+
 /* Change profile image style STARTS */
-.image-grid{
+.image-grid {
     width: 70%;
 }
+
 
 /* Style for the image grid */
 .image-grid ul {
@@ -115,6 +135,7 @@
     margin: 0;
 }
 
+
 /* Style for individual images */
 .profile-img {
     width: 120px;
@@ -123,10 +144,177 @@
     border-radius: 8px;
 }
 
+
 /* Optional: Add a hover effect on the images */
 .profile-img:hover {
     opacity: 0.8;
     cursor: pointer;
 }
 
+
 /* Change profile image style ENDS */
+
+
+
+
+
+
+
+
+
+
+/* LIST USERS STARTS */
+
+
+
+
+#listUsers-container form input[type="text"],
+#listUsers-container form button,
+#listUsers-container td button[type="button"] {
+    border-radius: 28px;
+}
+
+
+#listUsers-container form input[type="text"] {
+    padding: 10px;
+    border: 2px solid #f09321;
+    color: #333;
+    outline: none;
+}
+
+
+#listUsers-container form button {
+    background-color: #f09321;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+#listUsers-container form button:hover {
+    background-color: #e6831e;
+}
+
+
+#listUsers-container .form-control {
+    border-radius: 28px;
+    padding: 8px;
+    border: 2px solid #f09321;
+}
+
+
+#listUsers-container a {
+    color: #f09321;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+
+#listUsers-container a:hover {
+    text-decoration: underline;
+}
+
+
+#listUsers-container .alert {
+    background-color: #f09321;
+    color: white;
+    border-radius: 28px;
+    padding: 10px;
+}
+
+
+#listUsers-container table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 28px;
+    margin-top: 20px;
+}
+
+
+#listUsers-container table th,
+#listUsers-container table td {
+    padding: 10px;
+    text-align: center;
+}
+
+
+#listUsers-container table th {
+    background-color: #f09321;
+    color: white;
+}
+
+
+#listUsers-container table tr:nth-of-type(odd) {
+    background-color: #faf1e7;
+}
+
+
+
+
+#listUsers-container .pagination a {
+    background-color: #f09321;
+    color: white;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 28px;
+    text-decoration: none;
+}
+
+
+#listUsers-container .pagination a:hover {
+    background-color: #e6831e;
+}
+
+
+#listUsers-container .pagination a.btn-primary.text-white {
+    background-color: white;
+    color: #f09321;
+    border: 2px solid #f09321;
+}
+
+
+.user-controls {
+    display: flex;
+    justify-content: center;
+}
+
+
+#listUsers-container table td.user-controls button.profile-button {
+    border: 1px solid #f09321;
+    background-color: #fff;
+    color: #f09321;
+    padding: 10px 15px;
+    transition: 0.2s all ease;
+}
+
+#listUsers-container table td.user-controls button.profile-button:hover {
+    background-color: #f09321;
+    color: #fff;
+    cursor: pointer;
+}
+
+#listUsers-container table td.user-controls button.delete-button {
+    border: 1px solid red;
+    background-color: #fff;
+    color: red;
+    padding: 10px 15px;
+    transition: 0.2s all ease;
+}
+
+#listUsers-container table td.user-controls button.delete-button:hover {
+    color: #fff;
+    background-color: red;
+    cursor: pointer;
+}
+
+
+
+
+#listUsers-container .sort-users {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* LIST USERS ENDS */
