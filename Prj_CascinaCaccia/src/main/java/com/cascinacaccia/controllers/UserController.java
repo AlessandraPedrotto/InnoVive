@@ -124,19 +124,19 @@ public class UserController {
 	    allAssignedForms.addAll(assignedForms);
 	    allAssignedForms.addAll(assignedBookingForms);
 	    
-	 // Filter by selected categories if available
+	    //filter by selected categories if available
 	    allAssignedForms = FilterService.filterFormsByCategories(allAssignedForms, categoryIds);
         
 	    allAssignedForms = FilterService.filterFormsByStatuses(allAssignedForms, statuses);
         
-	 // Apply form type filter (either Information Form or Booking Form)
+	    //apply form type filter (either Information Form or Booking Form)
         if ("informationForm".equals(formType)) {
-        	allAssignedForms = FilterService.filterByInformationForm(allAssignedForms);  // This would filter out only Information Forms
+        	allAssignedForms = FilterService.filterByInformationForm(allAssignedForms);
         } else if ("bookingForm".equals(formType)) {
-        	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);  // This would filter out only Booking Forms
+        	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);
         }
         
-	    // Sort forms based on the selected option
+	    //sort forms based on the selected option
 	    switch (sortBy) {
 		    case "surnameAsc":
 		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, true);
@@ -154,7 +154,7 @@ public class UserController {
 		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, false);
 		}
 	    
-	    // If no forms are assigned, add a "noResults" message to the model
+	    //if no forms are assigned, add a "noResults" message to the model
 	    if (allAssignedForms.isEmpty()) {
 	        model.addAttribute("noResults", "No tasks assigned to you.");
 	    }
@@ -196,7 +196,8 @@ public class UserController {
 	@PostMapping("/assignStatusProfile")
 	public String assignStatus(@RequestParam("informationFormId") String informationFormId,
 	                            @RequestParam("informationFormStatus") String status) {
-	    //fetch the Informationform using the ID
+	    
+		//fetch the Informationform using the ID
 	    Informationform informationForm = informationFormDAO.findById(informationFormId)
 	        .orElseThrow(() -> new RuntimeException("InformationForm not found"));
 
