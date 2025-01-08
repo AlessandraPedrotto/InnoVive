@@ -43,7 +43,7 @@ public class ForgotPasswordController {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            String userName = user.getName();  // Assuming getFirstName() returns the user's first name
+            String userName = user.getName();
             String userSurname = user.getSurname(); 
             String result = forgotPasswordService.sendResetEmail(user, userName, userSurname); 
             if ("success".equals(result)) {

@@ -41,7 +41,19 @@ public class InformationFormService {
 	@Autowired
 	private UserDAO userDAO;
 	
-	//method that sends an email to the company when a new form is submitted
+	/*
+     * Method to send an email to the admin when a new form is submitted.
+     * This email contains details about the user's submission including name,
+     * surname, email, category, and message.
+     *
+     * @param adminEmail The email of the admin to receive the notification
+     * @param name The first name of the user submitting the form
+     * @param surname The surname of the user submitting the form
+     * @param email The email of the user submitting the form
+     * @param categoryName The category chosen by the user in the form
+     * @param content The content of the form message
+     * @throws MessagingException If there is an error sending the email
+     */
     public void sendEmailToAdmin(String adminEmail, String name, String surname, String email, String categoryName, String content) throws MessagingException {
     	
     	String subject = "Nuovo form in arrivo";
@@ -101,7 +113,19 @@ public class InformationFormService {
         sendHtmlEmail(adminEmail, subject, body);
     }
     
-    //method that sends a confirmation email to the user after submitting the form
+    /*
+     * Method to send a confirmation email to the user after submitting the form.
+     * This email contains a summary of the user's submission including name,
+     * surname, email, category, and message.
+     *
+     * @param userEmail The email of the user to receive the confirmation
+     * @param formName The first name of the user submitting the form
+     * @param formSurname The surname of the user submitting the form
+     * @param formEmail The email of the user submitting the form
+     * @param categoryName The category chosen by the user in the form
+     * @param content The content of the form message
+     * @throws MessagingException If there is an error sending the email
+     */
     public void sendConfirmationEmail(String userEmail, String formName, String formSurname, String formEmail, 
             String categoryName, String content) throws MessagingException {
     	
@@ -164,7 +188,20 @@ public class InformationFormService {
         sendHtmlEmail(userEmail, subject, body);
     }
     
-    //send assigned task email to the employee
+    /*
+     * Method to send an email to the assigned employee regarding a new task.
+     * This method sends an HTML-formatted email to the assigned employee with the task details.
+     * 
+     * @param userEmail The email address of the assigned employee.
+     * @param userName The first name of the assigned employee.
+     * @param userSurname The surname of the assigned employee.
+     * @param formName The first name of the form submitter (customer).
+     * @param formSurname The surname of the form submitter (customer).
+     * @param formEmail The email address of the form submitter (customer).
+     * @param categoryName The category selected by the form submitter.
+     * @param content The message content provided by the form submitter.
+     * @throws MessagingException If there is an error sending the email.
+     */
     public void sendAssignedTaskEmail(String userEmail, String userName, String userSurname, 
             String formName, String formSurname, String formEmail, 
             String categoryName, String content) throws MessagingException {
@@ -225,7 +262,16 @@ public class InformationFormService {
         	sendHtmlEmail(userEmail, subject, body);
     }
 
-    //method to send the email
+    /*
+     * Method to send an HTML-formatted email.
+     * This method sends an email to the specified recipient with the given subject and body content.
+     * It uses the MimeMessageHelper to create and send the email.
+     *
+     * @param toEmail The recipient's email address
+     * @param subject The subject of the email
+     * @param htmlBody The HTML content of the email body
+     * @throws MessagingException If there is an error sending the email
+     */
     private void sendHtmlEmail(String toEmail, String subject, String htmlBody) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -237,7 +283,15 @@ public class InformationFormService {
         mailSender.send(message);
     }
     
-    //method to assign a user to a task (form)
+    /*
+     * Method to assign a user to a specific information form (task).
+     * This method checks if the form exists, removes any previously assigned user,
+     * and then assigns the new user to the task. It also sends an email notification to the assigned user.
+     *
+     * @param userId The ID of the user to be assigned
+     * @param informationFormId The ID of the information form (task) to which the user will be assigned
+     * @throws RuntimeException If the information form is not found
+     */
     public void assignUser(String userId, String informationFormId) {
     	
     	Optional<Informationform> informationForm = informationFormDAO.findById(informationFormId);
@@ -273,7 +327,20 @@ public class InformationFormService {
         }
     }
     
-    //method to send the email to the employee when he's revoked from a task
+    /*
+     * Method to send an email to a user when they are removed from a task (information form).
+     * This email informs the user that they are no longer responsible for the task and provides the details.
+     *
+     * @param userEmail The email address of the user to be notified
+     * @param userName The first name of the user
+     * @param userSurname The surname of the user
+     * @param formName The name of the form (task) from which the user is removed
+     * @param formSurname The surname associated with the form
+     * @param formEmail The email associated with the form
+     * @param categoryName The category of the form
+     * @param content The content/message of the form
+     * @throws MessagingException If there is an error sending the email
+     */
     public void sendRemovedTaskEmail(String userEmail, String userName, String userSurname,
             String formName, String formSurname, String formEmail, String categoryName, 
             String content) throws MessagingException{
@@ -334,7 +401,15 @@ public class InformationFormService {
 	    	sendHtmlEmail(userEmail, subject, body);	
     }
     
-    //method to remove a user from a specific information form
+    /*
+     * Method to remove a user from a specific information form.
+     * This method checks if the user is assigned to the form, and if so,
+     * removes the user and sends an email notifying the user of their removal.
+     *
+     * @param userId The ID of the user to be removed
+     * @param informationFormId The ID of the information form from which the user is to be removed
+     * @throws RuntimeException If the user is not assigned to the form or the form is not found
+     */
     public void removeUser(String userId, String informationFormId) {
         Optional<Informationform> informationForm = informationFormDAO.findById(informationFormId);
         
@@ -371,7 +446,14 @@ public class InformationFormService {
         }
     }
     
-    //method to get all the assigned tasks (forms) to a user
+    /*
+     * Method to get all the assigned tasks (forms) for a given user.
+     * This method fetches all the forms assigned to a specific user and returns a list of related Generalform entries.
+     *
+     * @param userId The ID of the user whose assigned forms are to be fetched
+     * @return A list of Generalform entries that the user is assigned to
+     * @throws RuntimeException If the user is not found
+     */
     public List<Generalform> getAssignedFormsByUser(String userId) {
     	
         //fetch the User entity using the userId from the user repository
@@ -390,7 +472,14 @@ public class InformationFormService {
         return generalFormDAO.findAllById(generalFormIds);  
     }
     
-    //method to assign a status to a task (form)
+    /*
+     * Method to assign a status to a task (form).
+     * This method sets the status of a specific information form and saves the updated status.
+     *
+     * @param status The status to be assigned to the information form
+     * @param informationFormId The ID of the information form to update
+     * @throws RuntimeException If the information form is not found
+     */
     public void assignStatus(String status, String informationFormId) {
     	Optional<Informationform> informationForm = informationFormDAO.findById(informationFormId);
     	if(informationForm.isPresent()) {
@@ -402,7 +491,12 @@ public class InformationFormService {
         }
     }
     
-    //method to save the information forms
+    /*
+     * Method to save the information form.
+     * This method persists the given Informationform entity to the database.
+     *
+     * @param informationForm The information form entity to be saved
+     */
     public void saveInformationForm(Informationform informationForm) {
         informationFormDAO.save(informationForm);
     }

@@ -44,41 +44,65 @@ public class BookingFormService {
 	@Autowired
 	private UserDAO userDAO;
 	
-	// Method to validate check-in and check-out dates
+	/*
+	 * Method to validate the check-in and check-out dates for a booking form.
+	 *
+	 * @param checkIn The check-in date selected by the user
+	 * @param checkOut The check-out date selected by the user
+	 * @return A message indicating whether the booking is valid or what error occurred
+	 */
     public String validateAndSubmitBookingForm(Date checkIn, Date checkOut) {
-        Date today = new Date(); // Get today's date
+        Date today = new Date();
 
-        // Check if the check-in date is before tomorrow (at least one day after today)
+        //check if the check-in date is before tomorrow (at least one day after today)
         if (checkIn.before(today) || isSameDay(checkIn, today)) {
             return "Check-in date must be at least one day after today's date.";
         }
 
-        // Check if the check-out date is before tomorrow (at least one day after today)
+        //check if the check-out date is before tomorrow (at least one day after today)
         if (checkOut.before(today) || isSameDay(checkOut, today)) {
             return "Check-out date must be at least one day after today's date.";
         }
 
-        // Check if check-out is before check-in
+        //check if check-out is before check-in
         if (checkOut.before(checkIn)) {
             return "Check-out date cannot be before check-in date.";
         }
 
-        // Proceed with the rest of the form processing logic...
-        // Save the booking, send emails, etc.
-
+        //save the booking, send emails, etc.
         return "Booking successfully submitted!";
     }
 
-    // Helper method to check if two dates are the same day
+    /*
+     * Helper method to check if two dates are on the same day.
+     * This method compares two Date objects to determine if they represent the same day.
+     *
+     * @param date1 The first date to compare
+     * @param date2 The second date to compare
+     * @return true if both dates are on the same day, false otherwise
+     */
     private boolean isSameDay(Date date1, Date date2) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         return sdf.format(date1).equals(sdf.format(date2));
     }
     
-	//method that sends an email to the company when a new form is submitted
+    /*
+     * Method to send an email to the admin when a new form is submitted.
+     * This method formats the details of the submitted form into an HTML email and sends it to the provided admin email address.
+     *
+     * @param adminEmail The email address of the admin to receive the email
+     * @param name The name of the person who submitted the form
+     * @param surname The surname of the person who submitted the form
+     * @param email The email address of the person who submitted the form
+     * @param categoryName The category of the form submission
+     * @param checkIn The check-in date provided in the form
+     * @param checkOut The check-out date provided in the form
+     * @param content The message/content provided in the form
+     * @throws MessagingException If there is an error while sending the email
+     */
     public void sendEmailToAdmin(String adminEmail, String name, String surname, String email, String categoryName, Date checkIn, Date checkOut, String content) throws MessagingException {
     	
-    	// Format the check-in and check-out dates as 'dd-MM-yyyy'
+    	//format the check-in and check-out dates as 'dd-MM-yyyy'
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String formattedCheckIn = dateFormat.format(checkIn);
         String formattedCheckOut = dateFormat.format(checkOut);
@@ -141,11 +165,25 @@ public class BookingFormService {
         sendHtmlEmail(adminEmail, subject, body);
     }
     
-    //method that sends a confirmation email to the user after submitting the form
+    /*
+     * Method to send a confirmation email to the user after submitting the form.
+     * This method sends an HTML-formatted email to the user to confirm the successful submission of the form.
+     * It includes the details provided by the user in the form such as name, email, category, period, and message.
+     *
+     * @param userEmail The email address of the user to send the confirmation email.
+     * @param formName The first name of the form submitter (user).
+     * @param formSurname The surname of the form submitter (user).
+     * @param formEmail The email address of the form submitter (user).
+     * @param categoryName The category selected by the user in the form.
+     * @param checkIn The check-in date from the form.
+     * @param checkOut The check-out date from the form.
+     * @param content The message or content provided by the user in the form.
+     * @throws MessagingException If there is an error sending the email.
+     */
     public void sendConfirmationEmail(String userEmail, String formName, String formSurname, String formEmail, 
             String categoryName, Date checkIn, Date checkOut, String content) throws MessagingException {
     	
-    	// Format the check-in and check-out dates as 'dd-MM-yyyy'
+    	//format the check-in and check-out dates as 'dd-MM-yyyy'
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String formattedCheckIn = dateFormat.format(checkIn);
         String formattedCheckOut = dateFormat.format(checkOut);
@@ -210,12 +248,29 @@ public class BookingFormService {
         sendHtmlEmail(userEmail, subject, body);
     }
     
-    //send assigned task email to the employee
+    /* 
+     * Method to send an email to the employee when they are assigned a new task.
+     * 
+     * This method sends an email to the assigned employee with the details of a new task,
+     * including the customer's contact information and task details.
+     * 
+     * @param userEmail The email address of the assigned employee
+     * @param userName The first name of the employee
+     * @param userSurname The surname of the employee
+     * @param formName The first name of the customer
+     * @param formSurname The surname of the customer
+     * @param formEmail The email address of the customer
+     * @param categoryName The category of the task
+     * @param checkIn The check-in date for the booking
+     * @param checkOut The check-out date for the booking
+     * @param content Additional content or message related to the booking
+     * @throws MessagingException If there is an issue sending the email
+     */
     public void sendAssignedTaskEmail(String userEmail, String userName, String userSurname, 
             String formName, String formSurname, String formEmail, 
             String categoryName, Date checkIn, Date checkOut, String content) throws MessagingException {
 		
-    	// Format the check-in and check-out dates as 'dd-MM-yyyy'
+    	//format the check-in and check-out dates as 'dd-MM-yyyy'
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String formattedCheckIn = dateFormat.format(checkIn);
         String formattedCheckOut = dateFormat.format(checkOut);
@@ -278,7 +333,14 @@ public class BookingFormService {
         	sendHtmlEmail(userEmail, subject, body);
     }
 
-    //method to send the email
+    /* 
+     * This method takes care of creating and sending an HTML email message.
+     * 
+     * @param toEmail The recipient's email address
+     * @param subject The subject of the email
+     * @param htmlBody The body of the email in HTML format
+     * @throws MessagingException If there is an issue sending the email
+     */
     private void sendHtmlEmail(String toEmail, String subject, String htmlBody) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -290,7 +352,16 @@ public class BookingFormService {
         mailSender.send(message);
     }
     
-    //method to assign a user to a task (form)
+    /* 
+     * Method to assign a user to a specific booking form (task)
+     * 
+     * This method assigns a user to a task, removing any previously assigned user 
+     * and notifying the newly assigned user via email.
+     * 
+     * @param userId The ID of the user being assigned to the task
+     * @param bookingFormId The ID of the booking form (task) to which the user is being assigned
+     * @throws RuntimeException If the booking form is not found in the database
+     */
     public void assignUser(String userId, String bookingFormId) {
     	
     	Optional<BookingForm> bookingForm = bookingFormDAO.findById(bookingFormId);
@@ -328,12 +399,27 @@ public class BookingFormService {
         }
     }
     
-    //method to send the email to the employee when he's revoked from a task
+    /* 
+     * Method to send an email to a user when they are removed from a task (information form).
+     * 
+     * This email informs the user that they are no longer responsible for the task 
+     * and provides the details.
+     * 
+     * @param userEmail The email address of the user to be notified
+     * @param userName The first name of the user
+     * @param userSurname The surname of the user
+     * @param formName The name of the form (task) from which the user is removed
+     * @param formSurname The surname associated with the form
+     * @param formEmail The email associated with the form
+     * @param categoryName The category of the form
+     * @param content The content/message of the form
+     * @throws MessagingException If there is an error sending the email
+     */
     public void sendRemovedTaskEmail(String userEmail, String userName, String userSurname,
             String formName, String formSurname, String formEmail, String categoryName, Date checkIn, Date checkOut,  
             String content) throws MessagingException{
     	
-	    	// Format the check-in and check-out dates as 'dd-MM-yyyy'
+	    	//format the check-in and check-out dates as 'dd-MM-yyyy'
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	        String formattedCheckIn = dateFormat.format(checkIn);
 	        String formattedCheckOut = dateFormat.format(checkOut);
@@ -396,7 +482,15 @@ public class BookingFormService {
 	    	sendHtmlEmail(userEmail, subject, body);	
     }
     
-    //method to remove a user from a specific information form
+    /*
+     * Method to remove a user from a specific booking form.
+     * This method checks if the user is assigned to the form, and if so,
+     * removes the user and sends an email notifying the user of their removal.
+     *
+     * @param userId The ID of the user to be removed
+     * @param bookingFormId The ID of the booking form from which the user is to be removed
+     * @throws RuntimeException If the user is not assigned to the form or the form is not found
+     */
     public void removeUser(String userId, String bookingFormId) {
         Optional<BookingForm> bookingForm = bookingFormDAO.findById(bookingFormId);
         
@@ -435,7 +529,14 @@ public class BookingFormService {
         }
     }
     
-    //method to get all the assigned tasks (forms) to a user
+    /*
+     * Method to get all the assigned tasks (forms) for a given user.
+     * This method fetches all the forms assigned to a specific user and returns a list of related Generalform entries.
+     *
+     * @param userId The ID of the user whose assigned forms are to be fetched
+     * @return A list of Generalform entries that the user is assigned to
+     * @throws RuntimeException If the user is not found
+     */
     public List<Generalform> getAssignedFormsByUserBooking(String userId) {
     	
         //fetch the User entity using the userId from the user repository
@@ -454,7 +555,14 @@ public class BookingFormService {
         return generalFormDAO.findAllById(generalFormIds);  
     }
     
-    //method to assign a status to a task (form)
+    /*
+     * Method to assign a status to a task (form).
+     * This method sets the status of a specific booking form and saves the updated status.
+     *
+     * @param status The status to be assigned to the booking form
+     * @param informationFormId The ID of the booking form to update
+     * @throws RuntimeException If the booking form is not found
+     */
     public void assignStatus(String status, String bookingFormId) {
     	Optional<BookingForm> bookingForm = bookingFormDAO.findById(bookingFormId);
     	if(bookingForm.isPresent()) {
@@ -466,7 +574,12 @@ public class BookingFormService {
         }
     }
 	
-    //method to save the booking forms
+    /*
+     * Method to save the information form.
+     * This method persists the given BookingForm entity to the database.
+     *
+     * @param bookingForm The booking form entity to be saved
+     */
 	public void saveBookingForm(BookingForm bookingForm) {
 		bookingFormDAO.save(bookingForm);
 	}

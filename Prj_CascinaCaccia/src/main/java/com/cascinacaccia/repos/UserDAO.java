@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cascinacaccia.entities.User;
 
-
 /*
  * The UserDAO interface extends JpaRepository to provide standard CRUD operations for the User entity.
  * This interface facilitates interaction with the User entity, offering various methods to perform CRUD operations
