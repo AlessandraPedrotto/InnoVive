@@ -100,8 +100,15 @@
 
 
 /* Change profile image style STARTS */
+
+#profile-img-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 .image-grid{
     width: 70%;
+    margin: 0 auto;
 }
 
 /* Style for the image grid */
@@ -117,16 +124,51 @@
 
 /* Style for individual images */
 .profile-img {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 50%;
 }
 
 /* Optional: Add a hover effect on the images */
 .profile-img:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+
+.profile-img-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #f5f5f5;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-img-wrapper:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.profile-img-wrapper:hover img {
+    opacity: 0.9;
+}
+
+.back-btn {
+    text-decoration: none;
+    background-color: #f39340;
+    color: black;
+    border-radius: 8px;
+    padding: 10px 25px;
+}
+
+.back-btn:hover {
+    background-color: #f39340e6;
 }
 
 /* Change profile image style ENDS */

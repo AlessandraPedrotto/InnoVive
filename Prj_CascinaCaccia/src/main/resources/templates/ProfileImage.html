@@ -9,33 +9,6 @@
     <link rel="stylesheet" href="/styles/style.css?v=1.0">
     <link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
 </head>
-<style>
-
-    /* Style for the image grid */
-    .image-grid ul {
-        display: grid;
-        grid-template-columns: repeat(10, 1fr);
-        gap: 10px;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    /* Style for individual images */
-    .profile-img {
-        width: 120px;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-
-    /* Optional: Add a hover effect on the images */
-    .profile-img:hover {
-        opacity: 0.8;
-        cursor: pointer;
-    }
-</style>
-
 <body>
     <div class="backoffice-container">
         <div class="sidebar">
@@ -58,7 +31,7 @@
 
         </div>
         <div class="backoffice-content">
-            <h2>Available Profile Images</h2>
+            <h2 id="profile-img-title">Available Profile Images</h2>
             <div class="image-grid">
                 <ul>
 
@@ -70,7 +43,9 @@
                             <input type="hidden" name="userId" th:value="${user.id}" />
                             <input type="hidden" name="userImageId" th:value="${image.id}" />
                             <button type="submit" style="border: none; background: none;">
-                                <img th:src="@{${image.imgPath}}" alt="Image" class="profile-img" />
+                                <div class="profile-img-wrapper">
+                                    <img th:src="@{${image.imgPath}}" alt="Image" class="profile-img" />
+                                </div>
                             </button>
                         </form>
                     </li>
@@ -78,7 +53,7 @@
             </div>
 
             <!-- Back Button to Return to User List -->
-            <a href="/profile">Back</a>
+            <a class="back-btn" href="/profile">Back</a>
         </div>
     </div>
 
