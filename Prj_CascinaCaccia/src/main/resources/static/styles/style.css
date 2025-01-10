@@ -224,6 +224,9 @@
 
   .boxes {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .boxes-text-content {
@@ -231,7 +234,9 @@
   }
 
   .boxes-image {
-    display: none;
+    width: 80%;
+    order: 1;
+    margin-top: 1rem;
   }
 }
 
