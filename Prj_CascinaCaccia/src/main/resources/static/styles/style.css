@@ -1481,11 +1481,12 @@ select:focus {
 }
 
 .content {
-  margin: 20px auto;
+  margin: 0 auto;
+  margin-bottom: 2rem;
 }
 
 .request-page-header {
-  margin: 4rem 0 8rem 8rem;
+  margin: 0 0 8rem 8rem;
 }
 
 .requests-back-button {
@@ -1600,4 +1601,8 @@ select:focus {
 
 .pagination {
   margin-left: 8rem;
+}
+
+.main {
+  margin-left: 15vw;
 }
