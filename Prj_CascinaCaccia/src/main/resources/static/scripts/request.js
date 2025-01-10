@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     //toggle della classe 'hidden' sugli header delle richieste
-    const body = document.querySelector('body');
     const headers = document.querySelectorAll('.request-header');
     const bodies = document.querySelectorAll('.request-body');
 
