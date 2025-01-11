@@ -644,7 +644,7 @@
   gap: 10px;
 }
 
-#hidden-datepicker {
+#hidden-datepicker-checkin,#hidden-datepicker-checkout  {
   display: none;
 }
 
@@ -670,6 +670,9 @@ select:focus {
   box-shadow: 0 0 8px rgba(255, 165, 0, 0.6);
 }
 
+#check-in-time, #check-out-time{
+  font-size: 1.5rem;
+}
 
 
 .calendar {
@@ -763,9 +766,9 @@ select:focus {
 }
 
 .calendar-days div:hover {
-  background-color: #f09321;
+  background-color: #ffffff00;
+  border: 2px solid #f09321;
   border-radius: 50%;
-  color: white;
 }
 
 .calendar-days div.selected {
@@ -773,6 +776,12 @@ select:focus {
   background-color: #f09321;
   color: #fff;
 }
+
+.calendar-day-hover.range{
+  background-color: #ffa73b85;
+  border-radius: 50%;
+}
+
 
 .month-list {
   position: absolute;
@@ -901,17 +910,25 @@ select:focus {
   padding: 10px;
   display: flex;
   justify-content: space-evenly;
+  transition:  transform 0.5s ease;
+  opacity: 1;
+  transform: translateY(0);
 }
+
+.conferma-container.hidden{
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none; 
+}
+
 
 #selected-date {
   font-weight: bold;
 }
 
 .conferma-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   font-size: 24px;
+  width: 30%;
 }
 
 .conferma-button {
@@ -930,6 +947,10 @@ select:focus {
 
 }
 
+#check-in-confirm, #check-out-confirm{
+  display: inline;
+  font-weight: 500;
+}
 
 
 
@@ -945,6 +966,8 @@ select:focus {
     width: 50%;
   }
 }
+
+
 
 
 /* PRENOTA ENDS */
