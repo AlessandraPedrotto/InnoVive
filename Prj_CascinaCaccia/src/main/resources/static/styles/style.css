@@ -294,6 +294,7 @@
 
 /* FOOTER STARTS*/
 .footer {
+  margin-top: 15px;
   background-color: rgba(255, 119, 0, .56);
   display: flex;
   justify-content: space-evenly;
@@ -915,9 +916,8 @@ select:focus {
   transform: translateY(0);
 }
 
-.conferma-container.hidden{
-  opacity: 0;
-  transform: translateY(20px);
+.conferma-container.hidden-conferma{
+  transform: translateY(80px);
   pointer-events: none; 
 }
 

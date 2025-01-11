@@ -177,8 +177,8 @@ window.addEventListener('scroll', () => {
     const scrollHeight = document.documentElement.scrollHeight; 
 
     if (scrollY + innerHeight >= scrollHeight) {
-        confermaContainer.classList.add('hidden');
+        confermaContainer.classList.add('hidden-conferma');
     } else {
-        confermaContainer.classList.remove('hidden');
+        confermaContainer.classList.remove('hidden-conferma');
     }
 });
