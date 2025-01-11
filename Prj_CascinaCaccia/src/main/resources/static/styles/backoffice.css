@@ -583,3 +583,19 @@
 }
 
 /* BACKOFFICE YOUR REQUESTS REQUESTS ENDS */
+
+/* BACKOFFICE HOMEPAGE STARTS */
+
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-content {
+    margin: 3rem 0;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 28px;
+}
+
+/* BACKOFFICE HOMEPAGE ENDS */
