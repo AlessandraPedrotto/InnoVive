@@ -1478,6 +1478,7 @@ select:focus {
 
 .requests-welcome {
   margin-bottom: 2rem;
+  padding-top: 2rem;
 }
 
 .content {
@@ -1603,6 +1604,6 @@ select:focus {
   margin-left: 8rem;
 }
 
-.main {
+.requests-main {
   margin-left: 15vw;
 }
