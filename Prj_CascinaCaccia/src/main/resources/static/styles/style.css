@@ -644,7 +644,7 @@
   gap: 10px;
 }
 
-#hidden-datepicker {
+#hidden-datepicker-checkin,#hidden-datepicker-checkout  {
   display: none;
 }
 
@@ -910,17 +910,25 @@ select:focus {
   padding: 10px;
   display: flex;
   justify-content: space-evenly;
+  transition:  transform 0.5s ease;
+  opacity: 1;
+  transform: translateY(0);
 }
+
+.conferma-container.hidden{
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none; 
+}
+
 
 #selected-date {
   font-weight: bold;
 }
 
 .conferma-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   font-size: 24px;
+  width: 30%;
 }
 
 .conferma-button {
@@ -939,6 +947,10 @@ select:focus {
 
 }
 
+#check-in-confirm, #check-out-confirm{
+  display: inline;
+  font-weight: 500;
+}
 
 
 
@@ -954,6 +966,8 @@ select:focus {
     width: 50%;
   }
 }
+
+
 
 
 /* PRENOTA ENDS */
