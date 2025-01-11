@@ -22,6 +22,9 @@
   font-size: 1.5em;
   font-weight: bold;
 }
+.logo:hover {
+  cursor: pointer;
+}
 
 .logo img {
   max-width: 140px;
