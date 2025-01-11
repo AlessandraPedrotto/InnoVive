@@ -55,8 +55,6 @@
     width: 85vw;
     flex-grow: 0;
     padding: 20px;
-    overflow-y: scroll;
-    overflow-x: scroll;
     transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
 }
 
