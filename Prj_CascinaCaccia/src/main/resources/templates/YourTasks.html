@@ -49,60 +49,84 @@
 
 				<!-- Category Filter Form -->
 				<div class="filter-container">
-					<form method="get" action="/yourTasks" class="form-inline">
+					<form method="get" action="/yourTasks">
 						<input type="hidden" name="page" th:value="1" />
 						<input type="hidden" name="size" th:value="${size}" />
 
 						<!-- Category Checkbox Filters -->
-						<div class="form-group mr-2">
-							<label for="categories">Categories:</label><br />
-							<div th:each="category : ${categories}">
-								<input type="checkbox" name="categories" th:value="${category.id}"
-									th:checked="${selectedCategories != null and selectedCategories.contains(category.id)}" />
-								<span th:text="${category.name}"></span><br />
+						<div class="category-filter">
+							<label for="categories">Categorie:</label><br />
+
+							<div class="category-container">
+								<div class="category-item" th:each="category : ${categories}">
+									<input type="checkbox" name="categories" th:value="${category.id}"
+										th:checked="${selectedCategories != null and selectedCategories.contains(category.id)}" />
+									<span th:text="${category.name}"></span><br />
+								</div>
 							</div>
+
 						</div>
 
 						<!-- Status Checkbox Filters -->
-						<div class="form-group mr-2">
+						<div class="status-filter">
 							<label for="statuses">Status:</label><br />
-							<div>
-								<input type="checkbox" name="statuses" value="TO DO"
-									th:checked="${statusesSelected != null and statusesSelected.contains('TO DO')}" />
-								TO DO<br />
-								<input type="checkbox" name="statuses" value="IN PROGRESS"
-									th:checked="${statusesSelected != null and statusesSelected.contains('IN PROGRESS')}" />
-								IN PROGRESS<br />
-								<input type="checkbox" name="statuses" value="DONE"
-									th:checked="${statusesSelected != null and statusesSelected.contains('DONE')}" />
-								DONE<br />
+							<div class="status-container">
+								<div class="status-item">
+									<input type="checkbox" name="statuses" value="TO DO"
+										th:checked="${statusesSelected != null and statusesSelected.contains('TO DO')}" />
+									TO DO<br />
+								</div>
+								<div class="status-item">
+									<input type="checkbox" name="statuses" value="IN PROGRESS"
+										th:checked="${statusesSelected != null and statusesSelected.contains('IN PROGRESS')}" />
+									IN PROGRESS<br />
+								</div>
+								<div class="status-item">
+									<input type="checkbox" name="statuses" value="DONE"
+										th:checked="${statusesSelected != null and statusesSelected.contains('DONE')}" />
+									DONE<br />
+								</div>
+
+
+
 							</div>
 						</div>
 
-						<!-- Sorting Dropdown -->
-						<select class="form-control mr-2" name="sortBy">
-							<option value="newest" th:selected="${sortBy == 'newest'}">Date: Newest to Oldest</option>
-							<option value="oldest" th:selected="${sortBy == 'oldest'}">Date: Oldest to Newest</option>
-							<option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Surname: A to Z</option>
-							<option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Surname: Z to A
-							</option>
-						</select>
+						<div class="sort-type-container">
+							<!-- Sorting Dropdown -->
+							<div class="sort-type-item">
+								<label for="sortBy">Sort Type:</label>
+								<select name="sortBy">
+									<option value="newest" th:selected="${sortBy == 'newest'}">Date: Newest to Oldest
+									</option>
+									<option value="oldest" th:selected="${sortBy == 'oldest'}">Date: Oldest to Newest
+									</option>
+									<option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Surname: A to Z
+									</option>
+									<option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Surname: Z to A
+									</option>
+								</select>
+							</div>
 
-						<!-- Form Type Filter (Information Form or Booking Form) -->
-						<div class="form-group mr-2">
-							<label for="formType">Form Type:</label>
-							<select class="form-control" name="formType">
-								<option value="all" th:selected="${formType == 'all'}">All</option>
-								<option value="informationForm" th:selected="${formType == 'informationForm'}">
-									Information Form</option>
-								<option value="bookingForm" th:selected="${formType == 'bookingForm'}">Booking Form
-								</option>
-							</select>
+
+							<!-- Form Type Filter (Information Form or Booking Form) -->
+							<div class="sort-type-item">
+								<label for="formType">Form Type:</label>
+								<select class="form-control" name="formType">
+									<option value="all" th:selected="${formType == 'all'}">All</option>
+									<option value="informationForm" th:selected="${formType == 'informationForm'}">
+										Information Form</option>
+									<option value="bookingForm" th:selected="${formType == 'bookingForm'}">Booking Form
+									</option>
+								</select>
+							</div>
 						</div>
 
-						<button type="submit" class="btn btn-primary">Apply</button>
+						<div class="sort-buttons-container">
+							<button type="submit" class="requests-back-button">Applica filtri</button>
+							<a href="/yourTasks" class="requests-back-button">Rimuovi filtri</a>
+						</div>
 
-						<a href="/yourTasks" class="btn btn-secondary ml-2">Reset</a>
 
 					</form>
 				</div>
