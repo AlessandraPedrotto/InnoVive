@@ -22,6 +22,7 @@
   font-size: 1.5em;
   font-weight: bold;
 }
+
 .logo:hover {
   cursor: pointer;
 }
@@ -311,6 +312,15 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  width: calc(100% / 3);
+}
+
+.footer-map {
+  order: 1;
+}
+
+.footer-social {
+  order: 2;
 }
 
 .footer-content h3 {
@@ -385,6 +395,7 @@
 
   .footer-content {
     margin-bottom: 2rem;
+    width: 100%;
   }
 
   .footer-content h3 {
@@ -648,7 +659,8 @@
   gap: 10px;
 }
 
-#hidden-datepicker-checkin,#hidden-datepicker-checkout  {
+#hidden-datepicker-checkin,
+#hidden-datepicker-checkout {
   display: none;
 }
 
@@ -674,7 +686,8 @@ select:focus {
   box-shadow: 0 0 8px rgba(255, 165, 0, 0.6);
 }
 
-#check-in-time, #check-out-time{
+#check-in-time,
+#check-out-time {
   font-size: 1.5rem;
 }
 
@@ -781,7 +794,7 @@ select:focus {
   color: #fff;
 }
 
-.calendar-day-hover.range{
+.calendar-day-hover.range {
   background-color: #ffa73b85;
   border-radius: 50%;
 }
@@ -914,14 +927,14 @@ select:focus {
   padding: 10px;
   display: flex;
   justify-content: space-evenly;
-  transition:  transform 0.5s ease;
+  transition: transform 0.5s ease;
   opacity: 1;
   transform: translateY(0);
 }
 
-.conferma-container.hidden-conferma{
+.conferma-container.hidden-conferma {
   transform: translateY(80px);
-  pointer-events: none; 
+  pointer-events: none;
 }
 
 
@@ -950,7 +963,8 @@ select:focus {
 
 }
 
-#check-in-confirm, #check-out-confirm{
+#check-in-confirm,
+#check-out-confirm {
   display: inline;
   font-weight: 500;
 }
@@ -1280,19 +1294,19 @@ select:focus {
   width: 100%;
 }
 
-.form-box{
+.form-box {
   display: flex;
   justify-content: space-around;
   gap: 10px;
   padding: 15px;
 }
 
-.form-column{
+.form-column {
   width: 100%;
 }
 
 
-textarea#content-message{
+textarea#content-message {
   resize: none;
 }
 
