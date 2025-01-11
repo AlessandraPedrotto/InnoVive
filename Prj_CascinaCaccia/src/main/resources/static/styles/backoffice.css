@@ -405,29 +405,22 @@
     margin-bottom: 2rem;
 }
 
-.requests-back-button {
-    background: linear-gradient(90deg, #fcdd11, #e1097e);
-    padding: 10px 15px;
-    border-radius: 20px;
-    color: #fff;
-    font-weight: 500;
-}
-
+.requests-back-button,
 .pagination-button {
     background: linear-gradient(90deg, #fcdd11, #e1097e);
     padding: 10px 15px;
     border-radius: 20px;
     color: #fff;
     font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .request-container {
     display: flex;
     flex-direction: column;
-    border-radius: 20px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.397);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 80%;
-    margin-top: 2rem;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -438,7 +431,7 @@
 
 .request-header {
     padding: 20px;
-    border-top: 1px solid black;
+    border-top: 1px solid rgb(236, 236, 236);
 }
 
 .request-header-selected {
@@ -474,8 +467,6 @@
 
 .assign-status-submit-button,
 .assign-user-submit-button {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
     background-color: rgba(240, 147, 33, 0.42);
     border-radius: 5px;
     padding: 5px;
@@ -492,6 +483,7 @@
 
 .request-body {
     background-color: rgba(240, 147, 33, 0.42);
+    padding-bottom: 1rem;
 }
 
 .request-body-table {
@@ -593,9 +585,47 @@
 
 .profile-content {
     margin: 3rem 0;
-    padding: 2rem;
+    padding: 2rem 8rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 28px;
+}
+
+.profile-header {
+    margin-bottom: 1rem;
+}
+
+.profile-image-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.profile-image-container img {
+    max-width: 200px;
+}
+
+.profile-buttons-container {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.profile-buttons-container button {
+    margin-right: 0.3rem;
+}
+
+.profile-info-labels {
+    display: inline-block;
+}
+
+.profile-info-forms {
+    display: inline-block;
+    width: 100%;
+}
+
+.profile-info-group {
+    margin-top: 0.3rem;
 }
 
 /* BACKOFFICE HOMEPAGE ENDS */

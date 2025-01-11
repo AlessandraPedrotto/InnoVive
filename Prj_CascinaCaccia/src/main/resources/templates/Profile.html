@@ -39,42 +39,52 @@
 
                 <!-- Display user details -->
                 <div class="profile-details">
-                    <p>Profile image:</p>
-                    <img th:src="@{${profileImageUrl}}" alt="Profile Image" />
-                    <p><strong>Email:</strong> <span th:text="${email}">No email found</span></p>
-                    <p>
-                        <strong>Name:</strong>
-                        <span id="name-display" th:text="${fullName}">No name found</span>
-                        <strong>Surname:</strong>
-                        <span id="surname-display" th:text="${surname}">No surname found</span>
-                        <button id="edit-name-btn" class="btn btn-sm btn-link" onclick="toggleEditName()">
-                            <i class="fa fa-pencil-alt"></i> Edit
-                        </button>
-                    </p>
-
-                    <!-- Hidden form for editing name and surname -->
-                    <form id="edit-name-form" th:action="@{/profile/update-name}" method="post" style="display: none;">
-                        <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" name="name" class="form-control" th:value="${fullName}"
-                                required />
-                        </div>
-                        <div class="form-group">
-                            <label for="surname">Surname:</label>
-                            <input type="text" id="surname" name="surname" class="form-control" th:value="${surname}"
-                                required />
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                        <button type="button" class="btn btn-secondary btn-sm"
-                            onclick="toggleEditName()">Cancel</button>
-                    </form>
-                    <!-- Role of the authenticated user -->
-                    <div>
-                        <p>Role in session:
-                            <span
-                                th:text="${#authentication?.authorities?.isEmpty() ? 'No role' : #authentication?.authorities?.[0]?.authority}">No
-                                role</span>
+                    <p>La tua immagine del profilo</p>
+                    <div class="profile-image-container">
+                        <img th:src="@{${profileImageUrl}}" alt="Profile Image" />
+                    </div>
+                    <div class="profile-account-info">
+                        <p><strong>Email:</strong> <span th:text="${email}">No email found</span></p>
+                        <p>
+                            <strong>Name:</strong>
+                            <span id="name-display" th:text="${fullName}">No name found</span>
+                            <strong>Surname:</strong>
+                            <span id="surname-display" th:text="${surname}">No surname found</span>
                         </p>
+
+                        <div class="profile-buttons-container">
+                            <button id="edit-name-btn" class="requests-back-button" onclick="toggleEditName()">
+                                <i class="fa fa-pencil-alt"></i> Edit
+                            </button>
+                        </div>
+
+                        <!-- Hidden form for editing name and surname -->
+                        <form id="edit-name-form" th:action="@{/profile/update-name}" method="post"
+                            style="display: none;">
+                            <div class="profile-info-group">
+                                <label class="profile-info-labels" for="name">Nome:</label>
+                                <input type="text" id="name" name="name" class="profile-info-forms"
+                                    th:value="${fullName}" required />
+                            </div>
+                            <div class="profile-info-group">
+                                <label class="profile-info-labels" for="surname">Cognome:</label>
+                                <input type="text" id="surname" name="surname" class="profile-info-forms"
+                                    th:value="${surname}" required />
+                            </div>
+                            <div class="profile-buttons-container">
+                                <button type="submit" class="requests-back-button">Save</button>
+                                <button type="button" class="requests-back-button"
+                                    onclick="toggleEditName()">Cancel</button>
+                            </div>
+                        </form>
+                        <!-- Role of the authenticated user -->
+                        <div>
+                            <p>Ruolo:
+                                <span
+                                    th:text="${#authentication?.authorities?.isEmpty() ? 'No role' : #authentication?.authorities?.[0]?.authority}">No
+                                    role</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
