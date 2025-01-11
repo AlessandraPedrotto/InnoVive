@@ -14,7 +14,9 @@
     <!-- NAVBAR STARTS -->
     <nav class="navbar">
         <div class="logo">
-            <img src="/img/logo.png" alt="Education logo">
+            <a href="/">
+                <img src="/img/logo.png" alt="Education logo">
+            </a>
         </div>
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
@@ -59,29 +61,53 @@
     <div class="prenota-container">
 
         <div class="form-info" >
-            <form id="prenota-form" method="POST" action="" > 
+            <form id="prenota-form" method="POST" action="/submit-booking" > 
                 <div class="form-field">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" placeholder="Il tuo nome" name="">
+                    <input type="text" id="nome"  placeholder="Il tuo nome" name="name">
                 </div>
                 <div class="form-field">
                     <label for="cognome">Cognome</label>
-                    <input type="text" id="cognome" placeholder="Il tuo cognome" name="">
+                    <input type="text" id="cognome" placeholder="Il tuo cognome" name="surname">
                 </div>
                 <div class="form-field">
                     <label for="email">E-mail</label>
-                    <input type="email" id="email" placeholder="La tua email" name="">
+                    <input type="email" id="email" placeholder="La tua email" name="email">
+                </div>
+                <div class="form-field">
+                    <label for="categoryId">Categoria:</label>
+	    <select id="categoryId" name="categoryId" required>
+	        <option value="" disabled selected>Seleziona una categoria</option>
+	        
+	            <option value="1">Scuola elementare</option>
+	        
+	            <option value="2">Scuola media</option>
+	        
+	            <option value="3">Scuola superiore</option>
+	        
+	            <option value="4">Università</option>
+	        
+	            <option value="5">Oratorio</option>
+	        
+	            <option value="6">Evento privato generico</option>
+	        
+	            <option value="7">Evento pubblico generico</option>
+	        
+	            <option value="8">Altro</option>
+	        
+	    </select>
                 </div>
                 <div class="form-field">
                     <label for="messaggio">Messaggio</label>
-                    <textarea rows="10" cols="5" name="messaggio" id="messaggio"
+                    <textarea rows="10" cols="5" name="content" id="messaggio"
                         placeholder="Raccontaci chi sei, cosa ti aspetti da questa visita e dicci le tue esigenze" ></textarea>
                 </div>
-                <input type="date" id="hidden-datepicker" name="selected_date" />
+                <input type="date" id="hidden-datepicker-checkin" name="checkIn" />
+                <input type="date" id="hidden-datepicker-checkout" name="checkOut" />
             </form>
         </div>
         <div class="calendar-container">
-
+            <div class="hidden" id="check-in-time" >Check in: <span id="selected-check-in"></span> </div> <div class="hidden" id="check-out-time" >Check out: <span id="selected-check-out"></span> </div>
             <div class="calendar">
                 <!-- calendar header -->
                 <div class="calendar-header">
@@ -122,10 +148,14 @@
 
     <div class="conferma-container">
         <div class="conferma-info">
-            Conferma la richiesta di prenotazione per il giorno:
-            <div id="selected-date"></div>
+            <div>
+                Check-in: <span id="check-in-confirm"></span>
+            </div>
+            <div>
+                Check-out: <span id="check-out-confirm"></span>
+            </div>
         </div>
-        <button id="submit" class="conferma-button">Prenota</button>
+        <button id="submit-btn" class="conferma-button">Prenota</button>
     </div>
 
 
