@@ -317,4 +317,75 @@
     justify-content: flex-end;
 }
 
+
+#user-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 28px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#user-container h2 {
+    text-align: center;
+    color: #f09321;
+}
+
+#user-container .user-details {
+    line-height: 1.8;
+}
+
+#user-container .user-details p {
+    margin: 10px 0;
+}
+
+#user-container .user-details strong {
+    color: #555;
+}
+
+#user-container .profile-img {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#user-container .profile-img img {
+    border-radius: 50%;
+    border: 3px solid #f09321;
+}
+
+#user-container .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#user-container .button-container a {
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 28px;
+    background-color: #f09321;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#user-container .button-container a:hover {
+    background-color: #c87918;
+}
+
+#user-container .button-container .button-secondary {
+    background-color: #fff;
+    border: 1px solid#f09321;
+    color: #f09321;
+}
+
+#user-container .button-container .button-secondary:hover {
+    background-color: #c88c508f;
+}
+
+
+
 /* LIST USERS ENDS */
