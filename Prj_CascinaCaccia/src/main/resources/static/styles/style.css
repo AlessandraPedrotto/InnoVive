@@ -1154,7 +1154,7 @@ select:focus {
   right: 20px;
   width: 90%;
   max-width: 700px;
-  height: 80%;
+  height: max-content;
   max-height: 600px;
   background-color: #fff;
   border: 2px solid #F09321;
@@ -1207,7 +1207,6 @@ select:focus {
     bottom: 130px;
     right: 5%;
     width: 95%;
-    height: 85%;
     padding: 15px;
   }
 
@@ -1227,7 +1226,6 @@ select:focus {
     bottom: 120px;
     right: 2%;
     width: 96%;
-    height: 90%;
     padding: 10px;
   }
 
@@ -1248,7 +1246,6 @@ select:focus {
     top: 10%;
     right: 2.5%;
     width: 95%;
-    height: 90%;
     padding: 15px;
     border-radius: 20px;
   }
@@ -1259,7 +1256,6 @@ select:focus {
   #informationFormContainer {
     right: 2%;
     width: 96%;
-    height: 95%;
     padding: 10px;
     border-radius: 15px;
   }
@@ -1281,8 +1277,23 @@ select:focus {
 .info-form-field {
   display: flex;
   flex-direction: column;
-  padding: 3px;
-  gap: 3px;
+  width: 100%;
+}
+
+.form-box{
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  padding: 15px;
+}
+
+.form-column{
+  width: 100%;
+}
+
+
+textarea#content-message{
+  resize: none;
 }
 
 #sendInfoButton {
