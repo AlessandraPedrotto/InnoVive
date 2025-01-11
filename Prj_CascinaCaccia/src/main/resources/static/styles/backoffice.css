@@ -412,6 +412,7 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .request-container {
@@ -623,3 +624,19 @@
 }
 
 /* BACKOFFICE HOMEPAGE ENDS */
+
+/* BACKOFFICE REGISTRATION STRARTS */
+
+.user-registration-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.user-registration-container {
+    margin: 3rem 0;
+    padding: 2rem 8rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 28px;
+}
+
+/* BACKOFFICE REGISTRATIONS ENDS */

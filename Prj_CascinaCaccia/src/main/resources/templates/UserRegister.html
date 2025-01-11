@@ -37,32 +37,41 @@
             <a id="logoutBtn" th:href="@{/logout}">Logout</a>
 
         </div>
-        <div class="backoffice-content">
-            <h1>Register</h1>
+        <div class="backoffice-content user-registration-wrapper">
+            <div class="user-registration-container">
+                <h1>Registrazione</h1>
 
-    <!-- Register form -->
-    <form th:action="@{/admin/register}" th:object="${user}" method="post">
+                <!-- Register form -->
+                <form th:action="@{/admin/register}" th:object="${user}" method="post">
 
-        <label for="name">Name:</label>
-        <input type="text" name="name" required><br>
+                    <div class="profile-info-group">
+                        <label class="profile-info-labels" for="name">Nome:</label>
+                        <input class="profile-info-forms" type="text" name="name" required><br>
+                    </div>
+                    <div class="profile-info-group">
+                        <label class="profile-info-labels" for="surname">Cognome:</label>
+                        <input class="profile-info-forms" type="text" name="surname" required><br>
+                    </div>
+                    <div class="profile-info-group">
+                        <label class="profile-info-labels" for="email">Email:</label>
+                        <input class="profile-info-forms" type="email" name="email" required><br>
+                    </div>
+                    <div class="profile-info-group">
+                        <label class="profile-info-labels" for="password">Password:</label>
+                        <input class="profile-info-forms" type="password" name="password" required><br>
+                    </div>
+                    <!-- Display success or error messages -->
+                    <p th:if="${exist}" style="color:red;" th:text="${exist}"></p>
+                    <p th:if="${regiSuccess}" style="color:green;" th:text="${regiSuccess}"></p>
+                    <p th:if="${error}" style="color:red;" th:text="${error}"></p>
 
-        <label for="surname">Surname:</label>
-        <input type="text" name="surname" required><br>
+                    <div class="profile-buttons-container">
+                        <button class="requests-back-button" type="submit">Registra</button>
+                    </div>
+                </form>
+                <a class="requests-back-button" href="/profile">Back </a>
+            </div>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" required><br>
-
-        <label for="password">Password:</label>
-        <input type="password" name="password" required><br>
-
-        <!-- Display success or error messages -->
-        <p th:if="${exist}" style="color:red;" th:text="${exist}"></p>
-        <p th:if="${regiSuccess}" style="color:green;" th:text="${regiSuccess}"></p>
-        <p th:if="${error}" style="color:red;" th:text="${error}"></p>
-
-        <button type="submit">Register</button>
-    </form>
-    <a href="/profile">Back </a>
         </div>
     </div>
 </body>
