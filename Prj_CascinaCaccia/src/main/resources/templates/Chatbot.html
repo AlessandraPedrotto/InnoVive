@@ -24,35 +24,43 @@
 	
 	<!-- Information form -->
 	<form action="/submit-form" method="post">
-        <div class="info-form-field">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required><br>
-        </div>
-        <div class="info-form-field">
-            <label for="surname">Surname:</label>
-            <input type="text" id="surname" name="surname" required><br>
+        <div class="form-box">
+            <div class="form-column">
+                <div class="info-form-field">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" required><br>
+                </div>
+                <div class="info-form-field">
+                    <label for="surname">Cognome:</label>
+                    <input type="text" id="surname" name="surname" required><br>
+                </div>
+                
+                <div class="info-form-field">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required><br>
+                </div>
+            </div>
+            <div class="form-column">
+                <div class="info-form-field">
+
+                    <label for="categoryId">Categoria:</label>
+                    <select id="categoryId" name="categoryId" required>
+                        <option value="" disabled selected>Seleziona una categoria</option>
+                        <th:block th:each="category : ${categories}">
+                            <option th:value="${category.id}" th:text="${category.name}"></option>
+                        </th:block>
+                    </select><br>
+                </div>
+                <div class="info-form-field">
+                    <label for="content-message">Messaggio:</label>
+                    <textarea rows="4" col="2" type="text" id="content-message" name="content" required></textarea>
+                </div>
+            </div>
         </div>
         
-        <div class="info-form-field">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br>
-        </div>
-        <div class="info-form-field">
-
-            <label for="categoryId">Category:</label>
-            <select id="categoryId" name="categoryId" required>
-                <option value="" disabled selected>Select a category</option>
-                <th:block th:each="category : ${categories}">
-                    <option th:value="${category.id}" th:text="${category.name}"></option>
-                </th:block>
-            </select><br>
-        </div>
-        <div class="info-form-field">
-            <label for="content">Content:</label>
-            <input type="text" id="content" name="content" required><br>
-        </div>
+        
 		
-        <button id="sendInfoButton" type="submit">Send</button>
+        <button id="sendInfoButton" type="submit">Invia</button>
     </form>
     </div>
 
@@ -81,6 +89,7 @@
         </div>
         <div id="chatMessages"></div>
     </div>
+    
     <script src="/scripts/chatbot.js"></script>
 </body>
 
