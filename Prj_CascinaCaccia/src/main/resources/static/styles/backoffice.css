@@ -119,6 +119,50 @@
 
 
 /* Change profile image style STARTS */
+
+#profile-img-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-img-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #f5f5f5;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-img-wrapper:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.profile-img-wrapper:hover img {
+    opacity: 0.9;
+}
+
+.back-btn {
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #f09321;
+    padding: 10px 25px;
+    border-radius: 28px;
+    border: 2px solid #f09321;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #f09321;
+    color: #ffffff;
+}
+
 .image-grid{
     width: 70%;
     margin: 0 auto;
