@@ -627,7 +627,8 @@
 
 /* BACKOFFICE REGISTRATION STRARTS */
 
-.user-registration-wrapper {
+.user-registration-wrapper,
+.change-password-wrapper {
     display: flex;
     justify-content: center;
 }
