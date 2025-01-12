@@ -362,3 +362,63 @@
 }
 
 /* REGISTER ENDS */
+
+/* CHANGE PASSWORD STARTS */
+
+.chg-password-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.chg-password-form {
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chg-password-form form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.chg-password-form .input-group {
+    width: 100%; 
+    max-width: 300px; 
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+}
+
+.chg-password-form label {
+    margin-bottom: 5px; 
+    font-size: 14px;
+}
+
+.chg-password-form input {
+    width: 100%; 
+    padding: 8px;
+}
+
+.chg-password-form button {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    border-radius: 28px;
+    background-color: #f09321;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-top: 20px;
+}
+
+.chg-password-form button:hover {
+    transform: scale(1.1);
+}
+
+/* CHANGE PASSWORD ENDS */
