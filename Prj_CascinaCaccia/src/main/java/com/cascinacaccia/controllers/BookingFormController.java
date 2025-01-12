@@ -102,11 +102,11 @@ public class BookingFormController {
             bookingFormService.sendConfirmationEmail(email, name, surname, email, categoryName, parsedCheckIn, parsedCheckOut, content);
 
             redirectAttributes.addFlashAttribute("message", "Form submitted successfully!");
-            return "redirect:/bookingForm";
+            return "redirect:/prenota";
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error processing form: " + e.getMessage());
-            return "redirect:/bookingForm";
+            return "redirect:/prenota";
         }
     }
     

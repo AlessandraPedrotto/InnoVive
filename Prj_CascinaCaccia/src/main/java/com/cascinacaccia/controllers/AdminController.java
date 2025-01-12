@@ -155,13 +155,24 @@ public class AdminController {
         
     	User user = userService.getUserById(userId);
 
+    	if (user != null) {
+            model.addAttribute("user", user);  // Make sure user is added to the model
+        } else {
+            // Handle the case where user is not found
+            model.addAttribute("error", "User not found");
+        }
+    	
         //add user details to the model (name, surname, email, and profile image)
         String profileImageUrl = user.getUserImage() != null ? user.getUserImage().getImgPath() : "/default-image.png";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         
         model.addAttribute("fullName", user.getName());
         model.addAttribute("email", user.getEmail());
         model.addAttribute("profileImageUrl", profileImageUrl);
         model.addAttribute("surname", user.getSurname());
+        model.addAttribute("state", user.getState());
+        model.addAttribute("lastAccess", user.getLastAccess());
+        model.addAttribute("formatter", formatter);
         return "PublicProfile";
     }
     

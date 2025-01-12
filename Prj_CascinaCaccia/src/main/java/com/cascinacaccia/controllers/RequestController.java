@@ -47,6 +47,7 @@ public class RequestController {
 	        @RequestParam(name = "categories", required = false) List<String> categoryIds,
 	        @RequestParam(name = "statuses", required = false) List<String> statuses,
 	        @RequestParam(name = "formType", defaultValue = "all") String formType,
+	        @RequestParam(name = "assignation", required = false) String assignation,
 	        Model model) {
     	
     	//ensure statuses is never null
@@ -68,6 +69,12 @@ public class RequestController {
         	generalForms = FilterService.filterByInformationForm(generalForms);
         } else if ("bookingForm".equals(formType)) {
         	generalForms = FilterService.filterByBookingForm(generalForms);
+        }
+        
+        //apply filter by assignation status if provided
+        if (assignation != null && !assignation.isEmpty()) {
+            boolean isAssigned = "assigned".equals(assignation);
+            generalForms = FilterService.filterByAssignment(generalForms, isAssigned);
         }
         
         //sort forms based on the selected option
@@ -128,6 +135,7 @@ public class RequestController {
         model.addAttribute("statusesSelected", statuses);
         model.addAttribute("formatter", formatter);
         model.addAttribute("formType", formType);
+        model.addAttribute("assignation", assignation);
         return "Request";
     }
 }

@@ -116,7 +116,7 @@
 
 
 								<!-- Button to view Public Profile -->
-								<a th:href="@{/admin/publicProfile/{userId}(userId=${user.id})}">
+								<a th:if="${user.id != loggedInUserId}" th:href="@{/admin/publicProfile/{userId}(userId=${user.id})}">
 									<button class="profile-button" type="button">Visualizza profilo</button>
 								</a>
 
