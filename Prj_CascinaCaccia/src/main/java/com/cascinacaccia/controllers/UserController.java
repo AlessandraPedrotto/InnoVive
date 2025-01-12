@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
+import com.cascinacaccia.repos.BookingFormDAO;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserImageDAO;
@@ -33,6 +35,7 @@ import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -42,6 +45,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private UserImageDAO userImageDAO;
+	@Autowired
+	private BookingFormDAO bookingFormDAO;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -82,6 +87,27 @@ public class UserController {
 	    model.addAttribute("surname", user.getSurname()); //add surname
 	    model.addAttribute("assignedForms", assignedForms);
 	    return "profile";
+	}
+	
+	@PostMapping("/set-user-online")
+	public ResponseEntity<Void> setUserOnline(HttpSession session) {
+	    String email = (String) session.getAttribute("email");
+	    if (email != null) {
+	        userService.updateUserStateAndLastAccess(email, "ONLINE");
+	    }
+	    return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/set-user-offline")
+	public ResponseEntity<Void> setUserOffline(HttpSession session) {
+	    String email = (String) session.getAttribute("email");
+	    if (email != null) {
+	        System.out.println("Received offline request for email: " + email); // Debug log
+	        userService.updateUserStateAndLastAccess(email, "OFFLINE");
+	    } else {
+	        System.out.println("No email found in session. Cannot set user offline."); // Debug log
+	    }
+	    return ResponseEntity.ok().build();
 	}
 	
 	@PostMapping("/profile/update-name")
@@ -206,7 +232,7 @@ public class UserController {
 	    return "YourTasks";
 	}
 	
-	//process to change the status of a form
+	//process to change the status of a Informationform
 	@PostMapping("/assignStatusProfile")
 	public String assignStatus(@RequestParam("informationFormId") String informationFormId,
 	                            @RequestParam("informationFormStatus") String status) {
@@ -220,6 +246,25 @@ public class UserController {
 	    
 	    //save the updated Informationform
 	    informationFormDAO.save(informationForm);
+
+	    //redirect back to the profile page
+	    return "redirect:/yourTasks";
+	}
+	
+	//process to change the status of a BookingForm
+	@PostMapping("/assignStatusBookingProfile")
+	public String assignStatusBooking(@RequestParam("bookingFormId") String bookingFormId,
+	                            @RequestParam("bookingFormStatus") String status) {
+	    
+		//fetch the BookingForm using the ID
+	    BookingForm bookingForm = bookingFormDAO.findById(bookingFormId)
+	        .orElseThrow(() -> new RuntimeException("BookingForm not found"));
+
+	    //update the status of the BookingForm
+	    bookingForm.setStatus(status);
+	    
+	    //save the updated BookingForm
+	    bookingFormDAO.save(bookingForm);
 
 	    //redirect back to the profile page
 	    return "redirect:/yourTasks";
