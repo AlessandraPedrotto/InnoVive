@@ -321,4 +321,31 @@ public class FilterService {
                 .filter(form -> form.getBookingForms() != null && !form.getBookingForms().isEmpty())  // Assuming the relation is set up
                 .collect(Collectors.toList());
     }
+    
+    /*
+     * Method to filter a list of Generalform objects based on whether they have any assigned Informationforms or Bookingforms.
+     *
+     * @param generalForms The list of Generalform objects to filter
+     * @param isAssigned A boolean flag where:
+     *                   true means filter for forms with at least one assigned Informationform or Bookingform,
+     *                   false means filter for forms with no assigned Informationform or Bookingform
+     * @return A filtered list of Generalform objects based on the assignment status of their nested forms
+     */
+    public static List<Generalform> filterByAssignment(List<Generalform> generalForms, boolean isAssigned) {
+        return generalForms.stream()
+                .filter(form -> {
+                    boolean hasAssignedInformationform = form.getInformationForms() != null && 
+                                                         form.getInformationForms().stream()
+                                                             .anyMatch(informationForm -> informationForm.getAssignedUser() != null);
+                    boolean hasAssignedBookingform = form.getBookingForms() != null && 
+                                                     form.getBookingForms().stream()
+                                                         .anyMatch(bookingForm -> bookingForm.getAssignedUser() != null);
+                    
+                    // If isAssigned is true, filter for forms with assigned Informationforms or Bookingforms
+                    // If isAssigned is false, filter for forms with no assigned Informationforms or Bookingforms
+                    return (isAssigned && (hasAssignedInformationform || hasAssignedBookingform)) ||
+                           (!isAssigned && !hasAssignedInformationform && !hasAssignedBookingform);
+                })
+                .collect(Collectors.toList());
+    }
 }

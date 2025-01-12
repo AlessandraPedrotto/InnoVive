@@ -15,8 +15,9 @@ public class HomeController {
 	
 	//handles requests to the root URL ("/")
     @GetMapping("/")
-    public String home() {
-    	
+    public String home(Model model) {
+    	model.addAttribute("categories", categoryDAO.findAll());
+        model.addAttribute("categoryId", "");
     	//return the Home page
         return "Home"; 
     }
@@ -25,28 +26,35 @@ public class HomeController {
     public String chatbot(Model model) {
     	model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
-    	//return the Home page
+    	
+        //return the Chatbot page
         return "Chatbot"; 
     }
     
     @GetMapping("/prenota")
-    public String prenota() {
+    public String prenota(Model model) {
+    	model.addAttribute("categories", categoryDAO.findAll());
+        model.addAttribute("categoryId", "");
     	
-    	//return the Home page
+        //return the Prenota page
         return "Prenota"; 
     }
     
     @GetMapping("/attivita")
-    public String attivita() {
+    public String attivita(Model model) {
+    	model.addAttribute("categories", categoryDAO.findAll());
+        model.addAttribute("categoryId", "");
     	
-    	//return the Home page
+        //return the Attivita page
         return "Attivita"; 
     }
     
     @GetMapping("/struttura")
-    public String struttura() {
-    	
-    	//return the Home page
+    public String struttura(Model model) {
+    	model.addAttribute("categories", categoryDAO.findAll());
+        model.addAttribute("categoryId", "");
+        
+    	//return the Struttura page
         return "Struttura"; 
     }
 }

@@ -25,14 +25,14 @@
             </div>
             <a href="/profile">Home</a>
             <!-- Admin-specific buttons -->
-            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
-            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
+            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">Lista utenti</a>
+            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Registrazione</a>
 
             <!-- Buttons for every user -->
-            <a href="/yourTasks">Your tasks</a>
-            <a href="/changePassword">Change password</a>
-            <a href="/request">View all requests</a>
-            <a href="/profileImage">Profile image</a>
+            <a href="/yourTasks">I tuoi task</a>
+            <a href="/changePassword">Cambia password</a>
+            <a href="/request">Tutte le richieste</a>
+            <a href="/profileImage">Immagine profilo</a>
 
             <!-- Logout link -->
             <a id="logoutBtn" th:href="@{/logout}">Logout</a>
@@ -45,9 +45,14 @@
 			
 					<!-- User personal details -->
 					<div class="user-details">
-						<p><strong>Nome:</strong> <span id="nome">Domenico</span></p>
-						<p><strong>Cognome:</strong> <span id="cognome">Bianchi</span></p>
-						<p><strong>Email:</strong> <span>domenico.bianchi.emp@gmail.com</span></p>
+						<p><strong>Nome:</strong> <span id="nome" th:text="${fullName}">Nessun nome trovato</span></p>
+						<p><strong>Cognome:</strong> <span id="cognome" th:text="${surname}">Nessun cognome trovato</span></p>
+						<p><strong>Email:</strong> <span th:text="${email}">Nessuna mail trovata</span></p>
+						<p><strong>Stato:</strong> <span th:text="${state != null && !state.isEmpty() ? state : 'Nessuno stato trovato'}"></span></p>
+						<p th:if="${state != null && state == 'OFFLINE'}">
+					        <strong>Ultimo accesso:</strong> 
+					        <span th:text="${lastAccess != null ? lastAccess.format(formatter) : 'N/A'}"></span>
+					    </p>
 						<div class="profile-img">
 							<img src="https://cdn-icons-png.freepik.com/256/3985/3985214.png?ga=GA1.1.1838490280.1706974849&amp;semt=ais_hybrid" 
 								 alt="Profile Image" 
@@ -56,9 +61,9 @@
 						</div>
 					</div>
 			
-					<!-- Exit page button -->
+					<!-- Exit page button and view tasks button -->
 					<div class="button-container">
-						<a href="/admin/yourTasksPublic/7436f7bc-f635-4a9c-8b4f-44c491dd16c4">Visualizza Tasks</a>
+						<a th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id})}">Visualizza tasks</a>
 						<a href="/admin/listUsers" class="button-secondary">Indietro</a>
 					</div>
 				</div>
