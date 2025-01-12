@@ -132,7 +132,8 @@ public class AdminController {
 
         //paginate the list of users
         List<User> paginatedUsers = FilterService.getPaginatedList(users, page, size);
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        
         model.addAttribute("users", paginatedUsers);
         model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages); 
@@ -144,6 +145,7 @@ public class AdminController {
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("hasUsers", !users.isEmpty()); 
         model.addAttribute("loggedInUserId", userFromDb.getId());
+        model.addAttribute("formatter", formatter);
         return "ListUsers";
     }
     

@@ -53,7 +53,89 @@
 					<a href="/profile" class="requests-back-button">Back</a>
 				</div>
 
+				<!-- Category Filter Form -->
+				<div class="filter-container">
+					<form method="get" action="/request">
+						<input type="hidden" name="page" th:value="1" />
+						<input type="hidden" name="size" th:value="${size}" />
 
+						<!-- Category Checkbox Filters -->
+						<div class="category-filter">
+							<label for="categories">Categorie:</label><br />
+
+							<div class="category-container">
+								<div class="category-item" th:each="category : ${categories}">
+									<input type="checkbox" name="categories" th:value="${category.id}"
+										th:checked="${selectedCategories != null and selectedCategories.contains(category.id)}" />
+									<span th:text="${category.name}"></span><br />
+								</div>
+							</div>
+
+						</div>
+
+						<!-- Status Checkbox Filters -->
+						<div class="status-filter">
+							<label for="statuses">Status:</label><br />
+							<div class="status-container">
+								<div class="status-item">
+									<input type="checkbox" name="statuses" value="TO DO"
+										th:checked="${statusesSelected != null and statusesSelected.contains('TO DO')}" />
+									TO DO<br />
+								</div>
+								<div class="status-item">
+									<input type="checkbox" name="statuses" value="IN PROGRESS"
+										th:checked="${statusesSelected != null and statusesSelected.contains('IN PROGRESS')}" />
+									IN PROGRESS<br />
+								</div>
+								<div class="status-item">
+									<input type="checkbox" name="statuses" value="DONE"
+										th:checked="${statusesSelected != null and statusesSelected.contains('DONE')}" />
+									DONE<br />
+								</div>
+
+
+
+							</div>
+						</div>
+
+						<div class="sort-type-container">
+							<!-- Sorting Dropdown -->
+							<div class="sort-type-item">
+								<label for="sortBy">Sort Type:</label>
+								<select name="sortBy">
+									<option value="newest" th:selected="${sortBy == 'newest'}">Date: Newest to Oldest
+									</option>
+									<option value="oldest" th:selected="${sortBy == 'oldest'}">Date: Oldest to Newest
+									</option>
+									<option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Surname: A to Z
+									</option>
+									<option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Surname: Z to A
+									</option>
+								</select>
+							</div>
+
+
+							<!-- Form Type Filter (Information Form or Booking Form) -->
+							<div class="sort-type-item">
+								<label for="formType">Form Type:</label>
+								<select class="form-control" name="formType">
+									<option value="all" th:selected="${formType == 'all'}">All</option>
+									<option value="informationForm" th:selected="${formType == 'informationForm'}">
+										Information Form</option>
+									<option value="bookingForm" th:selected="${formType == 'bookingForm'}">Booking Form
+									</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="sort-buttons-container">
+							<button type="submit" class="requests-back-button">Applica filtri</button>
+							<a href="/request" class="requests-back-button">Rimuovi filtri</a>
+						</div>
+
+
+					</form>
+				</div>
 				<!-- Table for the requests -->
 				<div class="request-container">
 					<h3>Richieste Informazioni recenti</h3>
@@ -397,26 +479,26 @@
 				<!-- Pagination Controls -->
 				<div class="pagination">
 					<!-- First Page -->
-					<a class="pagination-button" th:if="${currentPage > 1}" th:href="@{/request(page=1)}">First</a>
+					<a class="pagination-button" th:if="${currentPage > 1}" th:href="@{/request(page=1, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">First</a>
 
 					<!-- Previous Page -->
 					<a class="pagination-button" th:if="${currentPage > 1}"
-						th:href="@{/request(page=${currentPage - 1})}">Previous</a>
+						th:href="@{/request(page=${currentPage - 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">Previous</a>
 
 					<!-- Page Numbers -->
 					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
-						<a class="pagination-button" th:href="@{/request(page=${i})}"
+						<a class="pagination-button" th:href="@{/request(page=${i}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}"
 							th:classappend="${i == currentPage ? 'btn-primary text-white' : 'btn-light'}"
 							th:text="${i}"></a>
 					</span>
 
 					<!-- Next Page -->
 					<a class="pagination-button" th:if="${currentPage < totalPages}"
-						th:href="@{/request(page=${currentPage + 1})}">Next</a>
+						th:href="@{/request(page=${currentPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">Next</a>
 
 					<!-- Last Page -->
 					<a class="pagination-button" th:if="${currentPage < totalPages}"
-						th:href="@{/request(page=${totalPages})}">Last</a>
+						th:href="@{/request(page=${totalPages}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">Last</a>
 				</div>
 			</div>
 		</div>
