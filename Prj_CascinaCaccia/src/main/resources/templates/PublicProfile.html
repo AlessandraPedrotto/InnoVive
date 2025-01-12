@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="ISO-8859-1">
-	<title></title>
+	<title>Utente</title>
 	<link rel="stylesheet" href="/styles/normalize.css">
 	<link rel="stylesheet" href="/styles/style.css?v=1.0">
 	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
@@ -14,6 +14,7 @@
 	<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="EducatiON" />
 	<link rel="manifest" href="/img/site.webmanifest" />
+
 </head>
 
 <body>
@@ -44,8 +45,8 @@
 			
 					<!-- User personal details -->
 					<div class="user-details">
-						<p><strong>Nome:</strong> <span>Domenico</span></p>
-						<p><strong>Cognome:</strong> <span>Bianchi</span></p>
+						<p><strong>Nome:</strong> <span id="nome">Domenico</span></p>
+						<p><strong>Cognome:</strong> <span id="cognome">Bianchi</span></p>
 						<p><strong>Email:</strong> <span>domenico.bianchi.emp@gmail.com</span></p>
 						<div class="profile-img">
 							<img src="https://cdn-icons-png.freepik.com/256/3985/3985214.png?ga=GA1.1.1838490280.1706974849&amp;semt=ais_hybrid" 
@@ -64,9 +65,9 @@
 			</div>
 		</div>
 	</div>
-<script>
-	document.title = `${document.getElementById('nome').textContent} ${document.getElementById('cognome').textContent} `;
-</script>
+	<script>
+		document.title = `${document.getElementById("nome").textContent} ${document.getElementById('cognome').textContent} `;
+	</script>
 </body>
 
 </html>
