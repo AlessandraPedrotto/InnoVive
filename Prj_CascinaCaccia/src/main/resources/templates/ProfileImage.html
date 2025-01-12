@@ -16,6 +16,7 @@
     <meta name="apple-mobile-web-app-title" content="EducatiON" />
     <link rel="manifest" href="/img/site.webmanifest" />
 </head>
+
 <body>
     <div class="backoffice-container">
         <div class="sidebar">
@@ -37,13 +38,13 @@
             <a id="logoutBtn" th:href="@{/logout}">Logout</a>
 
         </div>
-        <div class="backoffice-content">
-            <h2 id="profile-img-title">Available Profile Images</h2>
-            <div class="image-grid">
-                <ul>
+        <div class="backoffice-content profile-image-wrapper">
+            <div class="user-registration-container">
+                <h2>Seleziona un' immagine</h2>
+                <ul class="profile-img-list">
 
                     <!-- Iterate over allUserImages and display each image -->
-                    <li th:each="image : ${allUserImages}">
+                    <li class="profile-img-list-item" th:each="image : ${allUserImages}">
 
                         <!-- Wrap the image in a form to send the image id to the backend -->
                         <form th:action="@{/profileImage}" method="post">
@@ -51,16 +52,16 @@
                             <input type="hidden" name="userImageId" th:value="${image.id}" />
                             <button type="submit" style="border: none; background: none;">
                                 <div class="profile-img-wrapper">
-                                    <img th:src="@{${image.imgPath}}" alt="Image" class="profile-img" />
+                                    <img th:src="@{${image.imgPath}}" alt="Image" class="profile-img-list-img" />
                                 </div>
                             </button>
                         </form>
                     </li>
                 </ul>
-            </div>
 
-            <!-- Back Button to Return to User List -->
-            <a class="back-btn" href="/profile">Back</a>
+                <!-- Back Button to Return to User List -->
+                <a class="requests-back-button" href="/profile">Back</a>
+            </div>
         </div>
     </div>
 

@@ -629,7 +629,8 @@
 /* BACKOFFICE REGISTRATION STRARTS */
 
 .user-registration-wrapper,
-.change-password-wrapper {
+.change-password-wrapper,
+.profile-image-wrapper {
     display: flex;
     justify-content: center;
 }
@@ -639,6 +640,34 @@
     padding: 2rem 8rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 28px;
+    max-width: 60%;
 }
 
 /* BACKOFFICE REGISTRATIONS ENDS */
+
+/* BACKOFFICE PROFILE IMAGE STARTS */
+.profile-image-select-container {
+    margin: 3rem 0;
+    padding: 2rem 8rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 28px;
+}
+
+.profile-img-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.profile-img-list-item {
+    list-style: none;
+    width: 20%;
+}
+
+.profile-img-list-img {
+    width: 80px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+/* BACKOFFICE PROFILE IMAGE ENDS */
