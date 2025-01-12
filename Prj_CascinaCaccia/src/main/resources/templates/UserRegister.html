@@ -31,9 +31,10 @@
 
         </div>
         <div class="backoffice-content">
-            <h1>Register</h1>
+            <h1 class="register-title">Register</h1>
 
     <!-- Register form -->
+<div class="register-form">
     <form th:action="@{/admin/register}" th:object="${user}" method="post">
 
         <label for="name">Name:</label>
@@ -55,6 +56,7 @@
 
         <button type="submit">Register</button>
     </form>
+</div>
     <a href="/profile">Back </a>
         </div>
     </div>
