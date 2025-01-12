@@ -19,6 +19,8 @@ import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.services.InformationFormService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 public class InformationFormController {
 
@@ -47,7 +49,8 @@ public class InformationFormController {
         @RequestParam String email, 
         @RequestParam String categoryId,
         @RequestParam String content, 
-        RedirectAttributes redirectAttributes) {
+        RedirectAttributes redirectAttributes, 
+        HttpServletRequest request) {
 
         try {
         	
@@ -83,11 +86,11 @@ public class InformationFormController {
             informationFormService.sendConfirmationEmail(email, name, surname, email, categoryName, content);
 
             redirectAttributes.addFlashAttribute("message", "Form submitted successfully!");
-            return "redirect:/chatbot";
+            return "redirect:"+ request.getHeader("Referer");
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error processing form: " + e.getMessage());
-            return "redirect:/chatbot";
+            return "redirect:"+ request.getHeader("Referer");
         }
     }
     

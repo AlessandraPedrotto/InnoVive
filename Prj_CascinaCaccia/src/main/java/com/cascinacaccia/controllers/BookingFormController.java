@@ -26,6 +26,8 @@ import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.services.BookingFormService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 public class BookingFormController {
 
@@ -124,26 +126,26 @@ public class BookingFormController {
     
     //remove a user from a task
     @PostMapping("/removeUserFromBookingForm")
-    public String removeUserFromBooking(@RequestParam String bookingFormId, @RequestParam String userId, RedirectAttributes redirectAttributes) {
+    public String removeUserFromBooking(@RequestParam String bookingFormId, @RequestParam String userId, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
         	bookingFormService.removeUser(userId, bookingFormId);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to remove user: " + e.getMessage());
-            return "redirect:/request";
+            return "redirect:"+ request.getHeader("Referer");
         }
         redirectAttributes.addFlashAttribute("success", "User removed successfully.");
-        return "redirect:/request";
+        return "redirect:"+ request.getHeader("Referer");
     }
     
     //assign a status to a task
     @PostMapping("/assignStatusBooking")
-    public String assignStatusToBooking(@RequestParam String bookingFormStatus, @RequestParam String bookingFormId, RedirectAttributes redirectAttributes) {
+    public String assignStatusToBooking(@RequestParam String bookingFormStatus, @RequestParam String bookingFormId, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
         	bookingFormService.assignStatus(bookingFormStatus, bookingFormId);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to assign status: " + e.getMessage());
-            return "redirect:/request";
+            return "redirect:"+ request.getHeader("Referer");
         }
-        return "redirect:/request";
+        return "redirect:"+ request.getHeader("Referer");
     }
 }
