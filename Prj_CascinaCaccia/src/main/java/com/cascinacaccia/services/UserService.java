@@ -1,5 +1,6 @@
 package com.cascinacaccia.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +25,7 @@ import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.repos.UserImageDAO;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 /*
@@ -52,6 +55,34 @@ public class UserService implements UserDetailsService{
 	@Lazy
 	@Autowired
 	private InformationFormService informationFormService;
+	
+	/*
+	 * Updates the user's state and last access time in the database.
+	 * 
+	 * @param email The email address of the user whose state and last access time need to be updated.
+	 * @param state The new state to assign to the user (e.g., "ONLINE" or "OFFLINE").
+	 */
+	@Transactional
+	public void updateUserStateAndLastAccess(String email, String state) {
+
+	    User user = userDAO.findByEmail(email)
+	            .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+
+	    user.setState(state);
+	    user.setLastAccess(LocalDateTime.now());
+
+	    userDAO.save(user);
+	}
+	
+	@Scheduled(fixedRate = 100000) // Every 5 minutes
+	public void markInactiveUsersOffline() {
+	    LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(5);
+	    List<User> inactiveUsers = userDAO.findUsersByStateAndLastAccessBefore("ONLINE", cutoffTime);
+	    for (User user : inactiveUsers) {
+	        user.setState("OFFLINE");
+	        userDAO.save(user);
+	    }
+	}
 	
 	 /*
      * Registers a new user by setting their ID, name, email, password, default profile image, 
@@ -126,6 +157,13 @@ public class UserService implements UserDetailsService{
     	if (user.getRoles() == null || user.getRoles().isEmpty()) {
             throw new IllegalStateException("User does not have any roles assigned.");
         }
+    	
+    	user.setState("ONLINE");
+        user.setLastAccess(LocalDateTime.now());
+
+        // Save the updated user state to the database
+        userDAO.save(user);
+        System.out.println("User state updated to ONLINE for email: " + email);
 
         //map all roles to GrantedAuthority objects
         List<GrantedAuthority> authorities = user.getRoles().stream()

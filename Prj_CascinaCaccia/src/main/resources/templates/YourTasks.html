@@ -208,6 +208,7 @@
 												<th>Data</th>
 												<th>Status</th>
 												<th>Impiegato</th>
+												<th>Azioni</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -222,6 +223,20 @@
 													th:text="${generalForm.submissionDate.format(formatter) ?: 'No date'}">
 												</td>
 												<td th:text="${informationForm.getStatus() ?: 'TO DO'}">
+												<td>
+													<div class="d-flex align-items-center">
+														<div th:if="${informationForm.getAssignedUser() != null}">
+															<img th:src="${informationForm.getAssignedUser().getUserImage() != null ? informationForm.getAssignedUser().getUserImage().imgPath : '/default-user-image.png'}"
+																class="profile-image"
+																th:alt="'Image of ' + ${informationForm.getAssignedUser().name + ' ' + informationForm.getAssignedUser().surname}"
+																data-toggle="tooltip"
+																th:title="${informationForm.getAssignedUser().name + ' ' + informationForm.getAssignedUser().surname}" />
+														</div>
+														<div th:if="${informationForm.getAssignedUser() == null}">
+															<span>No employee assigned</span>
+														</div>
+													</div>
+												</td>
 												<td>
 
 													<!-- Button to open the assignment modal for status-->
@@ -291,7 +306,7 @@
 												<th>Check-Out</th>
 												<th>Status</th>
 												<th>Assigned User</th>
-												<th sec:authorize=" hasRole('ADMIN')">Action</th>
+												<th>Action</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -348,7 +363,7 @@
 													</form>
 
 													<!-- Button to open the assignment modal for status-->
-													<button sec:authorize="hasRole('ADMIN')"
+													<button
 														class="form-button assign-status-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignStatusModal-' + ${bookingForm.id}">
@@ -400,7 +415,7 @@
 
 																</div>
 																<div class="modal-body">
-																	<form action="/assignStatusBooking" method="post">
+																	<form action="/assignStatusBookingProfile" method="post">
 																		<input type="hidden" th:name="bookingFormId"
 																			th:value="${bookingForm.id}">
 

@@ -1,7 +1,9 @@
 package com.cascinacaccia.entities;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -23,6 +25,12 @@ public class User {
     private String surname;
     private String email;
     private String password;
+    
+    @Column(name = "state", nullable = false)
+    private String state; // ONLINE or OFFLINE
+
+    @Column(name = "last_access")
+    private LocalDateTime lastAccess;
     
     //relationship between user and password reset
     @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
@@ -96,4 +104,19 @@ public class User {
 	public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
 		this.passwordResetToken.add(passwordResetToken);
 	}
+	public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public LocalDateTime getLastAccess() {
+        return lastAccess;
+    }
+
+    public void setLastAccess(LocalDateTime lastAccess) {
+        this.lastAccess = lastAccess;
+    }
 }

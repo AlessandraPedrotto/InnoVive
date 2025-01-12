@@ -99,6 +99,8 @@
 							<th>Nome</th>
 							<th>Cognome</th>
 							<th>Email</th>
+							<th>Satato</th>
+							<th>Ultimo accesso</th>
 							<th>Azioni</th>
 						</tr>
 					</thead>
@@ -108,6 +110,8 @@
 							<td th:text="${user.name}"></td>
 							<td th:text="${user.surname}"></td>
 							<td th:text="${user.email}"></td>
+							<td th:text="${user.state}"></td>
+							<td> <span th:if="${user.state == 'OFFLINE'}" th:text="${user.lastAccess.format(formatter)}"></span></td>
 							<td class="user-controls">
 
 
