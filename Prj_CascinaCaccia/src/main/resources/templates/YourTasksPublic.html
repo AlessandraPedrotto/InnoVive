@@ -311,20 +311,6 @@
 												</td>
 												<td th:text="${bookingForm.status ?: 'No status'}"></td>
 												<td>
-													<div class="d-flex align-items-center">
-														<div th:if="${bookingForm.getAssignedUser() != null}">
-															<img th:src="${bookingForm.getAssignedUser().getUserImage() != null ? bookingForm.getAssignedUser().getUserImage().imgPath : '/default-user-image.png'}"
-																class="profile-image"
-																th:alt="'Image of ' + ${bookingForm.getAssignedUser().name + ' ' + bookingForm.getAssignedUser().surname}"
-																data-toggle="tooltip"
-																th:title="${bookingForm.getAssignedUser().name + ' ' + bookingForm.getAssignedUser().surname}" />
-														</div>
-														<div th:if="${bookingForm.getAssignedUser() == null}">
-															<span>Nessun impiegato assegnato</span>
-														</div>
-													</div>
-												</td>
-												<td>
 
 													<!-- Button to open the assignment modal for user-->
 													<button sec:authorize="hasRole('ADMIN')"
@@ -343,7 +329,7 @@
 															th:value="${bookingForm.id}" />
 														<input type="hidden" name="userId"
 															th:value="${bookingForm.getAssignedUser().id}" />
-														<button type="submit" class="btn btn-danger btn-sm">Rimuovi l'utente</button>
+														<button type="submit" class="form-button">Rimuovi l'utente</button>
 													</form>
 
 													<!-- Button to open the assignment modal for status-->

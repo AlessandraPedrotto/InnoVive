@@ -96,38 +96,38 @@ public class InformationFormController {
     
     //assign a user to a task
     @PostMapping("/assignUser")
-    public String assignUserToInformation(@RequestParam String informationFormId, @RequestParam String userId, RedirectAttributes redirectAttributes) {
+    public String assignUserToInformation(@RequestParam String informationFormId, @RequestParam String userId, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
             informationFormService.assignUser(userId, informationFormId);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to assign user: " + e.getMessage());
-            return "redirect:/request";
+            return "redirect:"+ request.getHeader("Referer");
         }
-        return "redirect:/request";
+        return "redirect:"+ request.getHeader("Referer");
     }
     
     //remove a user from a task
     @PostMapping("/removeUserFromInformationForm")
-    public String removeUserFromInformation(@RequestParam String informationFormId, @RequestParam String userId, RedirectAttributes redirectAttributes) {
+    public String removeUserFromInformation(@RequestParam String informationFormId, @RequestParam String userId, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
             informationFormService.removeUser(userId, informationFormId);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to remove user: " + e.getMessage());
-            return "redirect:/request";
+            return "redirect:"+ request.getHeader("Referer");
         }
         redirectAttributes.addFlashAttribute("success", "User removed successfully.");
-        return "redirect:/request";
+        return "redirect:"+ request.getHeader("Referer");
     }
     
     //assign a status to a task
     @PostMapping("/assignStatus")
-    public String assignStatusToInformation(@RequestParam String informationFormStatus, @RequestParam String informationFormId, RedirectAttributes redirectAttributes) {
+    public String assignStatusToInformation(@RequestParam String informationFormStatus, @RequestParam String informationFormId, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
             informationFormService.assignStatus(informationFormStatus, informationFormId);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to assign status: " + e.getMessage());
-            return "redirect:/request";
+            return "redirect:"+ request.getHeader("Referer");
         }
-        return "redirect:/request";
+        return "redirect:"+ request.getHeader("Referer");
     }
 }

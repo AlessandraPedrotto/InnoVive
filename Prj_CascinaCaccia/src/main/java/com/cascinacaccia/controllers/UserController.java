@@ -115,6 +115,20 @@ public class UserController {
                                        @RequestParam("name") String name, 
                                        @RequestParam("surname") String surname) {
 
+		//trim the inputs to remove leading/trailing spaces
+		name = name.trim().replaceAll("\\s+", " ");
+	    surname = surname.trim().replaceAll("\\s+", " ");
+
+	    //validate the inputs
+	    if (name.isEmpty() || surname.isEmpty()) {
+	        throw new IllegalArgumentException("Name and Surname cannot be empty or contain only spaces.");
+	    }
+
+	    //additional validation: Only letters, spaces (inside), and apostrophes allowed
+	    if (!name.matches("[A-Za-zÀ-ÖØ-öø-ÿ ']+") || !surname.matches("[A-Za-zÀ-ÖØ-öø-ÿ ']+")) {
+	        throw new IllegalArgumentException("Name and Surname can only contain letters, spaces, and apostrophes.");
+	    }
+	    
         // Get the logged-in user's email or ID
         User user = userService.getUserByEmail(principal);
 

@@ -67,7 +67,7 @@
 
                         <!-- Hidden form for editing name and surname -->
                         <form id="edit-name-form" th:action="@{/profile/update-name}" method="post"
-                            style="display: none;">
+                            style="display: none;" onsubmit="return validateNameForm()">
                             <div class="profile-info-group">
                                 <label class="profile-info-labels" for="name">Nome:</label>
                                 <input type="text" id="name" name="name" class="profile-info-forms"
@@ -118,6 +118,29 @@
                 editButton.style.display = "inline";
                 editForm.style.display = "none";
             }
+        }
+        
+        function validateNameForm() {
+            const nameField = document.getElementById("name");
+            const surnameField = document.getElementById("surname");
+
+            const name = nameField.value.trim();
+            const surname = surnameField.value.trim();
+
+            //check for empty fields
+            if (!name || !surname) {
+                alert("Name and Surname cannot be empty or contain only spaces.");
+                return false;
+            }
+
+            //validate characters (letters, spaces, apostrophes allowed)
+            const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ ']+$/;
+            if (!nameRegex.test(name) || !nameRegex.test(surname)) {
+                alert("Name and Surname can only contain letters, spaces, and apostrophes.");
+                return false;
+            }
+
+            return true;
         }
     </script>
 </body>
