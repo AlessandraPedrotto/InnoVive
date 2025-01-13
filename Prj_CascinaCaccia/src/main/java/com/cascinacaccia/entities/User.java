@@ -26,8 +26,8 @@ public class User {
     private String email;
     private String password;
     
-    @Column(name = "state", nullable = false)
-    private String state; // ONLINE or OFFLINE
+    @Column(name = "state", nullable = true)
+    private String state = "OFFLINE";; // ONLINE or OFFLINE
 
     @Column(name = "last_access")
     private LocalDateTime lastAccess;

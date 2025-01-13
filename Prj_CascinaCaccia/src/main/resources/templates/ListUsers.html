@@ -111,7 +111,10 @@
 							<td th:text="${user.surname}"></td>
 							<td th:text="${user.email}"></td>
 							<td th:text="${user.state}"></td>
-							<td> <span th:if="${user.state == 'OFFLINE'}" th:text="${user.lastAccess.format(formatter)}"></span></td>
+							<td> 
+								<span th:if="${user.state == 'OFFLINE' and user.lastAccess != null}" th:text="${user.lastAccess.format(formatter)}"></span>
+								<span th:if="${user.state == 'OFFLINE' and user.lastAccess == null}">Never accessed</span>
+							</td>
 							<td class="user-controls">
 
 
