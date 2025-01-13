@@ -277,6 +277,8 @@ public class AdminController {
         model.addAttribute("assignedForms", paginatedAssignedForms);
         model.addAttribute("user", user); 
         model.addAttribute("users", users);
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("userSurname", user.getSurname());
         model.addAttribute("sort", sortAscending);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("totalPages", totalPages);
