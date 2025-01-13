@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cascinacaccia.entities.BookingForm;
 import com.cascinacaccia.entities.Category;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
@@ -211,6 +212,8 @@ public class AdminController {
             generalForm.setInformationForms(assignedInformationForms); 
         });
         
+        List<User> users = userService.getAllUsers();
+        
         //fetch assigned booking forms
         List<Generalform> assignedBookingForms = bookingFormService.getAssignedFormsByUserBooking(user.getId());
 
@@ -272,7 +275,8 @@ public class AdminController {
         
         //add data to the model
         model.addAttribute("assignedForms", paginatedAssignedForms);
-        model.addAttribute("user", user);  
+        model.addAttribute("user", user); 
+        model.addAttribute("users", users);
         model.addAttribute("sort", sortAscending);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("totalPages", totalPages);
@@ -314,11 +318,21 @@ public class AdminController {
     	User user = userService.getUserById(userId);
 
         //fetch tasks assigned to this user and sort by submissionDate
-    	List<Generalform> assignedForms = informationFormService.getAssignedFormsByUser(user.getId())
+    	List<Generalform> assignedFormsFromInformation = informationFormService.getAssignedFormsByUser(user.getId())
     	        .stream()
     	        .sorted(Comparator.comparing(Generalform::getSubmissionDate, Comparator.nullsLast(Comparator.naturalOrder())))
     	        .collect(Collectors.toList());
-
+    	
+    	List<Generalform> assignedFormsFromBooking = bookingFormService.getAssignedFormsByUserBooking(user.getId())
+    	        .stream()
+    	        .sorted(Comparator.comparing(Generalform::getSubmissionDate, Comparator.nullsLast(Comparator.naturalOrder())))
+    	        .collect(Collectors.toList());
+    	
+    	// Combine both lists to form a complete list of assigned Generalforms
+    	List<Generalform> assignedForms = new ArrayList<>();
+        assignedForms.addAll(assignedFormsFromInformation);
+        assignedForms.addAll(assignedFormsFromBooking);
+        
     	    //filter tasks with "TO DO" or "IN PROGRESS" statuses
     	    List<Generalform> filteredForms = assignedForms.stream()
     	        .filter(generalForm -> {
@@ -334,18 +348,29 @@ public class AdminController {
     	                )
     	                .collect(Collectors.toList());
 
-    	            //only keep general forms that have at least one relevant information form
-    	            if (!filteredInformationForms.isEmpty()) {
-    	                generalForm.setInformationForms(filteredInformationForms);
-    	                return true;
-    	            } else {
-    	                return false;
-    	            }
+    	            //filter the associated booking forms with relevant statuses
+    	            List<BookingForm> filteredBookingForms = generalForm.getBookingForms().stream()
+    	                .filter(bookingForm -> 
+    	                    bookingForm.getAssignedUser() != null &&
+    	                    bookingForm.getAssignedUser().getId().equals(user.getId()) &&
+    	                    (bookingForm.getStatus().equalsIgnoreCase("TO DO") || 
+    	                     bookingForm.getStatus().equalsIgnoreCase("IN PROGRESS"))
+    	                )
+    	                .collect(Collectors.toList());
+    	            
+    	            generalForm.setInformationForms(filteredInformationForms);
+    	            generalForm.setBookingForms(filteredBookingForms);
+
+    	            //only keep general forms that have at least one relevant information form or booking form
+    	            return !filteredInformationForms.isEmpty() || !filteredBookingForms.isEmpty();
     	        })
     	        .collect(Collectors.toList());
-
+    	    
+    	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    	    
     	    model.addAttribute("assignedForms", filteredForms);
     	    model.addAttribute("user", user);
+    	    model.addAttribute("formatter", formatter);
 
         //return the confirmation page
         return "DeleteUser"; 

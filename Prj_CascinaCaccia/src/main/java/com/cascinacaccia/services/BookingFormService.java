@@ -208,7 +208,7 @@ public class BookingFormService {
             "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Periodo:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s - %s</td></tr>" +
             "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Messaggio:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
             "    </table>" +
-            "    <p style='margin-top: 20px;'>Se hai altri dubbi non esitare a <a href='http://localhost:8080/informationForm' style='color: #007bff;'>scriverci</a> di nuovo.</p>" +
+            "    <p style='margin-top: 20px;'>Se hai altri dubbi non esitare a <a href='http://localhost:8080/' style='color: #007bff;'>scriverci</a> di nuovo.</p>" +
             "    <p style='margin-top: 20px;'>Grazie e buon proseguimento di giornata.</p>" +
             "    <p style='margin-top: 20px;'>Team Cascina Caccia</p>" +
             "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cascinaCaccia_logo_footer.png' alt='Company Logo' style='width: 150px;'/>" +

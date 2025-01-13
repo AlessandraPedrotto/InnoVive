@@ -154,7 +154,7 @@
 												<th>Content</th>
 												<th>Date</th>
 												<th>Status</th>
-												<th>Action</th>
+												<th sec:authorize="hasRole('ADMIN')">Action</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -170,14 +170,69 @@
 												</td>
 												<td th:text="${informationForm.getStatus() ?: 'TO DO'}">
 												<td>
+													
+													<!-- Button to open the assignment modal for user-->
+													<button sec:authorize="hasRole('ADMIN')"
+														class="form-button assign-user-button" type="button"
+														data-toggle="modal"
+														th:data-target="'#assignUserModal-' + ${informationForm.id}">
+														Assegna un utente
+													</button>
 
+													<!-- Form to remove the currently assigned user from the InformationForm -->
+													<form th:action="@{/removeUserFromInformationForm}" method="post"
+														th:if="${informationForm.getAssignedUser() != null}"
+														sec:authorize="hasRole('ADMIN')"
+														onsubmit="return confirm('Are you sure you want to remove this user from the information form?');">
+														<input type="hidden" name="informationFormId"
+															th:value="${informationForm.id}" />
+														<input type="hidden" name="userId"
+															th:value="${informationForm.getAssignedUser().id}" />
+														<button type="submit" class="form-button ">Rimuovi l'utente</button>
+													</form>
+													
 													<!-- Button to open the assignment modal for status-->
 													<button class="form-button assign-status-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignStatusModal-' + ${informationForm.id}">
 														Assign Status
 													</button>
+													
+													<!-- Modal for user assignment -->
+													<div th:id="'assignUserModal-' + ${informationForm.id}">
+														<div class="modal-dialog" role="document">
+															<div class="assign-user-content hidden">
+																<div class="modal-body">
+																	<form action="/assignUser" method="post">
+																		<input type="hidden" th:name="informationFormId"
+																			th:value="${informationForm.id}">
 
+																		<!-- User dropdown list -->
+																		<div class="assignment-form">
+																			<label for="userSelect">Seleziona un utente</label>
+																			<select class="form-control" id="userSelect"
+																				name="userId" required>
+																				<option value="" disabled selected>
+																					Seleziona un utente
+																				</option>
+																				<option th:each="user : ${users}"
+																					th:value="${user.id}"
+																					th:text="${user.name + ' ' + user.surname}">
+																				</option>
+																			</select>
+																		</div>
+																		<div class="request-action-button-container">
+																			<button type="submit"
+																				class="assign-user-submit-button">Assegna un utente</button>
+																			<button type="button"
+																				class="request-action-close-modal close-user-assignment">x</button>
+																		</div>
+																	</form>
+																</div>
+															</div>
+														</div>
+													</div>
+													
 													<!-- Modal for status assignment -->
 													<div th:id="'assignStatusModal-' + ${informationForm.id}">
 														<div class="modal-dialog" role="document">
@@ -236,7 +291,6 @@
 												<th>Check-In</th>
 												<th>Check-Out</th>
 												<th>Status</th>
-												<th>Assigned User</th>
 												<th sec:authorize="hasRole('ADMIN')">Action</th>
 											</tr>
 										</thead>
@@ -257,31 +311,17 @@
 												</td>
 												<td th:text="${bookingForm.status ?: 'No status'}"></td>
 												<td>
-													<div class="d-flex align-items-center">
-														<div th:if="${bookingForm.getAssignedUser() != null}">
-															<img th:src="${bookingForm.getAssignedUser().getUserImage() != null ? bookingForm.getAssignedUser().getUserImage().imgPath : '/default-user-image.png'}"
-																class="profile-image"
-																th:alt="'Image of ' + ${bookingForm.getAssignedUser().name + ' ' + bookingForm.getAssignedUser().surname}"
-																data-toggle="tooltip"
-																th:title="${bookingForm.getAssignedUser().name + ' ' + bookingForm.getAssignedUser().surname}" />
-														</div>
-														<div th:if="${bookingForm.getAssignedUser() == null}">
-															<span>No employee assigned</span>
-														</div>
-													</div>
-												</td>
-												<td>
 
 													<!-- Button to open the assignment modal for user-->
 													<button sec:authorize="hasRole('ADMIN')"
 														class="form-button assign-user-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignUserModal-' + ${bookingForm.id}">
-														Assign User
+														Assegna un utente
 													</button>
 
 													<!-- Form to remove the currently assigned user from the InformationForm -->
-													<!-- <form th:action="@{/removeUserFromBookingForm}" method="post"
+													<form th:action="@{/removeUserFromBookingForm}" method="post"
 														th:if="${bookingForm.getAssignedUser() != null}"
 														sec:authorize="hasRole('ADMIN')"
 														onsubmit="return confirm('Are you sure you want to remove this user from the booking form?');">
@@ -289,16 +329,15 @@
 															th:value="${bookingForm.id}" />
 														<input type="hidden" name="userId"
 															th:value="${bookingForm.getAssignedUser().id}" />
-														<button type="submit" class="btn btn-danger btn-sm">Remove
-															User</button>
-													</form> -->
+														<button type="submit" class="form-button">Rimuovi l'utente</button>
+													</form>
 
 													<!-- Button to open the assignment modal for status-->
 													<button sec:authorize="hasRole('ADMIN')"
 														class="form-button assign-status-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignStatusModal-' + ${bookingForm.id}">
-														Assign Status
+														Assegna stato
 													</button>
 
 													<!-- Modal for user assignment -->
@@ -312,13 +351,11 @@
 
 																		<!-- User dropdown list -->
 																		<div class="assignment-form">
-																			<label for="userSelect">Select a
-																				User</label>
+																			<label for="userSelect">Seleziona un utente</label>
 																			<select class="form-control" id="userSelect"
 																				name="userId" required>
 																				<option value="" disabled selected>
-																					Select a
-																					user</option>
+																					Seleziona un utente</option>
 																				<option th:each="user : ${users}"
 																					th:value="${user.id}"
 																					th:text="${user.name + ' ' + user.surname}">
@@ -327,8 +364,7 @@
 																		</div>
 																		<div class="request-action-button-container">
 																			<button type="submit"
-																				class="assign-user-submit-button">Assign
-																				User</button>
+																				class="assign-user-submit-button">Assegna un utente</button>
 																			<button type="button"
 																				class="request-action-close-modal close-user-assignment">x</button>
 																		</div>
@@ -349,22 +385,24 @@
 
 																		<!-- Status dropdown list -->
 																		<div class="form-group">
-																			<label for="statusSelect">Select a
-																				status</label>
+																			<label for="statusSelect">Seleziona uno stato</label>
 																			<select class="form-control"
 																				id="statusSelect"
 																				name="bookingFormStatus" required>
 																				<option value="" disabled selected>
-																					Select a
-																					status</option>
+																					Seleziona uno stato</option>
 																				<option value="TO DO">To do</option>
 																				<option value="IN PROGRESS">In progress
 																				</option>
 																				<option value="DONE">Done</option>
 																			</select>
 																		</div>
-																		<button type="submit"
-																			class="btn btn-success">Assign</button>
+																		<div class="request-action-button-container">
+																			<button type="submit"
+																				class="assign-status-submit-button">Assegna stato</button>
+																			<button type="button"
+																				class="request-action-close-modal close-status-assignment">x</button>
+																		</div>
 																	</form>
 																</div>
 															</div>
