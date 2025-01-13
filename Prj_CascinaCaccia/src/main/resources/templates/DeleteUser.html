@@ -125,35 +125,57 @@
 
                     <!-- Collapsible content for InformationForms -->
                     <div th:id="'details-' + ${generalForm.id}" class="collapse">
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Category</th>
-                                        <th>Content</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    <!-- Loop through InformationForms -->
-                                    <tr th:each="informationForm : ${generalForm.informationForms}">
-                                        <td th:text="${generalForm.category.name ?: 'No category'}"></td>
-                                        <!-- Display Category -->
-                                        <td th:text="${informationForm.getContent() ?: 'No content'}"></td>
-                                        <td th:text="${generalForm.submissionDate ?: 'No date'}"></td>
-                                        <td th:text="${informationForm.getStatus() ?: 'TO DO'}">
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    	<div th:if="${generalForm.informationForms != null and generalForm.informationForms.size() > 0}">
+					        <table>
+					            <thead>
+					                <tr>
+					                    <th>Category</th>
+					                    <th>Content</th>
+					                    <th>Date</th>
+					                    <th>Status</th>
+					                </tr>
+					            </thead>
+					            <tbody>
+					                <tr th:each="informationForm : ${generalForm.informationForms}">
+					                    <td th:text="${generalForm.category.name ?: 'No category'}"></td>
+					                    <td th:text="${informationForm.content ?: 'No content'}"></td>
+					                    <td th:text="${generalForm.submissionDate ?: 'No date'}"></td>
+					                    <td th:text="${informationForm.status ?: 'No status'}"></td>
+					                </tr>
+					            </tbody>
+					        </table>
+					    </div>
+					
+					    <!-- Loop through BookingForms -->
+					    <div th:if="${generalForm.bookingForms != null and generalForm.bookingForms.size() > 0}">
+					        <table>
+					            <thead>
+					                <tr>
+					                    <th>Category</th>
+					                    <th>Content</th>
+					                    <th>Date</th>
+					                    <th>Check-In</th>
+					                    <th>Check-Out</th>
+					                    <th>Status</th>
+					                </tr>
+					            </thead>
+					            <tbody>
+					                <tr th:each="bookingForm : ${generalForm.bookingForms}">
+					                    <td th:text="${generalForm.category.name ?: 'No category'}"></td>
+					                    <td th:text="${bookingForm.content ?: 'No content'}"></td>
+					                    <td th:text="${generalForm.submissionDate ?: 'No date'}"></td>
+					                    <td th:text="${#dates.format(bookingForm.checkIn, 'dd-MM-yyyy') ?: 'No check-in date'}"></td>
+					                    <td th:text="${#dates.format(bookingForm.checkOut, 'dd-MM-yyyy') ?: 'No check-out date'}"></td>
+					                    <td th:text="${bookingForm.status ?: 'No status'}"></td>
+					                </tr>
+					            </tbody>
+					        </table>
+					    </div>
+					</div>
                 </div>
             </div>
         </div>
-    </div>
+    
 
 
     <!-- Script to toggle arrow direction -->

@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.cascinacaccia.entities.BookingForm;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Role;
 import com.cascinacaccia.entities.User;
@@ -52,6 +53,9 @@ public class UserService implements UserDetailsService{
 	private UserImageDAO userImageDAO;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Lazy
+	@Autowired
+	private BookingFormService bookingFormService;
 	@Lazy
 	@Autowired
 	private InformationFormService informationFormService;
@@ -100,6 +104,7 @@ public class UserService implements UserDetailsService{
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
+        user.setState("OFFLINE");
         
         //fetch the default profile image from the database
         UserImage defaultProfileImage = userImageDAO.findById(12L)
@@ -247,12 +252,26 @@ public class UserService implements UserDetailsService{
                 }
             });
         }
-
-        // Step 2: Remove roles and other associations
+        
+        // Step 2: Remove associations with BookingForms
+        List<Generalform> generalFormss = bookingFormService.getAssignedFormsByUserBooking(userId); 
+        for (Generalform generalForm : generalFormss) {
+        	generalForm.getBookingForms().forEach(bookingForm -> {
+	        	if (bookingForm.getAssignedUser() != null && 
+		                bookingForm.getAssignedUser().getId().equals(userId)) {
+		                
+		                // Nullify the user reference in the booking form
+		                bookingForm.setAssignedUser(null);
+		                bookingFormService.saveBookingForm(bookingForm); // Save the update
+		            }
+        		});
+        }
+        
+        // Step 3: Remove roles and other associations
         user.getRoles().clear();
         userDAO.save(user);
 
-        // Step 3: Delete the user
+        // Step 4: Delete the user
         userDAO.deleteById(userId); 
     }
     
