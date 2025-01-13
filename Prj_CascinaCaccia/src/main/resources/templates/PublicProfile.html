@@ -3,10 +3,18 @@
 
 <head>
 	<meta charset="ISO-8859-1">
-	<title>Insert title here</title>
+	<title>Utente</title>
 	<link rel="stylesheet" href="/styles/normalize.css">
 	<link rel="stylesheet" href="/styles/style.css?v=1.0">
 	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
+
+	<link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+	<link rel="shortcut icon" href="/img/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="EducatiON" />
+	<link rel="manifest" href="/img/site.webmanifest" />
+
 </head>
 
 <body>
@@ -17,37 +25,54 @@
             </div>
             <a href="/profile">Home</a>
             <!-- Admin-specific buttons -->
-            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
-            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
+            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">Lista utenti</a>
+            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Registrazione</a>
 
             <!-- Buttons for every user -->
-            <a href="/yourTasks">Your tasks</a>
-            <a href="/changePassword">Change password</a>
-            <a href="/request">View all requests</a>
-            <a href="/profileImage">Profile image</a>
+            <a href="/yourTasks">I tuoi task</a>
+            <a href="/changePassword">Cambia password</a>
+            <a href="/request">Tutte le richieste</a>
+            <a href="/profileImage">Immagine profilo</a>
 
             <!-- Logout link -->
             <a id="logoutBtn" th:href="@{/logout}">Logout</a>
 
         </div>
 		<div class="backoffice-content">
-			<h2>User Profile</h2>
-
-			<!-- User personal details -->
-			<div>
-				<p><strong>Name:</strong> <span th:text="${fullName}"></span></p>
-				<p><strong>Surname:</strong> <span th:text="${surname}"></span></p>
-				<p><strong>Email:</strong> <span th:text="${email}"></span></p>
-				<p><strong>Profile Image:</strong> <img th:src="@{${profileImageUrl}}" alt="Profile Image" width="100"
-						height="100" /></p>
+			<div id="user-container">
+				<div class="container">
+					<h2>Profilo Utente</h2>
+			
+					<!-- User personal details -->
+					<div class="user-details">
+						<p><strong>Nome:</strong> <span id="nome" th:text="${fullName}">Nessun nome trovato</span></p>
+						<p><strong>Cognome:</strong> <span id="cognome" th:text="${surname}">Nessun cognome trovato</span></p>
+						<p><strong>Email:</strong> <span th:text="${email}">Nessuna mail trovata</span></p>
+						<p><strong>Stato:</strong> <span th:text="${state != null && !state.isEmpty() ? state : 'Nessuno stato trovato'}"></span></p>
+						<p th:if="${state != null && state == 'OFFLINE'}">
+					        <strong>Ultimo accesso:</strong> 
+					        <span th:text="${lastAccess != null ? lastAccess.format(formatter) : 'N/A'}"></span>
+					    </p>
+						<div class="profile-img">
+							<img src="https://cdn-icons-png.freepik.com/256/3985/3985214.png?ga=GA1.1.1838490280.1706974849&amp;semt=ais_hybrid" 
+								 alt="Profile Image" 
+								 width="100" 
+								 height="100">
+						</div>
+					</div>
+			
+					<!-- Exit page button and view tasks button -->
+					<div class="button-container">
+						<a th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id})}">Visualizza tasks</a>
+						<a href="/admin/listUsers" class="button-secondary">Indietro</a>
+					</div>
+				</div>
 			</div>
-
-			<!-- Exit page button -->
-			<a th:href="@{/admin/yourTasksPublic/{userId}(userId=${userId})}">View Tasks</a>
-			<a href="/admin/listUsers" class="button">Back</a>
 		</div>
 	</div>
-
+	<script>
+		document.title = `${document.getElementById("nome").textContent} ${document.getElementById('cognome').textContent} `;
+	</script>
 </body>
 
 </html>

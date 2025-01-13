@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
+import com.cascinacaccia.repos.BookingFormDAO;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserImageDAO;
@@ -33,6 +35,7 @@ import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -42,6 +45,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private UserImageDAO userImageDAO;
+	@Autowired
+	private BookingFormDAO bookingFormDAO;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -84,6 +89,41 @@ public class UserController {
 	    return "profile";
 	}
 	
+	@PostMapping("/set-user-online")
+	public ResponseEntity<Void> setUserOnline(HttpSession session) {
+	    String email = (String) session.getAttribute("email");
+	    if (email != null) {
+	        userService.updateUserStateAndLastAccess(email, "ONLINE");
+	    }
+	    return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/set-user-offline")
+	public ResponseEntity<Void> setUserOffline(HttpSession session) {
+	    String email = (String) session.getAttribute("email");
+	    if (email != null) {
+	        System.out.println("Received offline request for email: " + email); // Debug log
+	        userService.updateUserStateAndLastAccess(email, "OFFLINE");
+	    } else {
+	        System.out.println("No email found in session. Cannot set user offline."); // Debug log
+	    }
+	    return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping("/profile/update-name")
+    public String updateNameAndSurname(@AuthenticationPrincipal Object principal, 
+                                       @RequestParam("name") String name, 
+                                       @RequestParam("surname") String surname) {
+
+        // Get the logged-in user's email or ID
+        User user = userService.getUserByEmail(principal);
+
+        // Update the user's name and surname
+        userService.updateNameAndSurname(user.getId(), name, surname);
+
+        return "redirect:/profile"; // Redirect back to the profile page
+    }
+	
 	//navigation to yourTasks page
 	@GetMapping("/yourTasks")
 	public String userTasks(@AuthenticationPrincipal Object principal,
@@ -124,19 +164,19 @@ public class UserController {
 	    allAssignedForms.addAll(assignedForms);
 	    allAssignedForms.addAll(assignedBookingForms);
 	    
-	 // Filter by selected categories if available
+	    //filter by selected categories if available
 	    allAssignedForms = FilterService.filterFormsByCategories(allAssignedForms, categoryIds);
         
 	    allAssignedForms = FilterService.filterFormsByStatuses(allAssignedForms, statuses);
         
-	 // Apply form type filter (either Information Form or Booking Form)
+	    //apply form type filter (either Information Form or Booking Form)
         if ("informationForm".equals(formType)) {
-        	allAssignedForms = FilterService.filterByInformationForm(allAssignedForms);  // This would filter out only Information Forms
+        	allAssignedForms = FilterService.filterByInformationForm(allAssignedForms);
         } else if ("bookingForm".equals(formType)) {
-        	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);  // This would filter out only Booking Forms
+        	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);
         }
         
-	    // Sort forms based on the selected option
+	    //sort forms based on the selected option
 	    switch (sortBy) {
 		    case "surnameAsc":
 		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, true);
@@ -154,7 +194,7 @@ public class UserController {
 		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, false);
 		}
 	    
-	    // If no forms are assigned, add a "noResults" message to the model
+	    //if no forms are assigned, add a "noResults" message to the model
 	    if (allAssignedForms.isEmpty()) {
 	        model.addAttribute("noResults", "No tasks assigned to you.");
 	    }
@@ -192,11 +232,12 @@ public class UserController {
 	    return "YourTasks";
 	}
 	
-	//process to change the status of a form
+	//process to change the status of a Informationform
 	@PostMapping("/assignStatusProfile")
 	public String assignStatus(@RequestParam("informationFormId") String informationFormId,
 	                            @RequestParam("informationFormStatus") String status) {
-	    //fetch the Informationform using the ID
+	    
+		//fetch the Informationform using the ID
 	    Informationform informationForm = informationFormDAO.findById(informationFormId)
 	        .orElseThrow(() -> new RuntimeException("InformationForm not found"));
 
@@ -205,6 +246,25 @@ public class UserController {
 	    
 	    //save the updated Informationform
 	    informationFormDAO.save(informationForm);
+
+	    //redirect back to the profile page
+	    return "redirect:/yourTasks";
+	}
+	
+	//process to change the status of a BookingForm
+	@PostMapping("/assignStatusBookingProfile")
+	public String assignStatusBooking(@RequestParam("bookingFormId") String bookingFormId,
+	                            @RequestParam("bookingFormStatus") String status) {
+	    
+		//fetch the BookingForm using the ID
+	    BookingForm bookingForm = bookingFormDAO.findById(bookingFormId)
+	        .orElseThrow(() -> new RuntimeException("BookingForm not found"));
+
+	    //update the status of the BookingForm
+	    bookingForm.setStatus(status);
+	    
+	    //save the updated BookingForm
+	    bookingFormDAO.save(bookingForm);
 
 	    //redirect back to the profile page
 	    return "redirect:/yourTasks";

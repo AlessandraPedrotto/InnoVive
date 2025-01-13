@@ -3,6 +3,7 @@
     flex-direction: column;
 }
 
+
 .sidebar {
     position: fixed;
     width: 15vw;
@@ -14,14 +15,17 @@
     transition: width 0.3s ease-in-out;
 }
 
+
 .sidebar-logo {
     width: 50%;
     margin: 0 auto;
 }
 
+
 .sidebar-logo img {
     width: 100%;
 }
+
 
 .sidebar a {
     color: white;
@@ -33,14 +37,17 @@
     font-weight: bold;
 }
 
+
 .sidebar a:hover {
     background-color: #f39340;
     border-radius: 28px;
 }
 
+
 #logoutBtn {
     color: red;
 }
+
 
 .backoffice-content {
     position: relative;
@@ -48,15 +55,16 @@
     width: 85vw;
     flex-grow: 0;
     padding: 20px;
-    overflow-y: scroll;
-    overflow-x: scroll;
     transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
 }
+
 
 .profile-image {
     max-width: 100px;
     border-radius: 50%;
 }
+
+
 
 
 @media (max-width: 768px) {
@@ -67,14 +75,17 @@
         box-shadow: none;
     }
 
+
     .backoffice-content {
         left: 0;
         width: 100%;
     }
 
+
     .sidebar-logo {
         width: 100px;
     }
+
 
     .sidebar a {
         font-size: 14px;
@@ -82,15 +93,18 @@
     }
 }
 
+
 @media (max-width: 480px) {
     .sidebar a {
         font-size: 12px;
         padding: 8px;
     }
 
+
     .sidebar-logo {
         width: 80px;
     }
+
 
     .profile-image {
         max-width: 80px;
@@ -99,10 +113,15 @@
 
 
 
+
+
+
 /* Change profile image style STARTS */
-.image-grid{
+.image-grid {
     width: 70%;
+    margin: 0 auto;
 }
+
 
 /* Style for the image grid */
 .image-grid ul {
@@ -115,13 +134,15 @@
     margin: 0;
 }
 
+
 /* Style for individual images */
 .profile-img {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 50%;
 }
+
 
 /* Optional: Add a hover effect on the images */
 .profile-img:hover {
@@ -130,3 +151,526 @@
 }
 
 /* Change profile image style ENDS */
+
+
+
+
+
+
+
+
+
+
+/* LIST USERS STARTS */
+
+
+
+
+#listUsers-container form input[type="text"],
+#listUsers-container form button,
+#listUsers-container td button[type="button"] {
+    border-radius: 28px;
+}
+
+
+#listUsers-container form input[type="text"] {
+    padding: 10px;
+    border: 2px solid #f09321;
+    color: #333;
+    outline: none;
+}
+
+
+#listUsers-container form button {
+    background-color: #f09321;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+#listUsers-container form button:hover {
+    background-color: #e6831e;
+}
+
+
+#listUsers-container .form-control {
+    border-radius: 28px;
+    padding: 8px;
+    border: 2px solid #f09321;
+}
+
+
+#listUsers-container a {
+    color: #f09321;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+
+#listUsers-container a:hover {
+    text-decoration: underline;
+}
+
+
+#listUsers-container .alert {
+    background-color: #f09321;
+    color: white;
+    border-radius: 28px;
+    padding: 10px;
+}
+
+
+#listUsers-container table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 28px;
+    margin-top: 20px;
+}
+
+
+#listUsers-container table th,
+#listUsers-container table td {
+    padding: 10px;
+}
+
+
+#listUsers-container table th {
+    background-color: #f09321;
+    color: white;
+}
+
+
+#listUsers-container table tr:nth-of-type(odd) {
+    background-color: #faf1e7;
+}
+
+
+
+
+#listUsers-container .pagination a {
+    background-color: #f09321;
+    color: white;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 28px;
+    text-decoration: none;
+}
+
+
+#listUsers-container .pagination a:hover {
+    background-color: #e6831e;
+}
+
+
+#listUsers-container .pagination a.btn-primary.text-white {
+    background-color: white;
+    color: #f09321;
+    border: 2px solid #f09321;
+}
+
+
+.user-controls {
+    display: flex;
+    justify-content: center;
+}
+
+
+#listUsers-container table td.user-controls button.profile-button {
+    border: 1px solid #f09321;
+    background-color: #fff;
+    color: #f09321;
+    padding: 10px 15px;
+    transition: 0.2s all ease;
+}
+
+#listUsers-container table td.user-controls button.profile-button:hover {
+    background-color: #f09321;
+    color: #fff;
+    cursor: pointer;
+}
+
+#listUsers-container table td.user-controls button.delete-button {
+    border: 1px solid red;
+    background-color: #fff;
+    color: red;
+    padding: 10px 15px;
+    transition: 0.2s all ease;
+}
+
+#listUsers-container table td.user-controls button.delete-button:hover {
+    color: #fff;
+    background-color: red;
+    cursor: pointer;
+}
+
+
+
+
+#listUsers-container .sort-users {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+#user-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 28px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#user-container h2 {
+    text-align: center;
+    color: #f09321;
+}
+
+#user-container .user-details {
+    line-height: 1.8;
+}
+
+#user-container .user-details p {
+    margin: 10px 0;
+}
+
+#user-container .user-details strong {
+    color: #555;
+}
+
+#user-container .profile-img {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#user-container .profile-img img {
+    border-radius: 50%;
+    border: 3px solid #f09321;
+}
+
+#user-container .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#user-container .button-container a {
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 28px;
+    background-color: #f09321;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#user-container .button-container a:hover {
+    background-color: #c87918;
+}
+
+#user-container .button-container .button-secondary {
+    background-color: #fff;
+    border: 1px solid#f09321;
+    color: #f09321;
+}
+
+#user-container .button-container .button-secondary:hover {
+    background-color: #c88c508f;
+}
+
+/* LIST USERS ENDS */
+
+/* BACKOFFICE REQUESTS STARTS */
+
+.requests-welcome {
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+}
+
+.content {
+    margin: 0 auto;
+    margin-bottom: 2rem;
+}
+
+.request-page-header {
+    margin-left: 8vw;
+    margin-bottom: 2rem;
+}
+
+.requests-back-button,
+.pagination-button {
+    background: linear-gradient(90deg, #fcdd11, #e1097e);
+    padding: 10px 15px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.request-container {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.request-container h3 {
+    padding: 20px;
+}
+
+.request-header {
+    padding: 20px;
+    border-top: 1px solid rgb(236, 236, 236);
+}
+
+.request-header-selected {
+    background-color: rgba(240, 147, 33, 0.42);
+}
+
+.request-header:hover {
+    cursor: pointer;
+    background-color: rgba(240, 147, 33, 0.42);
+}
+
+.request-body-table {
+    margin: 0 auto;
+}
+
+.request-table-row th,
+.request-table-row td {
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.request-table-row td:last-child {
+    text-align: left;
+}
+
+.form-control {
+    max-width: 200px;
+}
+
+.form-button {
+    background-color: rgba(240, 147, 33, 0.42);
+    border-radius: 5px;
+    padding: 5px;
+    width: 200px;
+    margin: 0.1rem;
+    cursor: pointer;
+}
+
+.assign-status-submit-button,
+.assign-user-submit-button {
+    background-color: rgba(240, 147, 33, 0.42);
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.form-button,
+.assign-status-submit-button,
+.assign-user-submit-button,
+.request-action-close-modal,
+.requests-back-button {
+    border-width: 0;
+}
+
+.request-body {
+    background-color: rgba(240, 147, 33, 0.42);
+    padding-bottom: 1rem;
+}
+
+.request-body-table {
+    max-width: 80%;
+}
+
+.assignment-form {
+    margin-top: 1.3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.request-action-close-modal {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: rgba(240, 147, 33, 0.42);
+    border-radius: 5px;
+    padding: 5px 9px;
+    cursor: pointer;
+}
+
+.request-table-header th {
+    background-color: rgba(255, 255, 255, 0);
+    color: black
+}
+
+.profile-image {
+    width: 50px;
+    height: 50px;
+}
+
+.pagination {
+    margin-left: 8vw;
+}
+
+/* BACKOFFICE REQUESTS ENDS */
+
+/* BACKOFFICE YOUR REQUESTS REQUESTS STARTS */
+
+.filter-container {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.category-filter,
+.status-filter,
+.sort-buttons-container {
+    margin-bottom: 2rem;
+}
+
+.category-container,
+.status-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category-item,
+.status-item {
+    padding: 0.3rem 1rem;
+}
+
+.sort-type-container {
+    display: flex;
+
+}
+
+.sort-type-item {
+    padding-right: 1rem;
+}
+
+.sort-buttons-container {
+    margin-top: 0.5rem;
+}
+
+.sort-type-item button,
+.sort-type-item a {
+    background-color: rgba(240, 147, 33, 0.42);
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.sort-buttons-container a {
+    text-decoration: none;
+}
+
+/* BACKOFFICE YOUR REQUESTS REQUESTS ENDS */
+
+/* BACKOFFICE HOMEPAGE STARTS */
+
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-content {
+    margin: 3rem 0;
+    padding: 2rem 8rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 28px;
+}
+
+.profile-header {
+    margin-bottom: 1rem;
+}
+
+.profile-image-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.profile-image-container img {
+    max-width: 200px;
+}
+
+.profile-buttons-container {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.profile-buttons-container button {
+    margin-right: 0.3rem;
+}
+
+.profile-info-labels {
+    display: inline-block;
+}
+
+.profile-info-forms {
+    display: inline-block;
+    width: 100%;
+}
+
+.profile-info-group {
+    margin-top: 0.3rem;
+}
+
+/* BACKOFFICE HOMEPAGE ENDS */
+
+/* BACKOFFICE REGISTRATION STRARTS */
+
+.user-registration-wrapper,
+.change-password-wrapper,
+.profile-image-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.user-registration-container {
+    margin: 3rem 0;
+    padding: 2rem 8rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 28px;
+    max-width: 60%;
+}
+
+/* BACKOFFICE REGISTRATIONS ENDS */
+
+/* BACKOFFICE PROFILE IMAGE STARTS */
+.profile-image-select-container {
+    margin: 3rem 0;
+    padding: 2rem 8rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 28px;
+}
+
+.profile-img-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.profile-img-list-item {
+    list-style: none;
+    width: 20%;
+}
+
+.profile-img-list-img {
+    width: 80px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+/* BACKOFFICE PROFILE IMAGE ENDS */

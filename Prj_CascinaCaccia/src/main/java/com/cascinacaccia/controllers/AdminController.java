@@ -62,7 +62,7 @@ public class AdminController {
     @GetMapping("/listUsers")
     public String listUsers(@RequestParam(name = "query", required = false, defaultValue = "") String query,
 				    		@RequestParam(name = "sort", required = false) Boolean sortAscending,
-				            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
+				            @RequestParam(name = "sortBy", required = false, defaultValue = "surnameAsc") String sortBy,
             				@RequestParam(name = "page", required = false, defaultValue = "1") int page,
             		        @RequestParam(name = "size", required = false, defaultValue = "3") int size,
             		        @AuthenticationPrincipal org.springframework.security.core.userdetails.User loggedInUser, 
@@ -72,7 +72,7 @@ public class AdminController {
             return "redirect:/login"; 
         }
 
-        // You need to fetch the full custom user object based on email
+        //you need to fetch the full custom user object based on email
         User userFromDb = userDAO.findByEmail(loggedInUser.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("Logged-in user not found"));
 
@@ -91,22 +91,22 @@ public class AdminController {
             }
         }
         
-        // Handle null sortAscending
+        //handle null sortAscending
         if (sortAscending == null) {
-            sortAscending = true; // Default to ascending order
+            sortAscending = true;
         }
         
-        // Apply sorting logic after filtering
+        //apply sorting logic after filtering
         if (users != null && !users.isEmpty()) {
             switch (sortBy) {
                 case "surnameAsc":
-                    users = FilterService.sortUsersBySurname(users, true); // Sort ascending
+                    users = FilterService.sortUsersBySurname(users, true);
                     break;
                 case "surnameDesc":
-                    users = FilterService.sortUsersBySurname(users, false); // Sort descending
+                    users = FilterService.sortUsersBySurname(users, false);
                     break;
                 default:
-                    // Default sort logic
+                    //default sort logic
                     users = FilterService.sortUsersBySurname(users, sortAscending);
                     break;
             }
@@ -115,11 +115,6 @@ public class AdminController {
             if (users.isEmpty()) {
                 model.addAttribute("noResults", "No users found for the search query: " + query);
             }
-        }
-        
-        //if sorting is required, call the sorting method
-        if (sortAscending != null) {
-            users = filterService.sortUsersBySurname(users, sortAscending);
         }
 
         //pagination logic: Get the total number of users
@@ -137,9 +132,8 @@ public class AdminController {
 
         //paginate the list of users
         List<User> paginatedUsers = FilterService.getPaginatedList(users, page, size);
-
-        //add pagination details to the model
-        //add pagination details to the model
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        
         model.addAttribute("users", paginatedUsers);
         model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages); 
@@ -151,6 +145,7 @@ public class AdminController {
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("hasUsers", !users.isEmpty()); 
         model.addAttribute("loggedInUserId", userFromDb.getId());
+        model.addAttribute("formatter", formatter);
         return "ListUsers";
     }
     
@@ -160,13 +155,24 @@ public class AdminController {
         
     	User user = userService.getUserById(userId);
 
+    	if (user != null) {
+            model.addAttribute("user", user);  // Make sure user is added to the model
+        } else {
+            // Handle the case where user is not found
+            model.addAttribute("error", "User not found");
+        }
+    	
         //add user details to the model (name, surname, email, and profile image)
         String profileImageUrl = user.getUserImage() != null ? user.getUserImage().getImgPath() : "/default-image.png";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         
         model.addAttribute("fullName", user.getName());
         model.addAttribute("email", user.getEmail());
         model.addAttribute("profileImageUrl", profileImageUrl);
         model.addAttribute("surname", user.getSurname());
+        model.addAttribute("state", user.getState());
+        model.addAttribute("lastAccess", user.getLastAccess());
+        model.addAttribute("formatter", formatter);
         return "PublicProfile";
     }
     
@@ -205,10 +211,10 @@ public class AdminController {
             generalForm.setInformationForms(assignedInformationForms); 
         });
         
-     // Fetch assigned booking forms
+        //fetch assigned booking forms
         List<Generalform> assignedBookingForms = bookingFormService.getAssignedFormsByUserBooking(user.getId());
 
-        // Combine information forms and booking forms
+        //combine information forms and booking forms
         List<Generalform> allAssignedForms = new ArrayList<>();
         allAssignedForms.addAll(assignedForms);
         allAssignedForms.addAll(assignedBookingForms);
@@ -217,11 +223,11 @@ public class AdminController {
         
         allAssignedForms = FilterService.filterFormsByStatuses(allAssignedForms, statuses);
         
-     // Apply form type filter (either Information Form or Booking Form)
+        //apply form type filter (either Information Form or Booking Form)
         if ("informationForm".equals(formType)) {
-        	allAssignedForms = FilterService.filterByInformationForm(allAssignedForms);  // This would filter out only Information Forms
+        	allAssignedForms = FilterService.filterByInformationForm(allAssignedForms);
         } else if ("bookingForm".equals(formType)) {
-        	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);  // This would filter out only Booking Forms
+        	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);
         }
         
         switch (sortBy) {
@@ -241,7 +247,7 @@ public class AdminController {
 		    	allAssignedForms = FilterService.sortBySubmissionDate(allAssignedForms, false);
 		}
 
-        // If no tasks are assigned, add a "noResults" message to the model
+        //if no tasks are assigned, add a "noResults" message to the model
         if (allAssignedForms.isEmpty()) {
             model.addAttribute("noResults", "No tasks assigned to this user.");
         }

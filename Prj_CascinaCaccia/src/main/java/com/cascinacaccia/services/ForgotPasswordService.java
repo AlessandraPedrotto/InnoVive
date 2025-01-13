@@ -34,7 +34,15 @@ public class ForgotPasswordService {
 	@Autowired
 	private JavaMailSender mailSender;
 	
-	//method to generate the password reset link and send the email
+	/*
+     * Method to generate a password reset token, create the reset link, 
+     * and send an email to the user with the reset link.
+     *
+     * @param user The user requesting a password reset
+     * @param userName The first name of the user
+     * @param userSurname The surname of the user
+     * @return A string indicating the success or failure of the operation
+     */
     public String sendResetEmail(User user, String userName, String userSurname) {
         try {
             String resetLink = generateResetToken(user);
@@ -87,7 +95,7 @@ public class ForgotPasswordService {
                     "</div>", 
                     userName, userSurname, resetLink);
 
-            // Send the email
+            //send the email
             sendHtmlEmail(user.getEmail(), subject, body);
             return "success";
         } catch (Exception e) {
@@ -96,7 +104,14 @@ public class ForgotPasswordService {
         }
     }
     
-    //method to send the email
+    /*
+     * Method to send an HTML-formatted email.
+     * 
+     * @param toEmail The recipient's email address
+     * @param subject The subject of the email
+     * @param htmlBody The body of the email in HTML format
+     * @throws MessagingException If there is an issue with sending the email
+     */
     private void sendHtmlEmail(String toEmail, String subject, String htmlBody) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -108,19 +123,28 @@ public class ForgotPasswordService {
         mailSender.send(message);
     }
     
-    //method to generate reset token and create a reset link
+    /*
+     * Method to generate a unique password reset token and create a corresponding reset link.
+     * The token will expire in 15 minutes.
+     *
+     * @param user The user for whom the reset token is being generated
+     * @return The reset URL containing the generated token
+     */
 	private String generateResetToken(User user) {
     	
+		//generate a new UUID for the token
         UUID uuid = UUID.randomUUID();
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime expiryDateTime = currentDateTime.plusMinutes(15);
         
+        //check if the user already has an existing reset token and delete it if present
         Optional<PasswordResetToken> oldToken = tokenDAO.findByUser(user);
         if (oldToken.isPresent()) {
         	oldToken.get().setUser(null);
         	deleteAndFlushPasswordResetToken(oldToken.get());
         }
         
+        //create a new password reset token
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setUser(user);
         resetToken.setToken(uuid.toString());
@@ -134,21 +158,39 @@ public class ForgotPasswordService {
         return endpointUrl + resetToken.getToken();
     }
 	
-
+	/*
+     * Method to delete a password reset token and flush the changes.
+     *
+     * @param token The token to be deleted
+     */
 	public void deleteAndFlushPasswordResetToken(PasswordResetToken token) {
 		tokenDAO.deleteById(token.getId()); 
 	}
-    //method to check if a token has expired
+	
+	/*
+     * Method to check if a reset token has expired.
+     *
+     * @param expiryDateTime The expiration time of the token
+     * @return true if the token has expired, false otherwise
+     */
     public boolean hasExpired(LocalDateTime expiryDateTime) {
         return expiryDateTime.isBefore(LocalDateTime.now());
     }
 
-    //method to find a reset token by its value
+    /*
+     * Method to find a password reset token by its token value.
+     *
+     * @param token The token value to search for
+     * @return The corresponding PasswordResetToken object, or null if not found
+     */
     public PasswordResetToken findResetTokenByToken(String token) {
         return tokenDAO.findByToken(token);
     }
 	
-    //method to clean expired tokens every 1 second
+    /*
+     * Method to clean up expired password reset tokens periodically.
+     * This method is scheduled to run every second.
+     */
     @Scheduled(fixedRate = 1000)
     public void cleanExpiredTokens() {
         LocalDateTime now = LocalDateTime.now();

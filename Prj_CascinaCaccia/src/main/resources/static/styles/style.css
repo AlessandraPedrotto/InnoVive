@@ -23,6 +23,10 @@
   font-weight: bold;
 }
 
+.logo:hover {
+  cursor: pointer;
+}
+
 .logo img {
   max-width: 140px;
   height: auto;
@@ -123,6 +127,7 @@
 /* header */
 .hero {
   background-color: #D9D9D9;
+  background-blend-mode: screen;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -211,7 +216,12 @@
 
 .boxes-image {
   width: 40%;
-  height: fit-content;
+  height: 200px;
+  overflow: hidden;
+}
+
+.boxes-image img {
+  width: 100%;
   object-fit: cover;
 }
 
@@ -224,6 +234,9 @@
 
   .boxes {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .boxes-text-content {
@@ -231,7 +244,9 @@
   }
 
   .boxes-image {
-    display: none;
+    width: 80%;
+    order: 1;
+    margin-top: 1rem;
   }
 }
 
@@ -289,6 +304,7 @@
 
 /* FOOTER STARTS*/
 .footer {
+  margin-top: 15px;
   background-color: rgba(255, 119, 0, .56);
   display: flex;
   justify-content: space-evenly;
@@ -302,6 +318,15 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  width: calc(100% / 3);
+}
+
+.footer-map {
+  order: 1;
+}
+
+.footer-social {
+  order: 2;
 }
 
 .footer-content h3 {
@@ -376,6 +401,7 @@
 
   .footer-content {
     margin-bottom: 2rem;
+    width: 100%;
   }
 
   .footer-content h3 {
@@ -397,7 +423,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 976px) {
 
   /* Navbar */
   .nav-links {
@@ -439,12 +465,13 @@
   position: sticky;
   top: 0;
   background-color: #fff;
+  z-index: 1;
 }
 
 .secondary a {
   text-decoration: none;
   color: #000;
-  transition: all 0.5s ease;
+  transition: color 0.5s ease;
   padding: 15px;
   font-weight: bold;
 }
@@ -473,6 +500,7 @@
   flex-direction: column;
   padding-top: 15px;
   animation: fadeIn 0.8s ease-in-out;
+  z-index: -1;
 }
 
 @media screen and (min-width:1180px) {
@@ -639,7 +667,8 @@
   gap: 10px;
 }
 
-#hidden-datepicker{
+#hidden-datepicker-checkin,
+#hidden-datepicker-checkout {
   display: none;
 }
 
@@ -665,6 +694,10 @@ select:focus {
   box-shadow: 0 0 8px rgba(255, 165, 0, 0.6);
 }
 
+#check-in-time,
+#check-out-time {
+  font-size: 1.5rem;
+}
 
 
 .calendar {
@@ -758,9 +791,9 @@ select:focus {
 }
 
 .calendar-days div:hover {
-  background-color: #f09321;
+  background-color: #ffffff00;
+  border: 2px solid #f09321;
   border-radius: 50%;
-  color: white;
 }
 
 .calendar-days div.selected {
@@ -768,6 +801,12 @@ select:focus {
   background-color: #f09321;
   color: #fff;
 }
+
+.calendar-day-hover.range {
+  background-color: #ffa73b85;
+  border-radius: 50%;
+}
+
 
 .month-list {
   position: absolute;
@@ -896,17 +935,24 @@ select:focus {
   padding: 10px;
   display: flex;
   justify-content: space-evenly;
+  transition: transform 0.5s ease;
+  opacity: 1;
+  transform: translateY(0);
 }
+
+.conferma-container.hidden-conferma {
+  transform: translateY(80px);
+  pointer-events: none;
+}
+
 
 #selected-date {
   font-weight: bold;
 }
 
 .conferma-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   font-size: 24px;
+  width: 30%;
 }
 
 .conferma-button {
@@ -925,6 +971,11 @@ select:focus {
 
 }
 
+#check-in-confirm,
+#check-out-confirm {
+  display: inline;
+  font-weight: 500;
+}
 
 
 
@@ -940,6 +991,8 @@ select:focus {
     width: 50%;
   }
 }
+
+
 
 
 /* PRENOTA ENDS */
@@ -1102,7 +1155,7 @@ select:focus {
 /* PASSWORD DIMENTICATA ENDS */
 
 
-	/* CHATBOT STARTS */
+/* CHATBOT STARTS */
 
 /* Replay icon for user messages */
 .message.user .text span {
@@ -1117,13 +1170,13 @@ select:focus {
 
 /* Chatbot Button at the bottom right */
 #informationFormContainer {
-  display: none; 
+  display: none;
   position: fixed;
-  bottom: 160px; 
+  bottom: 160px;
   right: 20px;
   width: 90%;
   max-width: 700px;
-  height: 80%;
+  height: max-content;
   max-height: 600px;
   background-color: #fff;
   border: 2px solid #F09321;
@@ -1133,7 +1186,7 @@ select:focus {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   padding: 20px;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 #chatbotButton {
@@ -1150,14 +1203,14 @@ select:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1100; 
+  z-index: 1100;
 }
 
 #informationButton {
   width: 45px;
   height: 45px;
   position: fixed;
-  bottom: 105px; 
+  bottom: 105px;
   right: 25px;
   background-color: #fff;
   color: #F09321;
@@ -1167,16 +1220,15 @@ select:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1100; 
+  z-index: 1100;
 }
 
 
 @media (max-width: 768px) {
   #informationFormContainer {
-    bottom: 130px; 
+    bottom: 130px;
     right: 5%;
     width: 95%;
-    height: 85%;
     padding: 15px;
   }
 
@@ -1196,7 +1248,6 @@ select:focus {
     bottom: 120px;
     right: 2%;
     width: 96%;
-    height: 90%;
     padding: 10px;
   }
 
@@ -1216,10 +1267,9 @@ select:focus {
   #informationFormContainer {
     top: 10%;
     right: 2.5%;
-    width: 95%; 
-    height: 90%;
-    padding: 15px; 
-    border-radius: 20px; 
+    width: 95%;
+    padding: 15px;
+    border-radius: 20px;
   }
 }
 
@@ -1227,34 +1277,48 @@ select:focus {
 @media (max-width: 480px) {
   #informationFormContainer {
     right: 2%;
-    width: 96%; 
-    height: 95%; 
+    width: 96%;
     padding: 10px;
     border-radius: 15px;
   }
 }
 
-#informationFormContainer h3{
+#informationFormContainer h3 {
   text-align: center;
 }
 
-#informationFormContainer.show{
+#informationFormContainer.show {
   display: flex;
 }
 
-#informationFormContainer form{
-  display: flex;
-  flex-direction: column;
-}
-
-.info-form-field{
+#informationFormContainer form {
   display: flex;
   flex-direction: column;
-  padding: 3px;
-  gap: 3px;
 }
 
-#sendInfoButton{
+.info-form-field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-box {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  padding: 15px;
+}
+
+.form-column {
+  width: 100%;
+}
+
+
+textarea#content-message {
+  resize: none;
+}
+
+#sendInfoButton {
   text-decoration: none;
   background: linear-gradient(90deg, #fcdd11, #e1097e);
   padding: 10px 15px;
@@ -1265,8 +1329,8 @@ select:focus {
   border: none;
 }
 
-#sendInfoButton:hover{
-cursor: pointer;
+#sendInfoButton:hover {
+  cursor: pointer;
 }
 
 
@@ -1279,8 +1343,8 @@ cursor: pointer;
 /* Chatbot Container */
 #chatbotContainer {
   position: fixed;
-  bottom: 80px; 
-  right: 100px; 
+  bottom: 80px;
+  right: 100px;
   width: 300px;
   height: 400px;
   background-color: #ebebeb;
@@ -1295,14 +1359,14 @@ cursor: pointer;
 
 @media (max-width: 768px) {
   #chatbotContainer {
-    right: 80px; 
+    right: 80px;
   }
 }
 
 
 @media (max-width: 480px) {
   #chatbotContainer {
-    right: 60px; 
+    right: 60px;
   }
 }
 
@@ -1318,11 +1382,12 @@ cursor: pointer;
   padding: 10px;
 }
 
-#closeChatbot{
+#closeChatbot {
   background-color: transparent;
   border: none;
 }
-#closeChatbot:hover{
+
+#closeChatbot:hover {
   cursor: pointer;
 }
 
@@ -1382,7 +1447,7 @@ cursor: pointer;
 }
 
 .buttons-container button {
-  width:fit-content;
+  width: fit-content;
   background-color: white;
   color: #F09321;
   border: 1px solid #F09321;
@@ -1393,7 +1458,7 @@ cursor: pointer;
 }
 
 .buttons-container button:hover {
-  background-color:#fff8f0;
+  background-color: #fff8f0;
 }
 
 .buttons-container button:disabled {
@@ -1401,9 +1466,9 @@ cursor: pointer;
   cursor: not-allowed;
 }
 
-.buttons-container .askMoreButton{
+.buttons-container .askMoreButton {
   border: 1.5px solid #F09321;
-  color: #F09321 ;
+  color: #F09321;
 }
 
 /* CHATBOT ENDS */
@@ -1415,22 +1480,23 @@ cursor: pointer;
   margin-top: 70px;
 }
 
-.card-struttura{
+.card-struttura {
   display: flex;
 }
 
-.descrizione-struttura{
+.descrizione-struttura {
   width: 50%;
   padding: 2rem;
 }
 
 
-.foto-struttura{
+.foto-struttura {
   width: 50%;
   display: flex;
   justify-content: center;
 }
-.foto-struttura img{
+
+.foto-struttura img {
   width: 350px;
 }
 
@@ -1475,28 +1541,28 @@ cursor: pointer;
 
 @media screen and (max-width: 768px) {
   .struttura {
-      padding: 10px;
+    padding: 10px;
   }
 
   .card-struttura {
-      display: flex;
-      flex-direction: column; 
-      align-items: center;
-      text-align: center; 
-      margin-bottom: 20px; 
-      padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
   }
 
   .foto-struttura img {
-      max-width: 100%; 
-      height: auto;
-      margin-bottom: 10px; 
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
   }
 
   .descrizione-struttura {
-      font-size: 1rem; 
-      padding: 10px;
-      line-height: 1.5; 
+    font-size: 1rem;
+    padding: 10px;
+    line-height: 1.5;
   }
 
   .card-struttura .foto-struttura {

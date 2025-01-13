@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 05, 2025 alle 15:52
+-- Creato il: Gen 07, 2025 alle 15:40
 -- Versione del server: 10.4.28-MariaDB
 -- Versione PHP: 8.2.4
 
@@ -29,12 +29,26 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `booking_form` (
   `id` varchar(255) NOT NULL,
-  `content` varchar(255) NOT NULL,
-  `general_form_id` varchar(255) NOT NULL,
-  `status` varchar(255) NOT NULL,
-  `date` date NOT NULL,
+  `check_in` date DEFAULT NULL,
+  `check_out` date DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
   `generalform_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `booking_form`
+--
+
+INSERT INTO `booking_form` (`id`, `check_in`, `check_out`, `content`, `status`, `user_id`, `generalform_id`) VALUES
+('10a60b32-fb71-4768-934d-ddf56fd4d62e', '2025-02-07', '2025-02-07', 'F. Asta di beneficenza, 50-60 persone con lo staff', 'TO DO', 'dccf76d3-1a94-4076-88d3-e3d447441d30', '0564d9aa-9949-4dcd-b016-070b76795c22'),
+('5bd185b2-0111-4989-9bfb-de51e67f0aca', '2025-01-10', '2025-01-12', 'A. 4 adulti e 20 bambini', 'TO DO', 'bad3ad59-c90d-42a3-a12b-602ccfa2dc14', '2595b09b-9c9c-498a-bef8-2e9fa4ca4231'),
+('62d881dc-c346-45be-b974-10fbdc4fcd7f', '2025-01-22', '2025-01-22', 'D. 10 ragazzi', 'TO DO', '2c5bce10-aa81-4cdb-884b-d608e3a98074', 'b0541118-39d6-4eed-914d-2f7883b1f219'),
+('8d01c86d-fb3c-4679-8e37-53bac561e564', '2025-01-08', '2025-01-08', 'E. 4 accompagnatori e 15 ragazzi', 'TO DO', 'dccf76d3-1a94-4076-88d3-e3d447441d30', '3619e90f-3050-402b-86a7-1c61796e003a'),
+('d2870110-8c4e-40ef-b9be-85f1fe6af733', '2025-01-31', '2025-02-01', 'C. 2 classi', 'TO DO', '2c5bce10-aa81-4cdb-884b-d608e3a98074', '1e6b085e-5ad0-4a6c-a892-037c3a8c9826'),
+('d33d8e4d-0d6e-4871-be66-feb5a053627c', '2025-01-21', '2025-01-21', 'B. 4 classi da 20 alunni e 3 professori', 'TO DO', 'bad3ad59-c90d-42a3-a12b-602ccfa2dc14', 'b4fd5bf4-8f85-4816-9763-bf6f668447e9'),
+('d6a92680-e3c0-4f3b-90ff-c1ca338879e6', '2025-02-09', '2025-02-09', 'G. Fiera dei fiori del paese', 'TO DO', 'b91d25aa-cab8-476d-ac9e-c76d72d34c9f', 'fcee204d-24ed-4d38-b729-ccfa20f3b1cc');
 
 -- --------------------------------------------------------
 
@@ -81,21 +95,21 @@ CREATE TABLE `general_form` (
 --
 
 INSERT INTO `general_form` (`id`, `email`, `name`, `surname`, `category_id`, `submission_date`) VALUES
-('0c038a07-8960-4294-9a33-00e199838423', 'alessandra.pedrotto@edu.itspiemonte.it', 'Riccardo', 'Tarenzi', '1', '2024-12-29 12:15:53.955710'),
-('14f0c79b-c3c0-4820-b002-17cf5462919b', 'alessandra.pedrotto@edu.itspiemonte.it', 'ale', 'Pittelli', '2', '2024-12-30 14:48:48.527239'),
-('315d6d32-206a-41b7-b0ee-173b7d31da44', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '4', NULL),
-('39444dbe-bd7c-4221-b2cd-4853d5247963', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '1', NULL),
-('4ecd7d09-7608-4ee1-b40e-e23743c2b654', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '7', NULL),
-('59c1df89-df61-48f8-979a-d51ea0b41f0d', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '4', '2024-12-28 14:22:12.344034'),
-('5c9d640e-bbbe-47cc-8a0c-ea183285626d', 'balmaneayoub3@gmail.com', 'prova', 'prova', '3', '2025-01-05 15:26:08.074883'),
-('656c0d3a-9810-4d65-af08-de7cd16a665f', 'alessandra.pedrotto@edu.itspiemonte.it', 'Sara', 'Pittelli', '5', '2024-12-28 14:28:20.776137'),
-('80dbd23f-a069-4f31-8e28-7f28d32a1d75', 'alessandra.pedrotto@edu.itspiemonte.it', 'Sara', 'jkn ', '1', '2024-12-30 14:51:57.690358'),
-('a59d7083-1c31-436b-805b-0b43b94a0df3', 'alessandra.pedrotto@edu.itspiemonte.it', 'pika', 'Pedrotto', '1', '2024-12-30 15:17:18.242001'),
-('b68a14c5-a3ed-4f64-b27b-273e5f8f04ee', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '3', '2024-12-30 13:13:26.404573'),
-('d60d6d7a-6c3e-44fe-887d-847be98fff8d', 'alessandra.pedrotto@edu.itspiemonte.it', 'pika', 'jkn ', '7', '2024-12-30 14:53:08.256662'),
-('dcbf528c-1fca-493f-8945-7a486ad2413e', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '1', NULL),
-('e175f8bc-a0f4-4b97-a78d-61d5c291c4c3', 'alessandra.pedrotto@edu.itspiemonte.it', 'ale', 'Pieretti', '1', '2024-12-30 18:22:58.790382'),
-('e454dc00-bd2a-4856-955e-d5d87a5abb5d', 'alessandra.pedrotto@edu.itspiemonte.it', 'Giorgia', 'Pons', '4', '2024-12-28 14:49:25.439460');
+('0564d9aa-9949-4dcd-b016-070b76795c22', 'hanji.zoe.cliente@gmail.com', 'Hanji', 'Zoe', '6', '2025-01-06 20:55:39.392235'),
+('07775b70-75b6-4936-8a9a-d4d283ddcac6', 'kazushi.hasegawa.cliente@gmail.com', 'Kazushi', 'Hasegawa', '7', '2025-01-06 20:11:43.351929'),
+('1e6b085e-5ad0-4a6c-a892-037c3a8c9826', 'erwin.smith.cliente@gmail.com', 'Erwin', 'Smith', '3', '2025-01-06 20:49:33.651851'),
+('2595b09b-9c9c-498a-bef8-2e9fa4ca4231', 'eren.jaeger.cliente@gmail.com', 'Eren', 'Jaeger', '1', '2025-01-06 20:39:30.931813'),
+('3342248d-e47b-4ee8-a398-5875a083cc90', 'hisashi.mitsui.cliente@gmail.com', 'Hisashi', 'Mitsui', '5', '2025-01-06 20:09:19.510312'),
+('3619e90f-3050-402b-86a7-1c61796e003a', 'reiner.braun.cliente@gmail.com', 'Reiner', 'Braun', '5', '2025-01-06 20:53:06.672630'),
+('4730b91c-c207-437a-a5cd-c1e3c6383527', 'kaede.rukawa.cliente@gmail.com', 'Kaede', 'Rukawa', '2', '2025-01-06 20:04:59.511910'),
+('86e707e2-dd12-4b7a-982c-a58762f6c7dd', 'kiyota.nobunaga.cliente@gmail.com', 'Kiyota', 'Nobunaga', '6', '2025-01-06 20:10:35.529912'),
+('86f4c92b-e1a2-49b2-a7c6-96b252b8f16d', 'haruko.akagi.cliente@gmail.com', 'Haruko', 'Akagi', '4', '2025-01-06 20:08:11.802766'),
+('87b5893a-3267-4d50-a49f-e853dbfd75eb', 'hanamichi.sakuragi.cliente@gmail.com', 'Hanamichi', 'Sakuragi', '1', '2025-01-06 19:59:10.092818'),
+('a4bf66ef-b02a-4fa6-b788-f119495e85e1', 'alessandra.pedrotto@edu.itspiemonte.it', 'Alessandra', 'Pedrotto', '8', '2025-01-07 00:09:12.840982'),
+('b0541118-39d6-4eed-914d-2f7883b1f219', 'sasha.braus.cliente@gmail.com', 'Sasha', 'Braus', '4', '2025-01-06 20:51:34.817381'),
+('b4fd5bf4-8f85-4816-9763-bf6f668447e9', 'mikasa.akerman.cliente@gmail.com', 'Mikasa', 'Ackerman', '2', '2025-01-06 20:43:42.669948'),
+('ec03bb89-d5c6-4b11-a5f1-a5014f096236', 'ryota.miyagi.cliente@gmail.com', 'Ryota', 'Miyagi', '3', '2025-01-06 20:06:49.890422'),
+('fcee204d-24ed-4d38-b729-ccfa20f3b1cc', 'levi.ackerman.cliente@gmail.com', 'Levi', 'Ackerman', '7', '2025-01-06 20:57:14.769935');
 
 -- --------------------------------------------------------
 
@@ -117,21 +131,13 @@ CREATE TABLE `information_form` (
 --
 
 INSERT INTO `information_form` (`id`, `content`, `generalform_id`, `user_id`, `status`, `general_form_id`) VALUES
-('0daee361-0cc1-4e15-a2aa-ccd01f0ae9b8', 'Quali attività si possono fare?', '0c038a07-8960-4294-9a33-00e199838423', '5e0c5595-32e1-40b0-8b1f-4f9ffb2afc87', 'TO DO', NULL),
-('1dbc8636-190f-4e7e-953d-502a4c1a5623', 'Siamo dell\'accademia militare, vorremmo portare i nostri ragazzi da voi per imparare di più sull\'argomento mafia, quando costa?', 'e454dc00-bd2a-4856-955e-d5d87a5abb5d', NULL, '', NULL),
-('203b8182-b9e0-46c7-898f-518cba8d30bd', 'ciaouuu', 'e175f8bc-a0f4-4b97-a78d-61d5c291c4c3', '5e0c5595-32e1-40b0-8b1f-4f9ffb2afc87', 'IN PROGRESS', NULL),
-('25e01fd9-f2a2-4c59-abb2-beb81028eb42', 'prova', '5c9d640e-bbbe-47cc-8a0c-ea183285626d', NULL, 'TO DO', NULL),
-('3af7ca9b-0c20-4952-bb81-2e42b1568dbd', 'La cascina dove si trova?', 'b68a14c5-a3ed-4f64-b27b-273e5f8f04ee', NULL, 'TO_DO', NULL),
-('3c180bad-827f-4a53-80fa-2e7559b64a4f', 'Per quante notti si può stare in cascina?', 'dcbf528c-1fca-493f-8945-7a486ad2413e', NULL, '', NULL),
-('5c19d302-f6bd-4b47-8794-ebad67e7903c', 'ciaouuu', '39444dbe-bd7c-4221-b2cd-4853d5247963', 'dccf76d3-1a94-4076-88d3-e3d447441d30', 'IN PROGRESS', NULL),
-('826bc89a-199f-43f0-a761-884314683112', 'Bisogna portare il pranzo al sacco oppure offrite anche la mensa?', '656c0d3a-9810-4d65-af08-de7cd16a665f', NULL, '', NULL),
-('c2cac40c-7779-4e3a-a2ff-bb03a55280d5', 'Quanto costa una giornata in cascina per 20 ragazzi e 2 professori?', '315d6d32-206a-41b7-b0ee-173b7d31da44', '4e1161c6-56a8-4041-9902-4fa5417598cd', '', NULL),
-('d1adcd70-6447-4193-b53e-6c23f44bc377', 'Siamo un gruppo di studenti  di giurisprudenza e vorremmo fare una visita da noi, è possibile fare foto?', '59c1df89-df61-48f8-979a-d51ea0b41f0d', NULL, '', NULL),
-('d37d0a7e-3559-4253-aa8c-7ff62032759b', 'Saraebbe possibile organizzare un\'asta di beneficienza all\'interno della cascina? Gli invitati sarebbero più o meno 50, senza contare lo staff.', 'a59d7083-1c31-436b-805b-0b43b94a0df3', '5e0c5595-32e1-40b0-8b1f-4f9ffb2afc87', 'IN PROGRESS', NULL),
-('da420aa9-8095-4c12-8fdc-8f068a84184c', 'Se c\'è mal tempo cosa si può fare?', 'd60d6d7a-6c3e-44fe-887d-847be98fff8d', 'feb91c1a-8558-41eb-9a0a-7660fd7f4d72', 'TO_DO', NULL),
-('de281730-4b65-4817-a678-78868c3bcb58', 'Saraebbe possibile organizzare un\'asta di beneficienza all\'interno della cascina? Gli invitati sarebbero più o meno 50, senza contare lo staff.', '4ecd7d09-7608-4ee1-b40e-e23743c2b654', NULL, '', NULL),
-('fa341d97-a74b-4b3b-9e7c-545ea440abac', 'La cascina è accessibile per persone disabili?', '39444dbe-bd7c-4221-b2cd-4853d5247963', 'bad3ad59-c90d-42a3-a12b-602ccfa2dc14', 'IN PROGRESS', NULL),
-('ff0b6377-98f7-4583-b784-587fc3f9ff34', 'Se c\'è mal tempo cosa si può fare?', '315d6d32-206a-41b7-b0ee-173b7d31da44', 'dccf76d3-1a94-4076-88d3-e3d447441d30', 'DONE', NULL);
+('1904cd18-218b-4adf-9ed1-bfd9a8efdebc', 'G. Come vengono raccontate le storie delle vittime di mafia per ispirare una riflessione?', '07775b70-75b6-4936-8a9a-d4d283ddcac6', 'd058b959-86a6-4a90-afa3-81f5704d334a', 'TO DO', NULL),
+('5c48582b-a827-4fd1-ad03-9a7511c92a1c', 'E. In che modo questa cascina combatte concretamente la mafia?', '3342248d-e47b-4ee8-a398-5875a083cc90', '7436f7bc-f635-4a9c-8b4f-44c491dd16c4', 'TO DO', NULL),
+('67a9ada0-5ab5-477e-8600-3195b8420318', 'A. Qual è la storia di questa cascina? Quali erano le sue origini prima di essere gestita dall’azienda attuale?', '87b5893a-3267-4d50-a49f-e853dbfd75eb', '252259e8-b6e3-40c1-887e-e6c1524898f1', 'TO DO', NULL),
+('adf21696-15ca-4786-8275-97da6975d1ee', 'F. Quali laboratori o esperienze vengono proposte agli studenti durante la permanenza?', '86e707e2-dd12-4b7a-982c-a58762f6c7dd', '7436f7bc-f635-4a9c-8b4f-44c491dd16c4', 'TO DO', NULL),
+('b7e4302e-e35a-4957-aa8d-e541deab0460', 'C. Come si integra questa cascina con il territorio circostante?', 'ec03bb89-d5c6-4b11-a5f1-a5014f096236', '5bbb6b29-a009-4d49-a1d2-5b9b37564735', 'TO DO', NULL),
+('d10fdaf6-b839-491f-b1e0-27f60d556516', 'D. Qual è l’impatto della mafia sulle comunità rurali come questa?', '86f4c92b-e1a2-49b2-a7c6-96b252b8f16d', '5bbb6b29-a009-4d49-a1d2-5b9b37564735', 'TO DO', NULL),
+('e94c8e90-6638-468f-bf5f-4d061259c32f', 'B. In che modo questa cascina è stata recuperata o trasformata in uno spazio per la sensibilizzazione sulla mafia?', '4730b91c-c207-437a-a5cd-c1e3c6383527', '252259e8-b6e3-40c1-887e-e6c1524898f1', 'TO DO', NULL);
 
 -- --------------------------------------------------------
 
@@ -151,7 +157,7 @@ CREATE TABLE `password_reset` (
 --
 
 INSERT INTO `password_reset` (`id`, `expiry_date_time`, `token`, `user_id`) VALUES
-(53, '2024-12-30 15:32:59.917933', '0e157a7d-6f2a-474a-aba2-b5f9dd331003', 'bad3ad59-c90d-42a3-a12b-602ccfa2dc14');
+(72, '2025-01-04 16:49:40.265286', 'c74ccecf-7785-4cd8-8f78-97acc247c0e6', 'bad3ad59-c90d-42a3-a12b-602ccfa2dc14');
 
 -- --------------------------------------------------------
 
@@ -192,18 +198,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `surname`, `email`, `password`, `user_img_id`) VALUES
-('25884b9e-f625-4ad9-b281-bed1936f7833', 'Sara', 'Scaringelli', 'sara.scaringelli.emp@gmail.com', '$2a$10$S3zQgBLQZ/D4UisG0O72NO49B442PSxoHETkM80ywj6AGdhBFLP9i', NULL),
-('4e1161c6-56a8-4041-9902-4fa5417598cd', 'Riccardo', 'Tarenzi', 'riccardo.tarenzi.emp@gmail.com', '$2a$10$3Kcww1KSQAR4F49hJPPH3unM4Q81J6KO4JC59vrmO0CUqMXL4Ol46', 26),
-('5e0c5595-32e1-40b0-8b1f-4f9ffb2afc87', 'Bianca', 'Deriachi', 'biancha.deriachi.emp@gmail.com', '$2a$10$2Acv0tL7da1VGMtNPnHkp.x4nN2z84.HNGZ0L0lSS1PU2hx0.N4Yu', 25),
-('6e2bf5a4-ba2d-4da0-8294-adcf55a6977a', 'Sara', 'Pittelli', 'employee@gmail.com', '$2a$10$wXN/7AoO1wcbySopJS8mS.vQK1eA6Uz9e155vlFgtu6ALm5g1yJ6m', NULL),
-('871b28da-5b50-431f-b930-b11dc0308b89', 'Alessia', 'Vigliarolo', 'alessia.vigliarolo.emp@gmail.com', '$2a$10$Dhaqgb2usquV2UYF52fiD.cPUMFLmnu4eoQPYTVSy/T7rKooxe3wW', 3),
-('a686b382-eef6-4f15-973d-da77c90793fa', 'Alessia', 'Marcimino', 'alessia.marcimino.emp@gmail.com', '$2a$10$8JnJ8eGQgBwtcGCwb5YlFuRAsvkVrgQ4S.DLNtHcqdIeAbAUDlOv2', 18),
-('aa76f92e-bd0a-4647-8678-a409cc2fe9cf', 'Ilaria', 'Pieretti', 'admin@gmail.com', '$2a$10$Ui8SmE4OyhD9ucq/isMzIOXZMxYG7FyAvNjLr58dsCQoXWCcBKt2S', NULL),
-('bad3ad59-c90d-42a3-a12b-602ccfa2dc14', 'Alessandra', 'Pedrotto', 'alessandra.pedrotto@edu.itspiemonte.it', '$2a$10$vlfyutwyZd/l4EdzIQFiUO2c4uUBQb.J22hpIKfUBjyFqPBCvxeFe', 24),
-('dccf76d3-1a94-4076-88d3-e3d447441d30', 'Logan', 'Paul', 'admin.employee@gmail.com', '$2a$10$3B5WxFfLQBl465KwyHj1HOAgEiAdBYgV2yUemN2luLxUwO4MY1BSm', 20),
-('f35183ad-9740-46f4-a11b-0b3d8b842154', 'Andrea', 'Daga', 'andrea.daga.emp@gmail.com', '$2a$10$BhjbUHYf10/8HVecdOtLDO3yXo5M7op5dHGrw2mTyxyknSiM8xnpi', NULL),
-('f87cc84e-324e-4bc2-b9b1-6bfa58b8bd75', 'Arianna', 'Zavaleta', 'arianna.zavaleta.emp@gmail.com', '$2a$10$Obl2E2.AnX3IOm3BrMfjfuIYaWH7ekjFVAv6Elc0oKD6TeHYKsTNi', 15),
-('feb91c1a-8558-41eb-9a0a-7660fd7f4d72', 'Enrico', 'Cotroneo', 'enrico.cotroneo@gmail.com', '$2a$10$6c2J.eXEYH0lsakb/ceMdeEtkKQ1Bk97ZfoNLFYpPH3QJxuYluHri', 12);
+('252259e8-b6e3-40c1-887e-e6c1524898f1', 'Beatrice', 'Ferrari', 'beatrice.ferrari.emp@gmail.com', '$2a$10$5BmmnQYRdU.xa3VDwYlOnu5DFtGwK6K/YK1fwlgVvpyjFErWOauQq', 12),
+('2c5bce10-aa81-4cdb-884b-d608e3a98074', 'Enrico', 'Romano', 'enrico.romano.cliente@gmail.com', '$2a$10$fMz5RveK03ZkkprzRp8kueAD0IptQag9kf27/jguvzYSnaZ3kBwaG', 12),
+('5bbb6b29-a009-4d49-a1d2-5b9b37564735', 'Carola', 'Esposito', 'carola.esposito.emp@gmail.com', '$2a$10$MWJKmkdeM5iZLjg7HJzXrOLxbfRnh6/WYlhHNqHP1EdhvUPigtPBO', 12),
+('7436f7bc-f635-4a9c-8b4f-44c491dd16c4', 'Domenico', 'Bianchi', 'domenico.bianchi.emp@gmail.com', '$2a$10$cQK0V39Ion6fGdsZ00xVnOH8JWjsxyvMRSKWnmuh./NWZaRWw32PW', 12),
+('b91d25aa-cab8-476d-ac9e-c76d72d34c9f', 'Fabiola', 'Colombo', 'fabiola.colombo.cliente@gmail.com', '$2a$10$hkeYsvSzetcCv.KiCIdoOeXdSGDp1IsIkomXpqe1cvrH4X2Iwi7GC', 12),
+('bad3ad59-c90d-42a3-a12b-602ccfa2dc14', 'Alessandra', 'Pedrotto', 'alessandra.pedrotto@edu.itspiemonte.it', '$2a$10$dxmtIsu6A7PB9djr8WHQfefeSYoHhJkovWft6BkeuA4Q2Fuf4QwBa', 24),
+('d058b959-86a6-4a90-afa3-81f5704d334a', 'Amelia', 'Russo', 'amelia.russo.emp@gmail.com', '$2a$10$gjgYZqlQ0H/g3Kwx7JTai.pp6ZHPZgZUpoThuyJeSYcBg6L89u9Ie', 16),
+('dccf76d3-1a94-4076-88d3-e3d447441d30', 'Logan', 'Paul', 'admin.employee@gmail.com', '$2a$10$3B5WxFfLQBl465KwyHj1HOAgEiAdBYgV2yUemN2luLxUwO4MY1BSm', 23);
 
 -- --------------------------------------------------------
 
@@ -265,19 +267,15 @@ CREATE TABLE `user_roles` (
 --
 
 INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
-('6e2bf5a4-ba2d-4da0-8294-adcf55a6977a', '1'),
-('aa76f92e-bd0a-4647-8678-a409cc2fe9cf', '2'),
-('871b28da-5b50-431f-b930-b11dc0308b89', '1'),
-('f35183ad-9740-46f4-a11b-0b3d8b842154', '1'),
 ('dccf76d3-1a94-4076-88d3-e3d447441d30', '2'),
 ('dccf76d3-1a94-4076-88d3-e3d447441d30', '1'),
-('25884b9e-f625-4ad9-b281-bed1936f7833', '1'),
-('a686b382-eef6-4f15-973d-da77c90793fa', '1'),
-('5e0c5595-32e1-40b0-8b1f-4f9ffb2afc87', '1'),
-('4e1161c6-56a8-4041-9902-4fa5417598cd', '1'),
-('f87cc84e-324e-4bc2-b9b1-6bfa58b8bd75', '1'),
 ('bad3ad59-c90d-42a3-a12b-602ccfa2dc14', '1'),
-('feb91c1a-8558-41eb-9a0a-7660fd7f4d72', '1');
+('d058b959-86a6-4a90-afa3-81f5704d334a', '1'),
+('252259e8-b6e3-40c1-887e-e6c1524898f1', '1'),
+('5bbb6b29-a009-4d49-a1d2-5b9b37564735', '1'),
+('7436f7bc-f635-4a9c-8b4f-44c491dd16c4', '1'),
+('2c5bce10-aa81-4cdb-884b-d608e3a98074', '1'),
+('b91d25aa-cab8-476d-ac9e-c76d72d34c9f', '1');
 
 --
 -- Indici per le tabelle scaricate
@@ -288,7 +286,7 @@ INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 --
 ALTER TABLE `booking_form`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `general_form_id` (`general_form_id`),
+  ADD KEY `FKe3hhn50pfkylr7l17kjlheort` (`user_id`),
   ADD KEY `FKpxfjm648qs5befywlmht3h4tq` (`generalform_id`);
 
 --
@@ -302,6 +300,7 @@ ALTER TABLE `category`
 --
 ALTER TABLE `general_form`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UKtc3jyt7i3d2hms10u3lq4jog0` (`email`,`category_id`,`name`,`surname`) USING HASH,
   ADD KEY `FKexviuaoaiiafyxvsoce0rs0n7` (`category_id`);
 
 --
@@ -354,7 +353,7 @@ ALTER TABLE `user_roles`
 -- AUTO_INCREMENT per la tabella `password_reset`
 --
 ALTER TABLE `password_reset`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT per la tabella `user_image`
@@ -370,6 +369,7 @@ ALTER TABLE `user_image`
 -- Limiti per la tabella `booking_form`
 --
 ALTER TABLE `booking_form`
+  ADD CONSTRAINT `FKe3hhn50pfkylr7l17kjlheort` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `FKpxfjm648qs5befywlmht3h4tq` FOREIGN KEY (`generalform_id`) REFERENCES `general_form` (`id`);
 
 --
@@ -382,15 +382,15 @@ ALTER TABLE `general_form`
 -- Limiti per la tabella `information_form`
 --
 ALTER TABLE `information_form`
-  ADD CONSTRAINT `FK737wsxxu99pnpex9q84gq9xm6` FOREIGN KEY (`generalform_id`) REFERENCES `general_form` (`id`),
-  ADD CONSTRAINT `FKk9a8x0t26tvpkou727e2go2cm` FOREIGN KEY (`general_form_id`) REFERENCES `general_form` (`id`),
-  ADD CONSTRAINT `assiged_to` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `FK737wsxxu99pnpex9q84gq9xm6` FOREIGN KEY (`generalform_id`) REFERENCES `general_form` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `FKk9a8x0t26tvpkou727e2go2cm` FOREIGN KEY (`general_form_id`) REFERENCES `general_form` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `assiged_to` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `password_reset`
 --
 ALTER TABLE `password_reset`
-  ADD CONSTRAINT `FK3rcc5avyc21uriav34cjrqc91` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK3rcc5avyc21uriav34cjrqc91` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Limiti per la tabella `user`

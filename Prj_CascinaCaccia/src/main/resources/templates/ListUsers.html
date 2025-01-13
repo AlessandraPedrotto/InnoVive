@@ -1,63 +1,88 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
+
 <head>
 	<meta charset="UTF-8">
 	<title>List Users</title>
 	<link rel="stylesheet" href="/styles/normalize.css">
 	<link rel="stylesheet" href="/styles/style.css?v=1.0">
 	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
+
+	<link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+	<link rel="shortcut icon" href="/img/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="EducatiON" />
+	<link rel="manifest" href="/img/site.webmanifest" />
 </head>
+
 
 <body>
 	<div class="backoffice-container">
-        <div class="sidebar">
-            <div class="sidebar-logo">
-                <img src="/img/logo.png" alt="education logo">
-            </div>
-            <a href="/profile">Home</a>
-            <!-- Admin-specific buttons -->
-            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
-            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
+		<div class="sidebar">
+			<div class="sidebar-logo">
+				<img src="/img/logo.png" alt="education logo">
+			</div>
+			<a href="/profile">Home</a>
+			<!-- Admin-specific buttons -->
+			<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">List Users</a>
+			<a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Register</a>
 
-            <!-- Buttons for every user -->
-            <a href="/yourTasks">Your tasks</a>
-            <a href="/changePassword">Change password</a>
-            <a href="/request">View all requests</a>
-            <a href="/profileImage">Profile image</a>
 
-            <!-- Logout link -->
-            <a id="logoutBtn" th:href="@{/logout}">Logout</a>
+			<!-- Buttons for every user -->
+			<a href="/yourTasks">Your tasks</a>
+			<a href="/changePassword">Change password</a>
+			<a href="/request">View all requests</a>
+			<a href="/profileImage">Profile image</a>
 
-        </div>
-		<div class="backoffice-content">
-			<h2>List Users</h2>
+
+			<!-- Logout link -->
+			<a id="logoutBtn" th:href="@{/logout}">Logout</a>
+
+
+		</div>
+		<div class="backoffice-content" id="listUsers-container">
+			<h2>Lista Utenti</h2>
+
 
 			<!-- Form for searching users -->
 			<form method="get" th:action="@{/admin/listUsers}">
 				<input type="text" name="query" th:value="${query}" placeholder="Search by email, name, or surname" />
-				<button type="submit">Search</button>
-				<button type="button" th:onclick="'window.location.href=\'' + @{/admin/listUsers} + '\''">View All
-					Users</button>
+				<button type="submit">
+					<svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+						<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+						<g id="SVGRepo_iconCarrier">
+							<path
+								d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+								stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+						</g>
+					</svg>
+				</button>
+				<button type="button" th:onclick="'window.location.href=\'' + @{/admin/listUsers} + '\''">Tutti gli utenti</button>
 			</form>
 
+
 			<!-- Sorting Dropdown -->
-			<div class="d-flex justify-content-between align-items-center mb-3">
-			    <form method="get" th:action="@{/admin/listUsers}" class="form-inline">
-			        <input type="hidden" name="page" th:value="${currentPage}" />
-			        <input type="hidden" name="size" th:value="${size}" />
-			        <select class="form-control mr-2" name="sortBy" onchange="this.form.submit()">
-			            <option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Surname: A to Z</option>
-			            <option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Surname: Z to A</option>
-			        </select>
-			        <noscript>
-			            <button type="submit" class="btn btn-primary">Sort</button>
-			        </noscript>
-			    </form>
+			<div class="sort-users">
+				<form method="get" th:action="@{/admin/listUsers}" class="form-inline">
+					<input type="hidden" name="page" th:value="${currentPage}" />
+					<input type="hidden" name="size" th:value="${size}" />
+					<select name="sortBy" onchange="this.form.submit()">
+						<option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Cognome: A to Z</option>
+						<option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Cognome: Z to A</option>
+					</select>
+					<noscript>
+						<button type="submit">Ordina</button>
+					</noscript>
+				</form>
 			</div>
 
+
 			<!-- Exit page button -->
-			<a href="/profile">Back</a>
+			<a href="/profile">Indietro</a>
+
 
 			<!-- If no results -->
 			<div th:if="${noResults}" class="alert alert-info">
@@ -65,15 +90,18 @@
 			</div>
 			<div th:if="${hasUsers}">
 
+
 				<!-- Table with all users -->
 				<table>
 					<thead>
 						<tr>
 							<!-- <th>ID</th>-->
-							<th>Name</th>
-							<th>Surname</th>
+							<th>Nome</th>
+							<th>Cognome</th>
 							<th>Email</th>
-							<th>Actions</th>
+							<th>Satato</th>
+							<th>Ultimo accesso</th>
+							<th>Azioni</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -82,18 +110,23 @@
 							<td th:text="${user.name}"></td>
 							<td th:text="${user.surname}"></td>
 							<td th:text="${user.email}"></td>
-							<td>
+							<td th:text="${user.state}"></td>
+							<td> <span th:if="${user.state == 'OFFLINE'}" th:text="${user.lastAccess.format(formatter)}"></span></td>
+							<td class="user-controls">
+
 
 								<!-- Button to view Public Profile -->
-								<a th:href="@{/admin/publicProfile/{userId}(userId=${user.id})}">
-									<button type="button">View Profile</button>
+								<a th:if="${user.id != loggedInUserId}" th:href="@{/admin/publicProfile/{userId}(userId=${user.id})}">
+									<button class="profile-button" type="button">Visualizza profilo</button>
 								</a>
+
 
 								<!-- Button to delete profile -->
 								<form th:action="@{/admin/deleteUser}" method="get"
 									th:if="${user.id != loggedInUserId}">
 									<input type="hidden" name="userId" th:value="${user.id}" />
-									<button sec:authorize="hasRole('ADMIN')" type="submit">Delete</button>
+									<button class="delete-button" sec:authorize="hasRole('ADMIN')"
+										type="submit">Elimina</button>
 								</form>
 							</td>
 						</tr>
@@ -101,23 +134,27 @@
 				</table>
 			</div>
 
+
 			<!-- Check if there's a message -->
 			<div th:if="${message != null}">
 				<p th:text="${message}"></p>
 			</div>
 
+
 			<div th:if="${users != null and users.size() > 0}">
 				<!-- Pagination Controls -->
 				<div>
 
+
 					<!-- First Page -->
 					<a th:if="${currentPage > 1}"
-						th:href="@{/admin/listUsers(page=1, query=${query}, sortBy=${sortBy})}">First Page</a>
+						th:href="@{/admin/listUsers(page=1, query=${query}, sortBy=${sortBy})}">Prima pagina</a>
+
 
 					<!-- Previous Page -->
 					<a th:if="${currentPage > 1}"
-						th:href="@{/admin/listUsers(page=${currentPage - 1}, query=${query}, sortBy=${sortBy})}">Previous
-						Page</a>
+						th:href="@{/admin/listUsers(page=${currentPage - 1}, query=${query}, sortBy=${sortBy})}">Pagina precedente</a>
+
 
 					<!-- Display page numbers -->
 					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
@@ -125,19 +162,22 @@
 							th:classappend="${i == currentPage ? 'btn-primary text-white' : ''}"></a>
 					</span>
 
+
 					<!-- Next Page -->
 					<a th:if="${currentPage < totalPages}"
-						th:href="@{/admin/listUsers(page=${currentPage + 1}, query=${query}, sortBy=${sortBy})}">Next
-						Page</a>
+						th:href="@{/admin/listUsers(page=${currentPage + 1}, query=${query}, sortBy=${sortBy})}">Pagina successiva</a>
+
 
 					<!-- Last Page -->
 					<a th:if="${currentPage < totalPages}"
-						th:href="@{/admin/listUsers(page=${totalPages}, query=${query}, sortBy=${sortBy})}">Last Page</a>
+						th:href="@{/admin/listUsers(page=${totalPages}, query=${query}, sortBy=${sortBy})}">Ultima pagina</a>
 				</div>
 			</div>
 		</div>
 	</div>
 
+
 </body>
+
 
 </html>

@@ -44,17 +44,32 @@ function handleQuestionClick(question, buttonsContainer) {
 
         const botText = document.createElement('div');
         botText.classList.add('text');
-        botText.textContent = getBotResponse(question);
+        botText.innerHTML = getBotResponse(question);
 
         const buttonsContainer = document.createElement('div');
         buttonsContainer.classList.add('buttons-container');
 
-        // Handle additional questions for "What can you do?"
-        if (question === "What can you do?") {
+        // Handle additional questions for "Informazioni sulla cascina"
+        if (question === "Informazioni sulla cascina") {
             const followUpQuestions = [
-                "How do you help with tasks?",
-                "Can you provide examples?",
-                "What makes you unique?"
+                "Dove si trova la cascina?",
+                "Come posso contattarvi?",
+                "Come prenoto una visita?"
+            ];
+
+            followUpQuestions.forEach(followUp => {
+                const followUpButton = document.createElement('button');
+                followUpButton.textContent = followUp;
+                followUpButton.onclick = () => handleQuestionClick(followUp, buttonsContainer);
+                buttonsContainer.appendChild(followUpButton);
+            });
+        }
+        
+        // Handle additional questions for "La storia di Cascina Caccia"
+        if (question === "La storia di Cascina Caccia") {
+            const followUpQuestions = [
+                "Cos'è Cascina Caccia?",
+                "Chi era Bruno Caccia?"
             ];
 
             followUpQuestions.forEach(followUp => {
@@ -67,7 +82,7 @@ function handleQuestionClick(question, buttonsContainer) {
 
         // Add "Ask something else" button
         const askMoreButton = document.createElement('button');
-        askMoreButton.textContent = "Ask something else";
+        askMoreButton.textContent = "Chiedi altro";
         askMoreButton.onclick = function () {
             // Disable all buttons in the current group
             disableAllButtons();
@@ -78,7 +93,7 @@ function handleQuestionClick(question, buttonsContainer) {
 
             const userText = document.createElement('div');
             userText.classList.add('text');
-            userText.textContent = "Ask something else";
+            userText.textContent = "Chiedi altro";
             userMessage.appendChild(userText);
             document.getElementById('chatMessages').appendChild(userMessage);
 
@@ -109,15 +124,15 @@ function showInitialMessage() {
     
     const botText = document.createElement('div');
     botText.classList.add('text');
-    botText.textContent = "How can I help you?";
+    botText.textContent = "Come posso aiutarti?";
     
     const buttonsContainer = document.createElement('div');
     buttonsContainer.classList.add('buttons-container');
     
     const questions = [
-        "What is your name?",
-        "What can you do?",
-        "Tell me a joke!"
+        "La storia di Cascina Caccia",
+        "Informazioni sulla cascina",
+        "Attività da svolgere"
     ];
 
     questions.forEach(question => {
@@ -145,15 +160,17 @@ function disableAllButtons() {
 // Bot response based on user input
 function getBotResponse(userMessage) {
     const responses = {
-        "What is your name?": "I am Caccia, your friendly chatbot!",
-        "What can you do?": "I can answer your questions, tell jokes, and assist with tasks! Here's more I can do:",
-        "Tell me a joke!": "Why don't skeletons fight each other? They don't have the guts!",
-        "How do you help with tasks?": "I provide step-by-step guidance to help you complete your tasks efficiently.",
-        "Can you provide examples?": "Sure! I can assist with coding, answering questions, and even creative writing.",
-        "What makes you unique?": "I’m fast, adaptive, and always ready to help!"
+        "La storia di Cascina Caccia": "Cosa desideri sapere?",
+        "Informazioni sulla cascina": "Cosa desideri sapere?",
+        "Attività da svolgere": "Oltre alle attività di sensibilizzazione sull'argomento mafia, offriamo anche laboratori manuali, che includono la raccolta dei frutti prodotti in cascina e la loro preparazione in cucina, oltre a attività artistiche per la creazione di candele. Per avere maggiori dettagli clicca <a href='/attivita' target='_blank'>qui</a>.",
+        "Dove si trova la cascina?": "La Cascina si trova a San Sebastiano da Po, in provincia di Torino, Piemonte.",
+        "Come posso contattarvi?": "Puoi contattarci compilando il modulo per le informazioni, che trovi cliccando sul pulsante rotondo con la 'i' qua di lato oppure <a href='#informationFormContainer' onclick='toggleInformationForm()'>qui</a>.",
+        "Come prenoto una visita?": "Puoi prenotare una visita cliccando sul tasto 'Prenota' nel menu in alto oppure <a href='/prenota' target='_blank'>qui</a>.",
+    	"Cos'è Cascina Caccia?": "Cascina Caccia era un bene della famiglia Belfiore, legata alla 'Ndrangheta, e fu confiscata dopo la condanna di Domenico Belfiore, mandante dell’omicidio del giudice Bruno Caccia. Oggi è un luogo simbolo di riscatto. Rappresenta la vittoria della giustizia sulla criminalità organizzata.",
+    	"Chi era Bruno Caccia?": "Bruno Caccia era un giudice torinese ucciso nel 1983 per la sua lotta contro la criminalità organizzata. La sua morte, causata da Domenico Belfiore, mandante dell'omicidio, ha portato alla confisca di beni legati alla famiglia Belfiore, tra cui questa Cascina."
     };
 
-    return responses[userMessage] || "I'm sorry, I didn't understand that.";
+    return responses[userMessage] || "Scusami, non ho capito.";
 }
 
 // Scroll to the bottom of the chat

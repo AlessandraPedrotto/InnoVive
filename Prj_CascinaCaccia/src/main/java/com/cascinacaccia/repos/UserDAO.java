@@ -1,12 +1,14 @@
 package com.cascinacaccia.repos;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.cascinacaccia.entities.User;
-
 
 /*
  * The UserDAO interface extends JpaRepository to provide standard CRUD operations for the User entity.
@@ -27,4 +29,8 @@ public interface UserDAO extends JpaRepository<User, String>{
 	Optional<User> findByEmail(String email);
 	Optional<User> findByName(String name);
 	Optional<User> findById(String Id);
+	
+	@Query("SELECT u FROM User u WHERE u.state = :state AND u.lastAccess < :cutoffTime")
+	List<User> findUsersByStateAndLastAccessBefore(@Param("state") String state, @Param("cutoffTime") LocalDateTime cutoffTime);
+
 }

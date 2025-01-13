@@ -1,5 +1,6 @@
 package com.cascinacaccia.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +25,7 @@ import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.repos.UserImageDAO;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 /*
@@ -53,7 +56,40 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	private InformationFormService informationFormService;
 	
-	//method to register a new user
+	/*
+	 * Updates the user's state and last access time in the database.
+	 * 
+	 * @param email The email address of the user whose state and last access time need to be updated.
+	 * @param state The new state to assign to the user (e.g., "ONLINE" or "OFFLINE").
+	 */
+	@Transactional
+	public void updateUserStateAndLastAccess(String email, String state) {
+
+	    User user = userDAO.findByEmail(email)
+	            .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+
+	    user.setState(state);
+	    user.setLastAccess(LocalDateTime.now());
+
+	    userDAO.save(user);
+	}
+	
+	@Scheduled(fixedRate = 100000) // Every 5 minutes
+	public void markInactiveUsersOffline() {
+	    LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(5);
+	    List<User> inactiveUsers = userDAO.findUsersByStateAndLastAccessBefore("ONLINE", cutoffTime);
+	    for (User user : inactiveUsers) {
+	        user.setState("OFFLINE");
+	        userDAO.save(user);
+	    }
+	}
+	
+	 /*
+     * Registers a new user by setting their ID, name, email, password, default profile image, 
+     * and role, then saves the user to the database.
+     * 
+     * @param user The user object containing registration details.
+     */
 	public void register(User user) { 
 		
         String id = UUID.randomUUID().toString();
@@ -72,7 +108,7 @@ public class UserService implements UserDetailsService{
         //set the default profile image for the new user
         user.setUserImage(defaultProfileImage);
         
-        //create a list of roles for the user
+        //assign a role for the user
         List<Role> roles = new ArrayList<>();
         //roles.add(new Role("2", "ROLE_ADMIN")); //uncomment this line to add an admin 
         roles.add(new Role("1", "ROLE_EMPLOYEE"));
@@ -82,7 +118,13 @@ public class UserService implements UserDetailsService{
         userDAO.save(user);
     }
 	
-	//method to assign roles to a user
+	/*
+     * Assigns roles to an existing user.
+     * 
+     * @param user The user to assign roles to.
+     * @param roles A list of roles to assign to the user.
+     * @throws IllegalArgumentException if the number of roles is less than 1 or more than 2.
+     */
 	public void assignRoles(User user, List<Role> roles) {
         
 		//check if the number of roles assigned is between 1 and 2
@@ -94,20 +136,34 @@ public class UserService implements UserDetailsService{
         userDAO.save(user);
     }
 	
+	/*
+     * Loads a user by their email address. This method is required by the UserDetailsService interface.
+     * It maps the user roles to GrantedAuthority objects for Spring Security.
+     * 
+     * @param email The email of the user to load.
+     * @return UserDetails object representing the authenticated user.
+     * @throws UsernameNotFoundException if the user is not found.
+     */
 	@Override
-	/*this method is required by the UserDetailsService interface,
-	 *it loads the user by their email address
-	*/
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         
+		//find the user by email, throw exception if not found
     	User user = userDAO.findByEmail(email).orElseThrow(() ->
             new UsernameNotFoundException("User was not found"));
     	
     	System.out.println("User roles: " + user.getRoles());
     	
+    	//ensure the user has at least one role assigned
     	if (user.getRoles() == null || user.getRoles().isEmpty()) {
             throw new IllegalStateException("User does not have any roles assigned.");
         }
+    	
+    	user.setState("ONLINE");
+        user.setLastAccess(LocalDateTime.now());
+
+        // Save the updated user state to the database
+        userDAO.save(user);
+        System.out.println("User state updated to ONLINE for email: " + email);
 
         //map all roles to GrantedAuthority objects
         List<GrantedAuthority> authorities = user.getRoles().stream()
@@ -121,7 +177,12 @@ public class UserService implements UserDetailsService{
                 .build();
     }
     
-	//method to check if an email already exists in the db
+	/*
+     * Checks if the given email is already in use by an existing user in the database.
+     * 
+     * @param user The user whose email needs to be checked.
+     * @return true if the email is already in use, false otherwise.
+     */
     public boolean isEmailAlreadyInUse(User user) {
     	String id = user.getEmail(); 
         List<User> usersList = userDAO.findAll();  
@@ -137,22 +198,39 @@ public class UserService implements UserDetailsService{
         return false;
 	}
     
-    //method to get user by email
+    /*
+     * Retrieves a user by their email address from the currently authenticated principal.
+     * 
+     * @param principal The currently authenticated user.
+     * @return The User object corresponding to the authenticated principal.
+     */
     public User getUserByEmail(Object principal) {
     	UserDetails userDetails = (UserDetails) principal;
         return userDAO.findByEmail(userDetails.getUsername())
                       .orElseThrow(() -> new RuntimeException("User not found"));
     }
     
-    //method to get user by id
+    /*
+     * Retrieves a user by their ID.
+     * 
+     * @param userId The ID of the user.
+     * @return The User object corresponding to the user ID.
+     * @throws RuntimeException if the user is not found.
+     */
     public User getUserById(String userId) {
         return userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    //method to delete a user
+    /*
+     * Deletes a user by their ID. This method also removes associations with information forms 
+     * and clears roles before deleting the user from the database.
+     * 
+     * @param userId The ID of the user to delete.
+     * @throws IllegalArgumentException if the user is not found.
+     */
     public void deleteUserById(String userId) {
     	
-    	// Fetch the user
+    	//fetch the user
     	User user = userDAO.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 
@@ -162,7 +240,8 @@ public class UserService implements UserDetailsService{
             generalForm.getInformationForms().forEach(informationForm -> {
                 if (informationForm.getAssignedUser() != null && 
                     informationForm.getAssignedUser().getId().equals(userId)) {
-                    // Nullify the user reference in the information form
+                    
+                	// Nullify the user reference in the information form
                     informationForm.setAssignedUser(null);
                     informationFormService.saveInformationForm(informationForm); // Save the update
                 }
@@ -170,14 +249,20 @@ public class UserService implements UserDetailsService{
         }
 
         // Step 2: Remove roles and other associations
-        user.getRoles().clear(); // Clear roles
-        userDAO.save(user); // Save the updated user state to ensure no dangling references
+        user.getRoles().clear();
+        userDAO.save(user);
 
         // Step 3: Delete the user
         userDAO.deleteById(userId); 
     }
     
-    //method to retrieve roles associated with a user
+    /*
+     * Retrieves the roles associated with a user.
+     * 
+     * @param idUser The ID of the user whose roles need to be retrieved.
+     * @return A list of roles assigned to the user.
+     * @throws EntityNotFoundException if the user is not found.
+     */
     public List<Role> getUserRoles(String idUser) {
     	
         Optional<User> user = userDAO.findById(idUser);
@@ -189,7 +274,14 @@ public class UserService implements UserDetailsService{
         throw new EntityNotFoundException("User not found with ID: " + idUser);
     }
     
-    //method to change a user password 
+    /*
+     * Changes the password for a user after verifying that the old password is correct.
+     * 
+     * @param userId The ID of the user whose password needs to be changed.
+     * @param oldPassword The current password of the user.
+     * @param newPassword The new password to set.
+     * @throws Exception if the old password is incorrect.
+     */
     public void changePassword(String userId, String oldPassword, String newPassword) throws Exception {
         
         User user = userDAO.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found."));
@@ -207,12 +299,21 @@ public class UserService implements UserDetailsService{
         userDAO.save(user);
     }
     
-    //method to retrieve all available user images
+    /*
+     * Retrieves all available user images from the database.
+     * 
+     * @return A list of user images.
+     */
     public List<UserImage> getAllUserImg() {
         return userImageDAO.findAll();
     }
     
-    //method to assign or change the profile image of a user
+    /*
+     * Assigns or updates the profile image for a user.
+     * 
+     * @param userId The ID of the user to update the profile image for.
+     * @param userImageId The ID of the new user image to assign.
+     */
     public void assignOrUpdateProfileImage(String userId, Long userImageId) {
         
     	//get the user by ID
@@ -227,8 +328,32 @@ public class UserService implements UserDetailsService{
         userDAO.save(user);
     }
     
-    //method to get all the users
+    /*
+     * Retrieves all users from the database.
+     * 
+     * @return A list of all users.
+     */
     public List<User> getAllUsers() {
         return userDAO.findAll(); 
+    }
+    
+    /*
+     * Updates the name and surname of a user.
+     * 
+     * @param userId   The ID of the user whose name and surname need to be updated.
+     * @param newName  The new name to be set for the user.
+     * @param newSurname The new surname to be set for the user.
+     * 
+     * @throws RuntimeException if the user with the specified ID is not found.
+     */
+    public void updateNameAndSurname(String userId, String newName, String newSurname) {
+        User user = userDAO.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setName(newName);
+        user.setSurname(newSurname);
+        
+        //save updated user details in the database
+        userDAO.save(user);
     }
 }

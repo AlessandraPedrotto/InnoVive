@@ -47,9 +47,10 @@ public class RequestController {
 	        @RequestParam(name = "categories", required = false) List<String> categoryIds,
 	        @RequestParam(name = "statuses", required = false) List<String> statuses,
 	        @RequestParam(name = "formType", defaultValue = "all") String formType,
+	        @RequestParam(name = "assignation", required = false) String assignation,
 	        Model model) {
     	
-    	// Ensure statuses is never null
+    	//ensure statuses is never null
         if (statuses == null) {
             statuses = new ArrayList<>();
         }
@@ -58,19 +59,25 @@ public class RequestController {
         List<Informationform> informationForms = informationFormDAO.findAll();
         List<BookingForm> bookingForms = bookingFormDAO.findAll();
         
-    	// Filter by selected categories if available
+    	//filter by selected categories if available
         generalForms = FilterService.filterFormsByCategories(generalForms, categoryIds);
         
         generalForms = FilterService.filterFormsByStatuses(generalForms, statuses);
     	
-        // Apply form type filter (either Information Form or Booking Form)
+        //apply form type filter (either Information Form or Booking Form)
         if ("informationForm".equals(formType)) {
-        	generalForms = FilterService.filterByInformationForm(generalForms);  // This would filter out only Information Forms
+        	generalForms = FilterService.filterByInformationForm(generalForms);
         } else if ("bookingForm".equals(formType)) {
-        	generalForms = FilterService.filterByBookingForm(generalForms);  // This would filter out only Booking Forms
+        	generalForms = FilterService.filterByBookingForm(generalForms);
         }
         
-        // Sort forms based on the selected option
+        //apply filter by assignation status if provided
+        if (assignation != null && !assignation.isEmpty()) {
+            boolean isAssigned = "assigned".equals(assignation);
+            generalForms = FilterService.filterByAssignment(generalForms, isAssigned);
+        }
+        
+        //sort forms based on the selected option
         switch (sortBy) {
             case "surnameAsc":
                 generalForms = FilterService.sortBySurname(generalForms, true);
@@ -85,10 +92,11 @@ public class RequestController {
                 generalForms = FilterService.sortBySubmissionDate(generalForms, true);
                 break;
             default:
-                // Default to newest
+                //default to newest
                 generalForms = FilterService.sortBySubmissionDate(generalForms, false);
         }
-    	// Check if no forms are found
+        
+    	//check if no forms are found
         if (generalForms.isEmpty()) {
             model.addAttribute("message", "No results found");
         }
@@ -111,7 +119,7 @@ public class RequestController {
         List<User> users = userService.getAllUsers();
         List<Category> categories = categoryDAO.findAll();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        //add the form lists to the model
+        
         model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages); 
         model.addAttribute("currentPage", page); 
@@ -127,6 +135,7 @@ public class RequestController {
         model.addAttribute("statusesSelected", statuses);
         model.addAttribute("formatter", formatter);
         model.addAttribute("formType", formType);
+        model.addAttribute("assignation", assignation);
         return "Request";
     }
 }
