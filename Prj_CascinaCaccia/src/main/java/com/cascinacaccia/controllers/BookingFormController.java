@@ -114,14 +114,14 @@ public class BookingFormController {
     
     //assign a user to a task
     @PostMapping("/assignUserBooking")
-    public String assignUserToBooking(@RequestParam String bookingFormId, @RequestParam String userId, RedirectAttributes redirectAttributes) {
+    public String assignUserToBooking(@RequestParam String bookingFormId, @RequestParam String userId, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
             bookingFormService.assignUser(userId, bookingFormId);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to assign user: " + e.getMessage());
-            return "redirect:/request";
+            return "redirect:"+ request.getHeader("Referer");
         }
-        return "redirect:/request";
+        return "redirect:"+ request.getHeader("Referer");
     }
     
     //remove a user from a task
