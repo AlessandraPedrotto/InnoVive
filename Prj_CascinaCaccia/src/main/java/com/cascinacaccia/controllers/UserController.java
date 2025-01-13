@@ -212,6 +212,8 @@ public class UserController {
 	        page = totalPages;
 	    }
 
+	    List<User> users = userService.getAllUsers();
+	    
 	    //paginate the list of assigned forms
 	    List<Generalform> paginatedForms = FilterService.getPaginatedList(allAssignedForms, page, size);
 	    List<Category> categories = categoryDAO.findAll();
@@ -221,6 +223,7 @@ public class UserController {
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("totalForms", totalForms);
 	    model.addAttribute("sort", sortAscending);
+	    model.addAttribute("users", users);
         model.addAttribute("sortBy", sortBy);
 	    model.addAttribute("assignedForms", paginatedForms);
 	    model.addAttribute("categoriesSelected", categoryIds != null ? categoryIds : List.of());

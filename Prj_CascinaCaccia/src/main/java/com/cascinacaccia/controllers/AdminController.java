@@ -212,6 +212,8 @@ public class AdminController {
             generalForm.setInformationForms(assignedInformationForms); 
         });
         
+        List<User> users = userService.getAllUsers();
+        
         //fetch assigned booking forms
         List<Generalform> assignedBookingForms = bookingFormService.getAssignedFormsByUserBooking(user.getId());
 
@@ -273,7 +275,8 @@ public class AdminController {
         
         //add data to the model
         model.addAttribute("assignedForms", paginatedAssignedForms);
-        model.addAttribute("user", user);  
+        model.addAttribute("user", user); 
+        model.addAttribute("users", users);
         model.addAttribute("sort", sortAscending);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("totalPages", totalPages);
