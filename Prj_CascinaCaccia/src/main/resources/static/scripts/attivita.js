@@ -9,6 +9,10 @@ const laboratori = document.getElementById('laboratori')
 buttons.forEach(button => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
+      window.scrollTo({
+          top: 70, 
+          behavior: 'smooth'
+      });
 
       //  hiding all sections
       medie.classList.add('hidden');               // da gestire con array
