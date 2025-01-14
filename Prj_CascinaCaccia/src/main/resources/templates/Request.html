@@ -168,7 +168,7 @@
 												<th>Data</th>
 												<th>Stato</th>
 												<th>Impiegato</th>
-												<th sec:authorize="hasRole('ADMIN')">Azioni</th>
+												<th>Azioni</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -203,7 +203,7 @@
 												<td>
 
 													<!-- Button to open the assignment modal for user-->
-													<button sec:authorize="hasRole('ADMIN')"
+													<button
 														class="form-button assign-user-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignUserModal-' + ${informationForm.id}">
@@ -213,7 +213,6 @@
 													<!-- Form to remove the currently assigned user from the InformationForm -->
 													<form th:action="@{/removeUserFromInformationForm}" method="post"
 														th:if="${informationForm.getAssignedUser() != null}"
-														sec:authorize="hasRole('ADMIN')"
 														onsubmit="return confirm('Are you sure you want to remove this user from the information form?');">
 														<input type="hidden" name="informationFormId"
 															th:value="${informationForm.id}" />
@@ -223,7 +222,7 @@
 													</form>
 
 													<!-- Button to open the assignment modal for status-->
-													<button sec:authorize="hasRole('ADMIN')"
+													<button
 														class="form-button assign-status-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignStatusModal-' + ${informationForm.id}">
@@ -320,7 +319,7 @@
 												<th>Check-Out</th>
 												<th>Stato</th>
 												<th>Impiegato</th>
-												<th sec:authorize="hasRole('ADMIN')">Azioni</th>
+												<th>Azioni</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -356,7 +355,7 @@
 												<td>
 
 													<!-- Button to open the assignment modal for user-->
-													<button sec:authorize="hasRole('ADMIN')"
+													<button
 														class="form-button assign-user-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignUserModal-' + ${bookingForm.id}">
@@ -366,7 +365,6 @@
 													<!-- Form to remove the currently assigned user from the InformationForm -->
 													<form th:action="@{/removeUserFromBookingForm}" method="post"
 														th:if="${bookingForm.getAssignedUser() != null}"
-														sec:authorize="hasRole('ADMIN')"
 														onsubmit="return confirm('Are you sure you want to remove this user from the booking form?');">
 														<input type="hidden" name="bookingFormId"
 															th:value="${bookingForm.id}" />
@@ -376,7 +374,7 @@
 													</form>
 
 													<!-- Button to open the assignment modal for status-->
-													<button sec:authorize="hasRole('ADMIN')"
+													<button
 														class="form-button assign-status-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignStatusModal-' + ${bookingForm.id}">
