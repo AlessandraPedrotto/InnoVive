@@ -21,21 +21,21 @@
 	<div class="backoffice-container">
         <div class="sidebar">
             <div class="sidebar-logo">
-                <img src="/img/logo.png" alt="education logo">
+                <img src="/img/logo.png" alt="Education logo">
             </div>
             <a href="/profile">Home</a>
             <!-- Admin-specific buttons -->
             <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">Lista utenti</a>
-            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Registrazione</a>
+            <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Registra utente</a>
 
             <!-- Buttons for every user -->
-            <a href="/yourTasks">I tuoi task</a>
+            <a href="/yourTasks">Le tue tasks</a>
             <a href="/changePassword">Cambia password</a>
-            <a href="/request">Tutte le richieste</a>
-            <a href="/profileImage">Immagine profilo</a>
+            <a href="/request">Visualizza richieste</a>
+            <a href="/profileImage">Immagine del profilo</a>
 
             <!-- Logout link -->
-            <a id="logoutBtn" th:href="@{/logout}">Logout</a>
+            <a id="logoutBtn" th:href="@{/logout}">Esci</a>
 
         </div>
 		<div class="backoffice-content">
