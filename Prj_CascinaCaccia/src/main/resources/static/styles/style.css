@@ -127,11 +127,17 @@
 /* header */
 .hero {
   background-color: #D9D9D9;
+  background: url('/img/cascina-hero.jpg');
   background-blend-mode: screen;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #fff;
+}
+
+.highlited{
+  color: #f09321;
 }
 
 .hero-title {
