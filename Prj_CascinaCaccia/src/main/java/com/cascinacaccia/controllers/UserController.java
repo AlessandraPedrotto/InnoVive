@@ -1,10 +1,12 @@
 package com.cascinacaccia.controllers;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -28,6 +30,7 @@ import com.cascinacaccia.entities.User;
 import com.cascinacaccia.entities.UserImage;
 import com.cascinacaccia.repos.BookingFormDAO;
 import com.cascinacaccia.repos.CategoryDAO;
+import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.repos.InformationformDAO;
 import com.cascinacaccia.repos.UserImageDAO;
 import com.cascinacaccia.services.BookingFormService;
@@ -35,6 +38,7 @@ import com.cascinacaccia.services.FilterService;
 import com.cascinacaccia.services.InformationFormService;
 import com.cascinacaccia.services.UserService;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -47,6 +51,8 @@ public class UserController {
 	private UserImageDAO userImageDAO;
 	@Autowired
 	private BookingFormDAO bookingFormDAO;
+	@Autowired
+	private GeneralformDAO generalFormDAO;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -62,7 +68,7 @@ public class UserController {
 	
 	//navigation to profile page
 	@GetMapping("/profile")
-	public String profilePage(@AuthenticationPrincipal Object principal, Model model) throws Exception {
+	public String profilePage(@AuthenticationPrincipal Object principal, Model model, HttpSession session, HttpServletRequest request) throws Exception {
 	    
 	    User user = userService.getUserByEmail(principal);
 
@@ -80,12 +86,45 @@ public class UserController {
 	        generalForm.setInformationForms(assignedInformationForms); 
 	    });
 	    
+        List<Generalform> generalForms = generalFormDAO.findAll();
+        
+        AtomicReference<LocalDateTime> lastSeenRef = new AtomicReference<>(LocalDateTime.now().minusDays(30));
+        
+        // Read cookies and get the "lastSeen" timestamp
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("lastSeen".equals(cookie.getName())) {
+                    try {
+                        String lastSeenStr = cookie.getValue();
+                        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                        lastSeenRef.set(LocalDateTime.parse(lastSeenStr, formatter));
+                    } catch (Exception e) {
+                        // Error parsing cookie
+                        System.err.println("Error parsing lastSeen cookie: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        LocalDateTime lastSeen = user.getLastSeen() != null ? user.getLastSeen() : LocalDateTime.now().minusDays(30);  // Use the user's own lastSeen value
+        
+        // Calculate the new form count based on lastSeen for the specific user
+        long newFormCount = generalForms.stream()
+            .filter(generalForm -> generalForm.getSubmissionDate() != null &&
+                generalForm.getSubmissionDate().isAfter(lastSeen))
+            .count();
+            
+        // Set session attribute to reset new form count
+        session.setAttribute("newFormCount", newFormCount);
+        
 	    //pass the user's name, surname and email to the model
 	    model.addAttribute("fullName", user.getName()); //add name
 	    model.addAttribute("email", user.getEmail());  //add email
 	    model.addAttribute("profileImageUrl", profileImageUrl); //add image
 	    model.addAttribute("surname", user.getSurname()); //add surname
 	    model.addAttribute("assignedForms", assignedForms);
+	    model.addAttribute("newFormCount", newFormCount);
 	    return "profile";
 	}
 	
@@ -158,6 +197,8 @@ public class UserController {
 			            @RequestParam(name = "categories", required = false) List<String> categoryIds,
                         @RequestParam(name = "statuses", required = false) List<String> statuses,
                         @RequestParam(name = "formType", defaultValue = "all") String formType, 
+                        HttpSession session,
+                        HttpServletRequest request,
                         Model model) throws Exception{
 		
 		User user = userService.getUserByEmail(principal);
@@ -236,12 +277,43 @@ public class UserController {
 	        page = totalPages;
 	    }
 
+	    List<Generalform> generalForms = generalFormDAO.findAll();
 	    List<User> users = userService.getAllUsers();
 	    
 	    //paginate the list of assigned forms
 	    List<Generalform> paginatedForms = FilterService.getPaginatedList(allAssignedForms, page, size);
 	    List<Category> categories = categoryDAO.findAll();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	    
+	    AtomicReference<LocalDateTime> lastSeenRef = new AtomicReference<>(LocalDateTime.now().minusDays(30));
+        
+        // Read cookies and get the "lastSeen" timestamp
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("lastSeen".equals(cookie.getName())) {
+                    try {
+                        String lastSeenStr = cookie.getValue();
+                        DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
+                        lastSeenRef.set(LocalDateTime.parse(lastSeenStr, formatter));
+                    } catch (Exception e) {
+                        // Error parsing cookie
+                        System.err.println("Error parsing lastSeen cookie: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        LocalDateTime lastSeen = user.getLastSeen() != null ? user.getLastSeen() : LocalDateTime.now().minusDays(30);  // Use the user's own lastSeen value
+        
+        // Calculate the new form count based on lastSeen for the specific user
+        long newFormCount = generalForms.stream()
+            .filter(generalForm -> generalForm.getSubmissionDate() != null &&
+                generalForm.getSubmissionDate().isAfter(lastSeen))
+            .count();
+            
+        // Set session attribute to reset new form count
+        session.setAttribute("newFormCount", newFormCount);
 	    
 	    model.addAttribute("totalPages", totalPages); 
 	    model.addAttribute("currentPage", page);
@@ -256,6 +328,7 @@ public class UserController {
 	    model.addAttribute("assignedBookingForms", assignedBookingForms); 
 	    model.addAttribute("formatter", formatter);
 	    model.addAttribute("formType", formType);
+	    model.addAttribute("newFormCount", newFormCount);
 	    return "YourTasks";
 	}
 	
@@ -322,13 +395,48 @@ public class UserController {
 	
 	//navigation to change password page
 	@GetMapping("/changePassword")
-    public String changePasswordView(@AuthenticationPrincipal Object principal, Model model) {
+    public String changePasswordView(@AuthenticationPrincipal Object principal, Model model, HttpSession session,
+            HttpServletRequest request) {
     	User user = userService.getUserByEmail(principal);
-        if(user.getPassword()!=null) {
+        
+    	List<Generalform> generalForms = generalFormDAO.findAll();
+    	
+    	AtomicReference<LocalDateTime> lastSeenRef = new AtomicReference<>(LocalDateTime.now().minusDays(30));
+        
+        // Read cookies and get the "lastSeen" timestamp
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("lastSeen".equals(cookie.getName())) {
+                    try {
+                        String lastSeenStr = cookie.getValue();
+                        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                        lastSeenRef.set(LocalDateTime.parse(lastSeenStr, formatter));
+                    } catch (Exception e) {
+                        // Error parsing cookie
+                        System.err.println("Error parsing lastSeen cookie: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        LocalDateTime lastSeen = user.getLastSeen() != null ? user.getLastSeen() : LocalDateTime.now().minusDays(30);  // Use the user's own lastSeen value
+        
+        // Calculate the new form count based on lastSeen for the specific user
+        long newFormCount = generalForms.stream()
+            .filter(generalForm -> generalForm.getSubmissionDate() != null &&
+                generalForm.getSubmissionDate().isAfter(lastSeen))
+            .count();
+            
+        // Set session attribute to reset new form count
+        session.setAttribute("newFormCount", newFormCount);
+    	
+    	if(user.getPassword()!=null) {
         	model.addAttribute("passNULL",false);
         }
         else model.addAttribute("passNULL",true);
         
+    	model.addAttribute("newFormCount", newFormCount);
         return "ChangePassword"; 
     }
     
@@ -392,12 +500,46 @@ public class UserController {
     
     //navigation to profile image page
     @GetMapping("/profileImage")
-    public String assignProfileImagePage(Model model, @AuthenticationPrincipal Object principal) {
+    public String assignProfileImagePage(Model model, @AuthenticationPrincipal Object principal, HttpSession session,
+            HttpServletRequest request) {
         User user = userService.getUserByEmail(principal);
-
+        
+        List<Generalform> generalForms = generalFormDAO.findAll();
+    	
+    	AtomicReference<LocalDateTime> lastSeenRef = new AtomicReference<>(LocalDateTime.now().minusDays(30));
+        
+        // Read cookies and get the "lastSeen" timestamp
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("lastSeen".equals(cookie.getName())) {
+                    try {
+                        String lastSeenStr = cookie.getValue();
+                        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                        lastSeenRef.set(LocalDateTime.parse(lastSeenStr, formatter));
+                    } catch (Exception e) {
+                        // Error parsing cookie
+                        System.err.println("Error parsing lastSeen cookie: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        LocalDateTime lastSeen = user.getLastSeen() != null ? user.getLastSeen() : LocalDateTime.now().minusDays(30);  // Use the user's own lastSeen value
+        
+        // Calculate the new form count based on lastSeen for the specific user
+        long newFormCount = generalForms.stream()
+            .filter(generalForm -> generalForm.getSubmissionDate() != null &&
+                generalForm.getSubmissionDate().isAfter(lastSeen))
+            .count();
+            
+        // Set session attribute to reset new form count
+        session.setAttribute("newFormCount", newFormCount);
+        
         //ensure user is added to the model
         model.addAttribute("user", user);
-
+        model.addAttribute("newFormCount", newFormCount);
+        
         //fetch all images from the database
         List<UserImage> allUserImages = userImageDAO.findAll();
         model.addAttribute("allUserImages", allUserImages);

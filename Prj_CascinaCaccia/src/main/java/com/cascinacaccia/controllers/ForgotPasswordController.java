@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cascinacaccia.entities.PasswordResetToken;
 import com.cascinacaccia.entities.User;
+import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.services.ForgotPasswordService;
 
@@ -26,13 +27,18 @@ public class ForgotPasswordController {
 	@Autowired
 	private UserDAO userDAO;
 	@Autowired
+	private CategoryDAO categoryDAO;
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$";
 	
 	//navigation to the page forgot password
     @GetMapping("/forgotPassword")
-    public String showForgotPasswordPage() {
+    public String showForgotPasswordPage(Model model) {
+    	model.addAttribute("categories", categoryDAO.findAll());
+        model.addAttribute("categoryId", "");
+    	
         return "ForgotPassword"; 
     }
     

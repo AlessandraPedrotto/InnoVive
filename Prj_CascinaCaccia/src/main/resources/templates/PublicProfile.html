@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="/styles/normalize.css">
 	<link rel="stylesheet" href="/styles/style.css?v=1.0">
 	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
+	<link rel="stylesheet" href="/styles/notification.css?v=1.0">
 
 	<link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96" />
 	<link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
@@ -14,7 +15,6 @@
 	<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="EducatiON" />
 	<link rel="manifest" href="/img/site.webmanifest" />
-
 </head>
 
 <body>
@@ -31,7 +31,7 @@
             <!-- Buttons for every user -->
             <a href="/yourTasks">Le tue tasks</a>
             <a href="/changePassword">Cambia password</a>
-            <a href="/request">Visualizza richieste</a>
+            <a href="/request" id="viewRequestsButton">Visualizza richieste<span class="badge" id="notificationBadge" th:text="${newFormCount}"></span></a>
             <a href="/profileImage">Immagine del profilo</a>
 
             <!-- Logout link -->
@@ -70,6 +70,7 @@
 			</div>
 		</div>
 	</div>
+	<script src="/scripts/notification.js"></script>
 	<script>
 		document.title = `${document.getElementById("nome").textContent} ${document.getElementById('cognome').textContent} `;
 	</script>

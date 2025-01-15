@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="/styles/normalize.css">
 	<link rel="stylesheet" href="/styles/style.css?v=1.0">
 	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
+	<link rel="stylesheet" href="/styles/notification.css?v=1.0">
 
 	<link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96" />
 	<link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
@@ -32,7 +33,7 @@
             <!-- Buttons for every user -->
             <a href="/yourTasks">Le tue tasks</a>
             <a href="/changePassword">Cambia password</a>
-            <a href="/request">Visualizza richieste</a>
+            <a href="/request" id="viewRequestsButton">Visualizza richieste<span class="badge" id="notificationBadge" th:text="${newFormCount}"></span></a>
             <a href="/profileImage">Immagine del profilo</a>
 
             <!-- Logout link -->
@@ -177,7 +178,7 @@
 		</div>
 	</div>
 	<script src="/scripts/message.js"></script>
-
+	<script src="/scripts/notification.js"></script>
 </body>
 
 
