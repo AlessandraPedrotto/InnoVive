@@ -113,28 +113,38 @@ public class UserController {
 	@PostMapping("/profile/update-name")
     public String updateNameAndSurname(@AuthenticationPrincipal Object principal, 
                                        @RequestParam("name") String name, 
-                                       @RequestParam("surname") String surname) {
+                                       @RequestParam("surname") String surname,
+                                       RedirectAttributes redirectAttributes) {
+		
+		try {
 
-		//trim the inputs to remove leading/trailing spaces
-		name = name.trim().replaceAll("\\s+", " ");
-	    surname = surname.trim().replaceAll("\\s+", " ");
+			//trim the inputs to remove leading/trailing spaces
+			name = name.trim().replaceAll("\\s+", " ");
+		    surname = surname.trim().replaceAll("\\s+", " ");
+	
+		    //validate the inputs
+		    if (name.isEmpty() || surname.isEmpty()) {
+		    	redirectAttributes.addFlashAttribute("error", "Nome e cognome non possono essere vuoi o contenere spazi.");
+		    }
+	
+		    //additional validation: Only letters, spaces (inside), and apostrophes allowed
+		    if (!name.matches("[A-Za-zÀ-ÖØ-öø-ÿ ']+") || !surname.matches("[A-Za-zÀ-ÖØ-öø-ÿ ']+")) {
+		    	redirectAttributes.addFlashAttribute("error", "Nome e cognome possono solo contenere lettere, spazi e apostrofi.");
+		    }
+		    
+	        // Get the logged-in user's email or ID
+	        User user = userService.getUserByEmail(principal);
+	
+	        // Update the user's name and surname
+	        userService.updateNameAndSurname(user.getId(), name, surname);
 
-	    //validate the inputs
-	    if (name.isEmpty() || surname.isEmpty()) {
-	        throw new IllegalArgumentException("Name and Surname cannot be empty or contain only spaces.");
-	    }
-
-	    //additional validation: Only letters, spaces (inside), and apostrophes allowed
-	    if (!name.matches("[A-Za-zÀ-ÖØ-öø-ÿ ']+") || !surname.matches("[A-Za-zÀ-ÖØ-öø-ÿ ']+")) {
-	        throw new IllegalArgumentException("Name and Surname can only contain letters, spaces, and apostrophes.");
+	     // Add success message
+	        redirectAttributes.addFlashAttribute("success", "Nome e cognome aggiornati con successo!");
+	    } catch (Exception e) {
+	        // Handle unexpected errors
+	        redirectAttributes.addFlashAttribute("error", "Errore durante l'aggiornamento del nome e cognome. Riprova più tardi.");
 	    }
 	    
-        // Get the logged-in user's email or ID
-        User user = userService.getUserByEmail(principal);
-
-        // Update the user's name and surname
-        userService.updateNameAndSurname(user.getId(), name, surname);
-
         return "redirect:/profile"; // Redirect back to the profile page
     }
 	
@@ -210,7 +220,7 @@ public class UserController {
 	    
 	    //if no forms are assigned, add a "noResults" message to the model
 	    if (allAssignedForms.isEmpty()) {
-	        model.addAttribute("noResults", "No tasks assigned to you.");
+	        model.addAttribute("noResults", "Non hai nessun task assegnato");
 	    }
 	    
 	    //pagination logic: Get the total number of forms
@@ -252,37 +262,60 @@ public class UserController {
 	//process to change the status of a Informationform
 	@PostMapping("/assignStatusProfile")
 	public String assignStatus(@RequestParam("informationFormId") String informationFormId,
-	                            @RequestParam("informationFormStatus") String status) {
+	                            @RequestParam("informationFormStatus") String status,
+	                            RedirectAttributes redirectAttributes) {
 	    
-		//fetch the Informationform using the ID
-	    Informationform informationForm = informationFormDAO.findById(informationFormId)
-	        .orElseThrow(() -> new RuntimeException("InformationForm not found"));
-
-	    //update the status of the Informationform
-	    informationForm.setStatus(status);
+		try {
+			
+			//fetch the Informationform using the ID
+		    Informationform informationForm = informationFormDAO.findById(informationFormId)
+		        .orElseThrow(() -> new RuntimeException("InformationForm not found"));
+	
+		    //update the status of the Informationform
+		    informationForm.setStatus(status);
+		    
+		    //save the updated Informationform
+		    informationFormDAO.save(informationForm);
+	
+			 // Add success message to redirect attributes
+	        redirectAttributes.addFlashAttribute("success", "Stato del task modificato con successo!");
+	
+	    } catch (Exception e) {
+	        
+	    	// Add error message to redirect attributes
+	        redirectAttributes.addFlashAttribute("error", "Errore durante la modifica dello stato del task, riprova.");
+	    }
 	    
-	    //save the updated Informationform
-	    informationFormDAO.save(informationForm);
-
-	    //redirect back to the profile page
+		//redirect back to the profile page
 	    return "redirect:/yourTasks";
 	}
 	
 	//process to change the status of a BookingForm
 	@PostMapping("/assignStatusBookingProfile")
 	public String assignStatusBooking(@RequestParam("bookingFormId") String bookingFormId,
-	                            @RequestParam("bookingFormStatus") String status) {
+	                            @RequestParam("bookingFormStatus") String status,
+	                            RedirectAttributes redirectAttributes) {
 	    
-		//fetch the BookingForm using the ID
-	    BookingForm bookingForm = bookingFormDAO.findById(bookingFormId)
-	        .orElseThrow(() -> new RuntimeException("BookingForm not found"));
+		try {
+			//fetch the BookingForm using the ID
+		    BookingForm bookingForm = bookingFormDAO.findById(bookingFormId)
+		        .orElseThrow(() -> new RuntimeException("BookingForm not found"));
+	
+		    //update the status of the BookingForm
+		    bookingForm.setStatus(status);
+		    
+		    //save the updated BookingForm
+		    bookingFormDAO.save(bookingForm);
 
-	    //update the status of the BookingForm
-	    bookingForm.setStatus(status);
-	    
-	    //save the updated BookingForm
-	    bookingFormDAO.save(bookingForm);
-
+		    // Add success message to redirect attributes
+	        redirectAttributes.addFlashAttribute("success", "Stato del task modificato con successo!");
+	
+	    } catch (Exception e) {
+	        
+	    	// Add error message to redirect attributes
+	        redirectAttributes.addFlashAttribute("error", "Errore durante la modifica dello stato del task, riprova.");
+	    }
+		
 	    //redirect back to the profile page
 	    return "redirect:/yourTasks";
 	}
@@ -315,24 +348,24 @@ public class UserController {
             
             //check if the new password matches the old password
             if (passwordEncoder.matches(newPassword, user.getPassword())) {
-                redirectAttributes.addFlashAttribute("error", "New password cannot be the same as the old password.");
+                redirectAttributes.addFlashAttribute("error", "La nuova passsword non può essere uguale a quella vecchia.");
                 return "redirect:/changePassword";
             }
             
             //check if the new password matches the old password
             if (passwordEncoder.matches(newPassword, user.getPassword())) {
-                redirectAttributes.addFlashAttribute("error", "New password cannot be the same as the old password.");
+                redirectAttributes.addFlashAttribute("error", "La nuova passsword non può essere uguale a quella vecchia.");
                 return "redirect:/changePassword";
             }
             
             //check if the new password entered is correct
             if (!newPassword.equals(confirmPassword)) {
-                redirectAttributes.addFlashAttribute("error", "New passwords do not match.");
+                redirectAttributes.addFlashAttribute("error", "Le nuove password non corrispondono.");
                 return "redirect:/changePassword";
             }
             
             if (!isValidPassword(newPassword)) {
-                redirectAttributes.addFlashAttribute("error", "Password must be at least 8 characters long, contain an uppercase letter, a number, and a special character.");
+                redirectAttributes.addFlashAttribute("error", "La password deve essere di almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale.");
                 return "redirect:/changePassword";
             }
             
@@ -340,7 +373,7 @@ public class UserController {
 
             session.invalidate(); 
             
-            redirectAttributes.addFlashAttribute("success", "Password change successful.");
+            redirectAttributes.addFlashAttribute("success", "Password cambiata con successo! Ora effettua nuovamente l'accesso.");
             
             //redirect to the login page to request re-authentication
             return "redirect:/login";
@@ -374,12 +407,12 @@ public class UserController {
     
     //assign or update profile image
     @PostMapping("/profileImage")
-    public String assignProfileImage(@RequestParam String userId, @RequestParam Long userImageId, Model model) {
+    public String assignProfileImage(@RequestParam String userId, @RequestParam Long userImageId, Model model, RedirectAttributes redirectAttributes) {
         try {
             userService.assignOrUpdateProfileImage(userId, userImageId);
-            model.addAttribute("message", "Profile image updated successfully!");
+            redirectAttributes.addFlashAttribute("success", "Immagine profilo cambiata con successo!");
         } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
+        	redirectAttributes.addFlashAttribute("error", "Errore durante il cambio dell'immagine profilo, riprova.");
         }
         return "redirect:/profile";
     }

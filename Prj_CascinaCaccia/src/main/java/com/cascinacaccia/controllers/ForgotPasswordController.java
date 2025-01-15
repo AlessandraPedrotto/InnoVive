@@ -47,12 +47,12 @@ public class ForgotPasswordController {
             String userSurname = user.getSurname(); 
             String result = forgotPasswordService.sendResetEmail(user, userName, userSurname); 
             if ("success".equals(result)) {
-                model.addAttribute("success", "Reset email successfully sent to " + email);
+                model.addAttribute("success", "Email inviata con successo all'indirizzo " + email);
             } else {
-                model.addAttribute("error", "An error occurred while sending the email.");
+                model.addAttribute("error", "Errore durante l'invio della mail, riprova.");
             }
         } else {
-            model.addAttribute("error", "No user with this mail.");
+            model.addAttribute("error", "Non esiste nessun utente con questa mail.");
         }
 
         return "ForgotPassword"; 
@@ -87,6 +87,7 @@ public class ForgotPasswordController {
         PasswordResetToken resetToken = forgotPasswordService.findResetTokenByToken(token);
         if (resetToken == null) {
             System.out.println("Token not found in POST request!");
+            model.addAttribute("error", "Il token per il reset della password non è stato trovato, chiedine uno.");
             return "redirect:/?error=invalidToken";
         }
 
@@ -96,12 +97,13 @@ public class ForgotPasswordController {
         //check if the token has expired
         if (forgotPasswordService.hasExpired(resetToken.getExpiryDateTime())) {
             System.out.println("Token has expired.");
+            model.addAttribute("error", "Il token per il reset della password è scaduto, chiedine un altro.");
             return "redirect:/?error=expired";
         }
 
         //continue with the password reset process if the token is valid
         if (!password.equals(confirmPassword)) {
-            model.addAttribute("error", "The passwords do not match.");
+            model.addAttribute("error", "Le due password non coincidono.");
             model.addAttribute("token", token);
             return "ResetPassword";
         }
@@ -110,13 +112,13 @@ public class ForgotPasswordController {
 
         // Check if the new password is the same as the current one
         if (passwordEncoder.matches(password, user.getPassword())) {
-            model.addAttribute("error", "New password cannot be the same as the old password.");
+            model.addAttribute("error", "La nuova password non può essere uguale a quella vecchia.");
             model.addAttribute("token", token);
             return "ResetPassword";
         }
         
         if (!isValidPassword(confirmPassword)) {
-        	model.addAttribute("error", "Password must be at least 8 characters long, contain an uppercase letter, a number, and a special character.");
+        	model.addAttribute("error", "La password deve essere di almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale.");
             model.addAttribute("token", token);
         	return "ResetPassword";
         }
@@ -124,6 +126,7 @@ public class ForgotPasswordController {
         user.setPassword(passwordEncoder.encode(password));
         userDAO.save(user);
 
+        model.addAttribute("success", "Password cambiata con successo!");
         return "redirect:/login?success=passwordReset";
     }
     

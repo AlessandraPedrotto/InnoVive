@@ -9,8 +9,8 @@
 	
 	<!-- Error messages -->
 	<div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
-	<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-	
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
 	<!-- Booking form -->
 	<form action="/submit-booking" method="post">
         
@@ -45,6 +45,7 @@
     
     <!-- Exit page button -->
     <a href="/">Back</a>
+    <script src="/scripts/message.js"></script>
     <script>
 		// This script sets the minimum date to tomorrow's date for both check-in and check-out fields
 		document.addEventListener("DOMContentLoaded", function() {

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cascinacaccia.entities.BookingForm;
 import com.cascinacaccia.entities.Category;
@@ -88,7 +89,7 @@ public class AdminController {
             
             //if no results found
             if (users.isEmpty()) {
-                model.addAttribute("noResults", "No users found for the search query: " + query);
+                model.addAttribute("noResults", "Nessun utente trovato con questo tipo di ricerca: " + query);
             }
         }
         
@@ -114,7 +115,7 @@ public class AdminController {
             
             //no result found
             if (users.isEmpty()) {
-                model.addAttribute("noResults", "No users found for the search query: " + query);
+                model.addAttribute("noResults", "Nessun utente trovato con questo tipo di ricerca: " + query);
             }
         }
 
@@ -160,7 +161,7 @@ public class AdminController {
             model.addAttribute("user", user);  // Make sure user is added to the model
         } else {
             // Handle the case where user is not found
-            model.addAttribute("error", "User not found");
+            model.addAttribute("error", "Utente non trovato.");
         }
     	
         //add user details to the model (name, surname, email, and profile image)
@@ -252,7 +253,7 @@ public class AdminController {
 
         //if no tasks are assigned, add a "noResults" message to the model
         if (allAssignedForms.isEmpty()) {
-            model.addAttribute("noResults", "No tasks assigned to this user.");
+            model.addAttribute("noResults", "Non ci sono task assegnati a questo utente.");
         }
         
         //pagination logic: Get the total number of tasks
@@ -297,18 +298,29 @@ public class AdminController {
 	public String assignStatusPublicProfile(
 			@RequestParam("userId") String userId,
 			@RequestParam("informationFormId") String informationFormId,
-			@RequestParam("informationFormStatus") String status) {
+			@RequestParam("informationFormStatus") String status,
+			RedirectAttributes redirectAttributes) {
     	
-	    //fetch the Informationform using the ID
-	    Informationform informationForm = informationFormDAO.findById(informationFormId)
-	        .orElseThrow(() -> new RuntimeException("InformationForm not found"));
-
-	    //update the status of the Informationform
-	    informationForm.setStatus(status);
-	    
-	    //save the updated Informationform
-	    informationFormDAO.save(informationForm);
-
+    	try {
+    		
+		    //fetch the Informationform using the ID
+		    Informationform informationForm = informationFormDAO.findById(informationFormId)
+		        .orElseThrow(() -> new RuntimeException("InformationForm not found"));
+	
+		    //update the status of the Informationform
+		    informationForm.setStatus(status);
+		    
+		    //save the updated Informationform
+		    informationFormDAO.save(informationForm);
+	
+		 // Add success message to redirect attributes
+	        redirectAttributes.addFlashAttribute("success", "Stato del task modificato con successo!");
+	
+	    } catch (Exception e) {
+	        
+	    	// Add error message to redirect attributes
+	        redirectAttributes.addFlashAttribute("error", "Errore durante la modifica dello stato del task, riprova.");
+	    }
 	    //redirect back to the profile page
 	    return "redirect:/admin/yourTasksPublic/" + userId;
 	}
@@ -380,9 +392,18 @@ public class AdminController {
     
     //process to delete a user
     @PostMapping("/deleteUser")
-    public String deleteUser(@RequestParam String userId) {
-        userService.deleteUserById(userId);
-        
+    public String deleteUser(@RequestParam String userId,  RedirectAttributes redirectAttributes) {
+        	
+    	try {
+    		userService.deleteUserById(userId);
+    		
+    		// Add success message to redirect attributes
+            redirectAttributes.addFlashAttribute("success", "Utente eliminatocon successo!");
+        } catch (Exception e) {
+            // Add error message to redirect attributes if an exception occurs
+            redirectAttributes.addFlashAttribute("error", "Errore durante la registrazione, riprova.");
+        }
+    	
         //redirect back to the list of users after deletion
         return "redirect:/admin/listUsers"; 
     }
@@ -398,24 +419,24 @@ public class AdminController {
     //handle User Registration (POST request)
     @PostMapping("/register")
     @PreAuthorize("hasRole('ADMIN')")
-    public String registerUser(@ModelAttribute User user, Model model) {
+    public String registerUser(@ModelAttribute User user, Model model, RedirectAttributes redirectAttributes) {
     	
         //check if the email is already registered
         boolean userExists = userService.isEmailAlreadyInUse(user);
         if (userExists) {
-            model.addAttribute("exist", "Error, the email is already registered.");
+        	redirectAttributes.addFlashAttribute("error", "Questa mail è già stata usate per un account.");
             return "UserRegister";  
         }
 
         //validate email format
         if (!isValidEmail(user.getEmail())) {
-            model.addAttribute("emailError", "Invalid email format.");
+        	redirectAttributes.addFlashAttribute("error", "Formato della mail invalido.");
             return "UserRegister";  
         }
 
         //validate password format
         if (!isValidPassword(user.getPassword())) {
-            model.addAttribute("passwordError", "Password must be at least 8 characters long, contain an uppercase letter, a number, and a special character.");
+        	redirectAttributes.addFlashAttribute("error", "Password must be at least 8 characters long, contain an uppercase letter, a number, and a special character.");
             return "UserRegister";  
         }
         
@@ -423,12 +444,12 @@ public class AdminController {
         	
             //register the new user
             userService.register(user);
-            model.addAttribute("regiSuccess", "Registered successfully");
+            redirectAttributes.addFlashAttribute("success", "Registrazione effettuata con successo!");
             
             //redirect to profile page after success
             return "redirect:/profile";  
         } catch (Exception e) {
-            model.addAttribute("error", "Registration failed: " + e.getMessage());
+        	redirectAttributes.addFlashAttribute("error", "Errore durante la registrazione, riprova.");
             
             //stay on the register page if there is an error
             return "UserRegister";  

@@ -63,6 +63,11 @@
     </div>
   </nav>
   <!-- NAVBAR ENDS -->
+  
+  <!-- Error messages -->
+  <div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
+  <div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
+		    
   <!-- ATTIVITA STARTS -->
   <h1 class="page-title">Attività</h1>
   <div class="secondary">
@@ -372,9 +377,6 @@
   </div>
 
   <div id="informationFormContainer">
-    <!-- Error messages -->
-    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <h3>Invia una richiesta di informazioni</h3>
 
@@ -447,7 +449,7 @@
   </div>
 
   <script src="/scripts/chatbot.js"></script>
-
+  <script src="/scripts/message.js"></script>
   <script src="/scripts/main.js"></script>
   <script src="/scripts/attivita.js"></script>
 </body>
