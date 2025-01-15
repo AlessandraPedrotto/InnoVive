@@ -1,0 +1,15 @@
+.badge {
+	background-color: red;
+	color: white;
+	font-size: 14px;
+	padding: 5px 10px;
+	border-radius: 50%;
+	margin-left: 10px;
+	position: relative;
+	top: -5px; /* Adjust the position slightly to align better with the text */
+	display: inline-block; /* Ensure the badge is inline */
+}
+
+.badge.hidden {
+    display: none;
+}

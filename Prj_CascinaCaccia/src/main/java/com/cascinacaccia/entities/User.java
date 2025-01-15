@@ -25,6 +25,7 @@ public class User {
     private String surname;
     private String email;
     private String password;
+    private LocalDateTime lastSeen;
     
     @Column(name = "state", nullable = true)
     private String state = "OFFLINE";; // ONLINE or OFFLINE
@@ -119,4 +120,10 @@ public class User {
     public void setLastAccess(LocalDateTime lastAccess) {
         this.lastAccess = lastAccess;
     }
+	public LocalDateTime getLastSeen() {
+		return lastSeen;
+	}
+	public void setLastSeen(LocalDateTime lastSeen) {
+		this.lastSeen = lastSeen;
+	}
 }
