@@ -98,7 +98,7 @@ public class RequestController {
         
     	//check if no forms are found
         if (generalForms.isEmpty()) {
-            model.addAttribute("message", "No results found");
+            model.addAttribute("message", "Nessun risultato trovato.");
         }
         
     	//pagination logic: Get the total number of users

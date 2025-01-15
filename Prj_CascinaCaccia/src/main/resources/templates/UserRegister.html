@@ -41,6 +41,10 @@
             <div class="user-registration-container">
                 <h2>Registrazione</h2>
 
+				<!-- Error messages -->
+				<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
+				<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
+					
                 <!-- Register form -->
                 <form th:action="@{/admin/register}" th:object="${user}" method="post">
 
@@ -60,10 +64,6 @@
                         <label class="profile-info-labels" for="password">Password:</label>
                         <input class="profile-info-forms" type="password" name="password" required><br>
                     </div>
-                    <!-- Display success or error messages -->
-                    <p th:if="${exist}" style="color:red;" th:text="${exist}"></p>
-                    <p th:if="${regiSuccess}" style="color:green;" th:text="${regiSuccess}"></p>
-                    <p th:if="${error}" style="color:red;" th:text="${error}"></p>
 
                     <div class="profile-buttons-container">
                         <button class="requests-back-button" type="submit">Registra</button>
@@ -74,6 +74,7 @@
 
         </div>
     </div>
+    <script src="/scripts/message.js"></script>
 </body>
 
 </html>

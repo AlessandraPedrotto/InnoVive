@@ -103,11 +103,11 @@ public class BookingFormController {
             bookingFormService.sendEmailToAdmin("innovive2024@gmail.com", generalform.getName(), generalform.getSurname(), generalform.getEmail(), categoryName, parsedCheckIn, parsedCheckOut, bookingForm.getContent());
             bookingFormService.sendConfirmationEmail(email, name, surname, email, categoryName, parsedCheckIn, parsedCheckOut, content);
 
-            redirectAttributes.addFlashAttribute("message", "Form submitted successfully!");
+            redirectAttributes.addFlashAttribute("success", "Prenotazione inviata con successo!");
             return "redirect:/prenota";
 
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error processing form: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Errore durante l'invio della prenotazione, prova ad inviarla di nuovo.");
             return "redirect:/prenota";
         }
     }
@@ -118,9 +118,10 @@ public class BookingFormController {
         try {
             bookingFormService.assignUser(userId, bookingFormId);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Failed to assign user: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Errore durante l'assegnazione del task, riprova.");
             return "redirect:"+ request.getHeader("Referer");
         }
+        redirectAttributes.addFlashAttribute("success", "Task assegnato con successo!");
         return "redirect:"+ request.getHeader("Referer");
     }
     
@@ -130,10 +131,10 @@ public class BookingFormController {
         try {
         	bookingFormService.removeUser(userId, bookingFormId);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Failed to remove user: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Errore durante la rimozione dell'utente dal task, riprova.");
             return "redirect:"+ request.getHeader("Referer");
         }
-        redirectAttributes.addFlashAttribute("success", "User removed successfully.");
+        redirectAttributes.addFlashAttribute("success", "L'utente è stato rimosso dal task con successo!");
         return "redirect:"+ request.getHeader("Referer");
     }
     
@@ -143,9 +144,10 @@ public class BookingFormController {
         try {
         	bookingFormService.assignStatus(bookingFormStatus, bookingFormId);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Failed to assign status: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Errore durante la modifica dello stato del task, riprova.");
             return "redirect:"+ request.getHeader("Referer");
         }
+        redirectAttributes.addFlashAttribute("success", "Stato del task modificato con successo!");
         return "redirect:"+ request.getHeader("Referer");
     }
 }

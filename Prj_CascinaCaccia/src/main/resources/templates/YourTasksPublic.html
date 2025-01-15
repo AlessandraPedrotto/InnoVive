@@ -46,6 +46,13 @@
 				<div class="request-page-header">
 					<h2 class="requests-welcome">Richieste assegnate a <span th:text="${userName}">Nome Utente</span> <span th:text="${userSurname}">Cognome Utente</span></h2>
 
+					<!-- Error messages -->
+					<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
+					<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
+					
+					<!-- Check if there's a message -->
+					<div th:if="${noResults}" th:attr="data-no-results=${noResults}" class="hidden"></div>
+			
 					<!-- Exit page button -->
 					<a href="/admin/listUsers" class="requests-back-button">Back</a>
 				</div>
@@ -419,10 +426,6 @@
 				</div>
 			</div>
 
-			<!-- Check if there's a message -->
-			<div th:if="${noResults != null}">
-				<p th:text="${noResults}"></p>
-			</div>
 			<div th:if="${assignedForms != null and assignedForms.size() > 0}">
 				<!-- Pagination Controls -->
 				<div class="pagination">
@@ -453,6 +456,7 @@
 			</div>
 		</div>
 	</div>
+	<script src="/scripts/message.js"></script>
 </body>
 
 </html>

@@ -44,6 +44,10 @@
                     <p>Login effettuato!</p>
                 </div>
 
+				<!-- Error messages -->
+				<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
+				<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
+		    
                 <!-- Display user details -->
                 <div class="profile-details">
                     <p>La tua immagine del profilo</p>
@@ -97,7 +101,7 @@
             </div>
         </div>
     </div>
-
+	<script src="/scripts/message.js"></script>
     <script>
         function toggleEditName() {
             const nameDisplay = document.getElementById("name-display");

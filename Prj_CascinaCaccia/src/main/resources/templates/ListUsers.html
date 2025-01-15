@@ -42,7 +42,13 @@
 		<div class="backoffice-content" id="listUsers-container">
 			<h2>Lista Utenti</h2>
 
-
+			<!-- Error messages -->
+			<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
+			<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
+		    
+		    <!-- If no results -->
+			<div th:if="${noResults}" th:attr="data-no-results=${noResults}" class="hidden"></div>
+			
 			<!-- Form for searching users -->
 			<form method="get" th:action="@{/admin/listUsers}">
 				<input type="text" name="query" th:value="${query}" placeholder="Search by email, name, or surname" />
@@ -80,11 +86,6 @@
 			<!-- Exit page button -->
 			<a href="/profile">Indietro</a>
 
-
-			<!-- If no results -->
-			<div th:if="${noResults}" class="alert alert-info">
-				<p th:text="${noResults}"></p>
-			</div>
 			<div th:if="${hasUsers}">
 
 
@@ -175,7 +176,7 @@
 			</div>
 		</div>
 	</div>
-
+	<script src="/scripts/message.js"></script>
 
 </body>
 
