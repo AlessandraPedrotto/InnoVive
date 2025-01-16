@@ -15,7 +15,7 @@
     <link rel="manifest" href="/img/site.webmanifest" />
 </head>
 
-<body>
+<body class="simplified-popup">
     <!-- NAVBAR STARTS -->
     <nav class="navbar">
         <div class="logo">
@@ -66,6 +66,7 @@
 	<!-- Error messages -->
 	<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
 	<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
+	
     <div id="custom-popup" class="popup hidden">
         <div class="popup-content">
             <span id="popup-logo"></span>
@@ -93,10 +94,6 @@
         <div class="login-utilities">
 
             <a id="passwordRecovery" href="/forgotPassword">Password dimenticata?</a>
-
-            <!-- Error and logout message -->
-            <p th:if="${param.error}">Invalid email or password</p>
-            <p th:if="${param.logout}">You have been logged out</p>
         </div>
     </div>
     <!-- LOGIN ENDS -->

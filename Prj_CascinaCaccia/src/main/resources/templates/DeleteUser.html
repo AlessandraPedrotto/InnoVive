@@ -18,7 +18,7 @@
 
 </head>
 
-<body>
+<body class="simplified-popup">
     <div class="backoffice-container">
         <div class="sidebar">
             <div class="sidebar-logo">
@@ -45,6 +45,19 @@
 		            
 		            <h2>Are you sure you want to delete this user?</h2><br>
 		            
+		            <!-- Error messages -->
+					<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
+					<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
+			    
+			    	<div id="custom-popup" class="popup hidden">
+					    <div class="popup-content">
+					        <span id="popup-logo"></span>
+					        <span id="popup-claim"></span>
+					        <span id="popup-message"></span>
+					        <button id="popup-close">Chiudi</button>
+					    </div>
+					</div>
+				
 		            <!-- User details -->
 		            <p>Name: <span th:text="${user.name}"></span></p><br>
 		            <p>Surname: <span th:text="${user.surname}"></span></p><br>

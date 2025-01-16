@@ -1,5 +1,6 @@
 package com.cascinacaccia.controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +61,8 @@ public class RequestController {
 	        @RequestParam(name = "statuses", required = false) List<String> statuses,
 	        @RequestParam(name = "formType", defaultValue = "all") String formType,
 	        @RequestParam(name = "assignation", required = false) String assignation,
+	        @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate startDate,
+	        @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate endDate,
 	        HttpSession session,
 	        HttpServletRequest request,
 	        HttpServletResponse response,
@@ -107,6 +111,11 @@ public class RequestController {
             generalForms = FilterService.filterByAssignment(generalForms, isAssigned);
         }
         
+        // Apply filter by date range if provided
+        if (startDate != null && endDate != null) {
+            generalForms = FilterService.filterByDateRange(generalForms, startDate, endDate);
+        }
+        
         //sort forms based on the selected option
         switch (sortBy) {
             case "surnameAsc":
@@ -128,7 +137,7 @@ public class RequestController {
         
     	//check if no forms are found
         if (generalForms.isEmpty()) {
-            model.addAttribute("message", "Nessun risultato trovato.");
+            model.addAttribute("message", "Nessun risultato trovato per questa ricerca.");
         }
         
     	//pagination logic: Get the total number of users
@@ -197,6 +206,8 @@ public class RequestController {
         model.addAttribute("formType", formType);
         model.addAttribute("assignation", assignation);
         model.addAttribute("newFormCount", newFormCount);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
         return "Request";
     }
 }
