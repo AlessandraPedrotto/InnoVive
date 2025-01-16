@@ -22,7 +22,7 @@
 	<script src="/scripts/request.js"></script>
 </head>
 
-<body>
+<body class="simplified-popup">
 	<div class="backoffice-container">
         <div class="sidebar">
             <div class="sidebar-logo">
@@ -58,6 +58,15 @@
 					<!-- Check if there's a message -->
 					<div th:if="${noResults}" th:attr="data-no-results=${noResults}" class="hidden"></div>
 					
+					<div id="custom-popup" class="popup hidden">
+					    <div class="popup-content">
+					        <span id="popup-logo"></span>
+					        <span id="popup-claim"></span>
+					        <span id="popup-message"></span>
+					        <button id="popup-close">Chiudi</button>
+					    </div>
+    				</div>	
+    				
 					<!-- Exit page button -->
 					<a href="/profile" class="requests-back-button">Back</a>
 				</div>

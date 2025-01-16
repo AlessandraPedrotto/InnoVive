@@ -17,7 +17,7 @@
     <link rel="manifest" href="/img/site.webmanifest" />
 </head>
 
-<body>
+<body class="simplified-popup">
     <div class="backoffice-container">
         <div class="sidebar">
             <div class="sidebar-logo">
@@ -46,6 +46,15 @@
 				<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
 				<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
 					
+				<div id="custom-popup" class="popup hidden">
+				    <div class="popup-content">
+				        <span id="popup-logo"></span>
+				        <span id="popup-claim"></span>
+				        <span id="popup-message"></span>
+				        <button id="popup-close">Chiudi</button>
+				    </div>
+   				</div>	
+   					
                 <!-- Register form -->
                 <form th:action="@{/admin/register}" th:object="${user}" method="post">
 

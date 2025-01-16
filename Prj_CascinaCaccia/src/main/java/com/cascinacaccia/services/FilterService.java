@@ -1,5 +1,7 @@
 package com.cascinacaccia.services;
 
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -345,6 +347,24 @@ public class FilterService {
                     // If isAssigned is false, filter for forms with no assigned Informationforms or Bookingforms
                     return (isAssigned && (hasAssignedInformationform || hasAssignedBookingform)) ||
                            (!isAssigned && !hasAssignedInformationform && !hasAssignedBookingform);
+                })
+                .collect(Collectors.toList());
+    }
+    
+    /*
+     * Method to filter forms by a date range.
+     *
+     * @param forms The list of Generalform objects to filter
+     * @param startDate The start date of the range (inclusive)
+     * @param endDate The end date of the range (inclusive)
+     * @return A list of Generalform objects that fall within the specified date range
+     */
+    public static List<Generalform> filterByDateRange(List<Generalform> generalForms, LocalDate startDate, LocalDate endDate) {
+        return generalForms.stream()
+                .filter(form -> {
+                    // Extract the LocalDate part of submissionDate (assuming submissionDate is LocalDateTime)
+                    LocalDate submissionDate = form.getSubmissionDate().toLocalDate();
+                    return !submissionDate.isBefore(startDate) && !submissionDate.isAfter(endDate);
                 })
                 .collect(Collectors.toList());
     }
