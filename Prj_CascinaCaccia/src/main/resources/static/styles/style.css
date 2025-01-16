@@ -22,6 +22,10 @@
   padding-bottom: 4px;
   border-bottom: 1px solid #f09321;
 }
+.item-active-hidden{
+  padding-bottom: 4px;
+  border-bottom: 1px solid #ffffff00;
+}
 
 .logo {
   font-size: 1.5em;
