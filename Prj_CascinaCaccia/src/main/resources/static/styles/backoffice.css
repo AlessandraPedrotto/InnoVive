@@ -15,6 +15,10 @@
     transition: width 0.3s ease-in-out;
 }
 
+.backoffice-container .sidebar .active-item{
+    color: #f09321;
+}
+
 
 .sidebar-logo {
     width: 50%;
