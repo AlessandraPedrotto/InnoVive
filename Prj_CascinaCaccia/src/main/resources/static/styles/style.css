@@ -18,6 +18,11 @@
   height: 70px;
 }
 
+.item-active{
+  padding-bottom: 4px;
+  border-bottom: 1px solid #f09321;
+}
+
 .logo {
   font-size: 1.5em;
   font-weight: bold;
