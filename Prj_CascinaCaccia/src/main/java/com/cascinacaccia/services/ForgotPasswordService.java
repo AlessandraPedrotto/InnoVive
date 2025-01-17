@@ -191,7 +191,7 @@ public class ForgotPasswordService {
      * Method to clean up expired password reset tokens periodically.
      * This method is scheduled to run every second.
      */
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 300000)
     public void cleanExpiredTokens() {
         LocalDateTime now = LocalDateTime.now();
         

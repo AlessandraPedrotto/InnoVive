@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,10 @@ import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.services.UserService;
 
+import jakarta.servlet.http.Cookie;
+
 @Configuration
+@EnableScheduling
 public class SecurityConfig {
 	
 	@Autowired
@@ -55,6 +59,13 @@ public class SecurityConfig {
                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                     String email = userDetails.getUsername();
 
+                    // Create a cookie with the user's email
+                    Cookie emailCookie = new Cookie("userEmail", email);
+                    emailCookie.setHttpOnly(false);  // Allows JavaScript to access the cookie
+                    emailCookie.setSecure(false);    // Set to true in production if using HTTPS
+                    emailCookie.setPath("/");        // Make it available across the site
+                    emailCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+                    
                     Optional<User> optionalUser = userDAO.findByEmail(email);
                     if (optionalUser.isPresent()) {
                         User user = optionalUser.get();
@@ -86,7 +97,7 @@ public class SecurityConfig {
                             String email = userDetails.getUsername();
 
                             // Update user state to "OFFLINE"
-                            userService.updateUserStateAndLastAccess(email, "OFFLINE");
+                            userService.markInactiveUsersOffline();
                         }
 
                         response.sendRedirect("/");
