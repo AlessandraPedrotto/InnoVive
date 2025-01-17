@@ -19,8 +19,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,6 +36,7 @@ import com.cascinacaccia.repos.BookingFormDAO;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.GeneralformDAO;
 import com.cascinacaccia.repos.InformationformDAO;
+import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.repos.UserImageDAO;
 import com.cascinacaccia.services.BookingFormService;
 import com.cascinacaccia.services.FilterService;
@@ -42,6 +45,7 @@ import com.cascinacaccia.services.UserService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -51,6 +55,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private UserImageDAO userImageDAO;
+	@Autowired
+	private UserDAO userDAO;
 	@Autowired
 	private BookingFormDAO bookingFormDAO;
 	@Autowired
@@ -130,25 +136,14 @@ public class UserController {
 	    return "profile";
 	}
 	
-	@PostMapping("/set-user-online")
-	public ResponseEntity<Void> setUserOnline(HttpSession session) {
-	    String email = (String) session.getAttribute("email");
+	@PostMapping("/heartbeat")
+	public ResponseEntity<Void> updateHeartbeat(@RequestBody Map<String, String> payload) {
+	    String email = payload.get("email");
 	    if (email != null) {
-	        userService.updateUserStateAndLastAccess(email, "ONLINE");
+	        userService.updateUserLastAccess(email);
+	        return ResponseEntity.ok().build();
 	    }
-	    return ResponseEntity.ok().build();
-	}
-
-	@PostMapping("/set-user-offline")
-	public ResponseEntity<Void> setUserOffline(HttpSession session) {
-	    String email = (String) session.getAttribute("email");
-	    if (email != null) {
-	        System.out.println("Received offline request for email: " + email); // Debug log
-	        userService.updateUserStateAndLastAccess(email, "OFFLINE");
-	    } else {
-	        System.out.println("No email found in session. Cannot set user offline."); // Debug log
-	    }
-	    return ResponseEntity.ok().build();
+	    return ResponseEntity.badRequest().build();
 	}
 	
 	@PostMapping("/profile/update-name")

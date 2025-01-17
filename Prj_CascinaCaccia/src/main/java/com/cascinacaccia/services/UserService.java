@@ -67,26 +67,30 @@ public class UserService implements UserDetailsService{
 	 * @param state The new state to assign to the user (e.g., "ONLINE" or "OFFLINE").
 	 */
 	@Transactional
-	public void updateUserStateAndLastAccess(String email, String state) {
-
+	public void updateUserLastAccess(String email) {
 	    User user = userDAO.findByEmail(email)
 	            .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
 
-	    user.setState(state);
 	    user.setLastAccess(LocalDateTime.now());
-
 	    userDAO.save(user);
 	}
 	
-	@Scheduled(fixedRate = 100000) // Every 5 minutes
+	@Scheduled(fixedRate = 60000)
 	public void markInactiveUsersOffline() {
-	    LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(5);
-	    List<User> inactiveUsers = userDAO.findUsersByStateAndLastAccessBefore("ONLINE", cutoffTime);
-	    for (User user : inactiveUsers) {
-	        user.setState("OFFLINE");
-	        userDAO.save(user);
-	    }
-	}
+        LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(1); // 1 minute inactivity threshold
+        System.out.println("Checking for inactive users before: " + cutoffTime);
+        
+        // Find users who are still "ONLINE" and have not updated their last access time in the last minute
+        List<User> inactiveUsers = userDAO.findUsersByStateAndLastAccessBefore("ONLINE", cutoffTime);
+        System.out.println("Inactive users found: " + inactiveUsers.size());
+        
+        // Loop through the users and mark them "OFFLINE"
+        for (User user : inactiveUsers) {
+            System.out.println("Marking user offline: " + user.getEmail());
+            user.setState("OFFLINE");
+            userDAO.save(user);
+        }
+    }
 	
 	 /*
      * Registers a new user by setting their ID, name, email, password, default profile image, 
