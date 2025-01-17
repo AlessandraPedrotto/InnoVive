@@ -1,5 +1,6 @@
 package com.cascinacaccia.controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -270,6 +272,8 @@ public class AdminController {
 		                        @RequestParam(name = "statuses", required = false) List<String> statuses,
 		                        @RequestParam(name = "formType", defaultValue = "all") String formType, 
 		                        @AuthenticationPrincipal Object principal, 
+		                        @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate startDate,
+		            	        @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate endDate,
 		                        HttpSession session,
 		                        HttpServletRequest request,
 		                        Model model) {
@@ -320,6 +324,11 @@ public class AdminController {
         	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);
         }
         
+        // Apply filter by date range if provided
+        if (startDate != null && endDate != null) {
+        	allAssignedForms = FilterService.filterByDateRange(allAssignedForms, startDate, endDate);
+        }
+        
         switch (sortBy) {
 		    case "surnameAsc":
 		    	allAssignedForms = FilterService.sortBySurname(allAssignedForms, true);
@@ -339,7 +348,7 @@ public class AdminController {
 
         //if no tasks are assigned, add a "noResults" message to the model
         if (allAssignedForms.isEmpty()) {
-            model.addAttribute("noResults", "Non ci sono task assegnati a questo utente.");
+            model.addAttribute("noResults", "Non ci sono task assegnati a questo utente, con questo tipo di ricerca.");
         }
         
         //pagination logic: Get the total number of tasks
@@ -409,6 +418,8 @@ public class AdminController {
 	    model.addAttribute("formatter", formatter);
 	    model.addAttribute("formType", formType);
 	    model.addAttribute("newFormCount", newFormCount);
+	    model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
         return "YourTasksPublic"; 
     }
     
