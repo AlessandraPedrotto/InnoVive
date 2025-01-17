@@ -110,6 +110,17 @@
 										th:checked="${statusesSelected != null and statusesSelected.contains('DONE')}" />
 									DONE
 								</div>
+							</div><br />
+							
+							<!-- Date Range Filter -->
+					        <div class="date-range-filter">
+							    <label for="startDate">Data di inizio:</label>
+							    <input type="date" name="startDate" id="startDate" th:value="${startDate}" 
+							           onchange="toggleDateRequirements()" />
+							
+							    <label for="endDate">Data di fine:</label>
+							    <input type="date" name="endDate" id="endDate" th:value="${endDate}" 
+							           onchange="toggleDateRequirements()" />
 							</div>
 						</div>
 
@@ -449,27 +460,27 @@
 				<div class="pagination">
 					<!-- First Page -->
 					<a class="pagination-button" th:if="${currentPage > 1}"
-						th:href="@{/yourTasks(page=1, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">First</a>
+						th:href="@{/yourTasks(page=1, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}">First</a>
 
 					<!-- Previous Page -->
 					<a class="pagination-button" th:if="${currentPage > 1}"
-						th:href="@{/yourTasks(page=${currentPage - 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">Previous</a>
+						th:href="@{/yourTasks(page=${currentPage - 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}">Previous</a>
 
 					<!-- Page Numbers -->
 					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
 						<a class="pagination-button"
-							th:href="@{/yourTasks(page=${i}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}"
+							th:href="@{/yourTasks(page=${i}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}"
 							th:classappend="${i == currentPage ? 'btn-primary text-white' : 'btn-light'}"
 							th:text="${i}"></a>
 					</span>
 
 					<!-- Next Page -->
 					<a class="pagination-button" th:if="${currentPage < totalPages}"
-						th:href="@{/yourTasks(page=${currentPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">Next</a>
+						th:href="@{/yourTasks(page=${currentPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}">Next</a>
 
 					<!-- Last Page -->
 					<a class="pagination-button" th:if="${currentPage < totalPages}"
-						th:href="@{/yourTasks(page=${totalPages}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType})}">Last</a>
+						th:href="@{/yourTasks(page=${totalPages}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}">Last</a>
 				</div>
 			</div>
 		</div>

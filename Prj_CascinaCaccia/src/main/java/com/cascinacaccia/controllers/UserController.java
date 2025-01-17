@@ -1,5 +1,6 @@
 package com.cascinacaccia.controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -197,6 +199,8 @@ public class UserController {
 			            @RequestParam(name = "categories", required = false) List<String> categoryIds,
                         @RequestParam(name = "statuses", required = false) List<String> statuses,
                         @RequestParam(name = "formType", defaultValue = "all") String formType, 
+                        @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate startDate,
+            	        @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate endDate,
                         HttpSession session,
                         HttpServletRequest request,
                         Model model) throws Exception{
@@ -241,6 +245,11 @@ public class UserController {
         	allAssignedForms = FilterService.filterByBookingForm(allAssignedForms);
         }
         
+        // Apply filter by date range if provided
+        if (startDate != null && endDate != null) {
+        	allAssignedForms = FilterService.filterByDateRange(allAssignedForms, startDate, endDate);
+        }
+        
 	    //sort forms based on the selected option
 	    switch (sortBy) {
 		    case "surnameAsc":
@@ -261,7 +270,7 @@ public class UserController {
 	    
 	    //if no forms are assigned, add a "noResults" message to the model
 	    if (allAssignedForms.isEmpty()) {
-	        model.addAttribute("noResults", "Non hai nessun task assegnato");
+	        model.addAttribute("noResults", "Non hai nessun task assegnato, con questo tipo di ricerca.");
 	    }
 	    
 	    //pagination logic: Get the total number of forms
@@ -329,6 +338,8 @@ public class UserController {
 	    model.addAttribute("formatter", formatter);
 	    model.addAttribute("formType", formType);
 	    model.addAttribute("newFormCount", newFormCount);
+	    model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
 	    return "YourTasks";
 	}
 	
