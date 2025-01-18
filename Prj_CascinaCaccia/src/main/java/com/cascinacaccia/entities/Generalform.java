@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "general_form", uniqueConstraints = @UniqueConstraint(columnNames = {"email", "category_id", "name", "surname"}))
+@Table(name = "general_form")
 public class Generalform {
 	
 	//characteristics of the entity GeneralForm
