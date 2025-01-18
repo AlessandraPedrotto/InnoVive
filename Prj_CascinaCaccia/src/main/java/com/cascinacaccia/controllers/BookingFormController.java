@@ -76,21 +76,12 @@ public class BookingFormController {
             
             //get the category name
             String categoryName = category.getName();
+          
+            Generalform generalform;	
             
-            //check for existing Generalform entries
-            List<Generalform> existingForms = generalFormDAO.findByEmailAndCategoryAndNameAndSurname(email, category, name, surname);
-
-            Generalform generalform;
-            if (!existingForms.isEmpty()) {
-            	
-                //reuse the existing Generalform if found
-                generalform = existingForms.get(0); 
-            } else {
-            	
-                //create a new Generalform if no match is found
-                generalform = new Generalform(UUID.randomUUID().toString(), name, surname, email, category);
-                generalFormDAO.save(generalform);
-            }
+            //create a new Generalform if no match is found
+            generalform = new Generalform(UUID.randomUUID().toString(), name, surname, email, category);
+            generalFormDAO.save(generalform);
 
             //create BookingForm
             BookingForm bookingForm = new BookingForm(UUID.randomUUID().toString(), generalform, content);
