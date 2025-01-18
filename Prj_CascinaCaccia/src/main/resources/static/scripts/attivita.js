@@ -1,44 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-const buttons = document.querySelectorAll('.secondary a');
-const medie = document.getElementById('medie');
-const superiori = document.getElementById('superiori');
-const tutti = document.getElementById('tutti') 
+  const buttons = document.querySelectorAll('.secondary a');  // secondary navbar links
+  const sections = {  // object with section to display/hide
+    'Medie': document.getElementById('medie'),
+    'Superiori': document.getElementById('superiori'),
+    'Tutti': document.getElementById('tutti')
+  };
 
-
-//  for each button, adding an event listener
-buttons.forEach(button => {
+  buttons.forEach(button => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
+
+      // scroll the page to the secondary menu
       window.scrollTo({
-          top: 70, 
-          behavior: 'smooth'
+        top: 70,
+        behavior: 'smooth'
       });
 
-      //  hiding all sections
-      medie.classList.add('hidden');               // da gestire con array
-      superiori.classList.add('hidden');
-      tutti.classList.add('hidden');
+      // hide all sections and remove attivita class
+      Object.values(sections).forEach(section => {
+        section.classList.add('hidden');
+        section.classList.remove('attivita');
+      });
 
-      //  removing torunaments class
-      medie.classList.remove('attivita');
-      superiori.classList.remove('attivita');               // idem
-      tutti.classList.remove('attivita');
-      
-      //  removing active class from all buttons
+      // remove active class from all buttons
       buttons.forEach(btn => btn.classList.remove('active'));
-  
-      // showing only the clicked section
-      if (button.textContent === 'Medie') {
-        medie.classList.remove('hidden');
-        medie.classList.add('attivita');
-      } else if (button.textContent === 'Superiori') {
-        superiori.classList.remove('hidden');
-        superiori.classList.add('attivita');
-      } else if (button.textContent === 'Tutti') {
-        tutti.classList.remove('hidden');
-        tutti.classList.add('attivita');
+
+      // remove hidden class and add attivita class to the selected section
+      const section = sections[button.textContent];
+      if (section) {
+        section.classList.remove('hidden');
+        section.classList.add('attivita');
       }
-      //  adding active class to the selected section
+
+      // add active class to the clicked button
       button.classList.add('active');
     });
   });

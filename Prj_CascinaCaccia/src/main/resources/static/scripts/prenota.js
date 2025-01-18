@@ -13,12 +13,22 @@ let dateSelection = {
     },
 };
 
-// function to chek if is a bisestile year 
+
+/**
+ * chek if the input year is bisestile  
+ * @param {number} year - input year
+ * @returns {boolean} - isBisestile true or false
+ */
 const isBisestile = (year) => {
     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
 };
 
-// function to calculate february year 
+
+/**
+ * calculate february days  
+ * @param {number} year - input year
+ * @returns {number} - days of february
+ */
 const setFebruaryDays = (year) => {
     return isBisestile(year) ? 29 : 28;
 };
@@ -29,23 +39,39 @@ const monthNames = [
     'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
 ];
 
-// main function to manage the calendar
-const getCalendar = (month, year) => {
-    let calendarDays = document.querySelector('.calendar-days');
-    calendarDays.textContent = ''; // calendar reset
 
+/**
+ * main function to get the calendar 
+ * @param {number} month - input month
+ * @param {number} year - input year
+ * @returns {void} 
+ */
+const getCalendar = (month, year) => {
+    // get the calendar days container
+    let calendarDays = document.querySelector('.calendar-days');
+    // calendar reset
+    calendarDays.textContent = ''; 
+
+    // get the calendar year container
     let calendarYear = document.querySelector('#year');
+    // array with number of days for each month
     let monthDays = [31, setFebruaryDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    // get the current date
     let currentDate = new Date();
 
+    // setting the month and the year
     monthPicker.textContent = monthNames[month];
     calendarYear.textContent = year;
 
+    // get the first day of the selected month and year
     let firstDay = new Date(year, month, 1);
 
+    // iterate all month days
     for (let i = 0; i < monthDays[month] + firstDay.getDay(); i++) {
+        // create a div for the day
         let day = document.createElement('div');
 
+        // check if is a valid day
         if (i >= firstDay.getDay()) {
             let dayNumber = i - firstDay.getDay() + 1;
             let dateToCheck = new Date(year, month, dayNumber);
@@ -54,23 +80,25 @@ const getCalendar = (month, year) => {
             day.textContent = dayNumber;
 
             if (dateToCheck < currentDate.setHours(0, 0, 0, 0)) {
+                // if it is a past day is disabled
                 day.classList.add('disabled');
             } else {
                 day.classList.add('calendar-day-hover');
 
                 if (dateSelection.checkIn === formattedDate) {
-                    day.classList.add('selected');
+                    day.classList.add('selected');  // seleted check in
                 } else if (dateSelection.checkOut === formattedDate) {
-                    day.classList.add('selected');
+                    day.classList.add('selected');  // selected check out
                 } else if (
                     dateSelection.checkIn &&
                     dateSelection.checkOut &&
                     dateToCheck > new Date(dateSelection.checkIn) &&
                     dateToCheck < new Date(dateSelection.checkOut)
                 ) {
-                    day.classList.add('range');
+                    day.classList.add('range');  // range betweeen check in and check out
                 }
 
+                // click listener to select the date
                 day.onclick = () => {
                     if (!dateSelection.checkIn) {
                         // check in selection
@@ -99,12 +127,12 @@ const getCalendar = (month, year) => {
                             div.classList.remove('selected', 'range');
                         });
                     }
-
+                    // reload the calendar 
                     getCalendar(currentMonth.value, currentYear.value);
                 };
             }
         }
-        calendarDays.appendChild(day);
+        calendarDays.appendChild(day);  // append the day to the calendar
     }
 };
 
@@ -112,6 +140,7 @@ const getCalendar = (month, year) => {
 let calendar = document.querySelector('.calendar');
 let monthPicker = document.querySelector('#month-picker');
 let monthList = calendar.querySelector('.month-list');
+
 
 monthNames.forEach((m, index) => {
     let month = document.createElement('div');
@@ -124,12 +153,15 @@ monthNames.forEach((m, index) => {
     monthList.appendChild(month);
 });
 
+
+
 let currentDate = new Date();
 let currentMonth = { value: currentDate.getMonth() };
 let currentYear = { value: currentDate.getFullYear() };
 
 getCalendar(currentMonth.value, currentYear.value);
 
+// buttons to navigate the year
 const prevYear = document.getElementById('prev-year');
 const nextYear = document.getElementById('next-year');
 
@@ -148,29 +180,27 @@ monthPicker.onclick = () => {
 };
 
 
-
+// submit form button
 const submitBTN = document.getElementById('submit-btn');
 
 
 submitBTN.onclick = () =>{
+    // check the date values to submit to the backend
     if (document.getElementById('hidden-datepicker-checkout').value === '') {
+        // setting check out date equals to the chec in date
         document.getElementById('hidden-datepicker-checkout').value = document.getElementById('hidden-datepicker-checkin').value
     }
-    console.log(document.getElementById('hidden-datepicker-checkin').value);
-    console.log(document.getElementById('hidden-datepicker-checkout').value);
-    
+    // submit the form
     document.getElementById('prenota-form').submit();
     
 }
 
 
 
-// manage conferma container
-
-
+// container with checkin and checkout recap
 const confermaContainer = document.querySelector('.conferma-container');
 
-
+// event listener to hide the container when the page is scrolled to the end
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY; 
     const innerHeight = window.innerHeight; 
