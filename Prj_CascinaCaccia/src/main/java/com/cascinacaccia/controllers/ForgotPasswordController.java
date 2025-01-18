@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cascinacaccia.entities.PasswordResetToken;
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.UserDAO;
 import com.cascinacaccia.services.ForgotPasswordService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ForgotPasswordController {
@@ -66,7 +69,7 @@ public class ForgotPasswordController {
     
     //show the password reset form when the user clicks on the link
     @GetMapping("/resetPassword/{token}")
-    public String showResetPasswordForm(@PathVariable String token, Model model) {
+    public String showResetPasswordForm(@PathVariable String token, Model model, RedirectAttributes redirectAttributes) {
     	
     	//check if the token is correctly passed
         System.out.println("Received token: " + token);  
@@ -76,8 +79,9 @@ public class ForgotPasswordController {
             model.addAttribute("token", token);
             return "ResetPassword";
         }
-
-        return "redirect:/?error=expired";
+        
+        redirectAttributes.addFlashAttribute("error", "Il token per il reset della password non è stato trovato o è scaduto, chiedine uno.");
+        return "redirect:/forgotPassword?error=true";
     }
 
     //process the password reset
@@ -85,6 +89,8 @@ public class ForgotPasswordController {
     public String processResetPassword(@RequestParam("token") String token,
                                        @RequestParam("password") String password, 
                                        @RequestParam("confirmPassword") String confirmPassword,
+                                       HttpServletRequest request,
+                                       RedirectAttributes redirectAttributes,
                                        Model model) {
         //log the received token
         System.out.println("Received token in POST: " + token);
@@ -93,8 +99,8 @@ public class ForgotPasswordController {
         PasswordResetToken resetToken = forgotPasswordService.findResetTokenByToken(token);
         if (resetToken == null) {
             System.out.println("Token not found in POST request!");
-            model.addAttribute("error", "Il token per il reset della password non è stato trovato, chiedine uno.");
-            return "redirect:/?error=invalidToken";
+            redirectAttributes.addFlashAttribute("error", "Il token per il reset della password non è stato trovato, chiedine uno.");
+            return "redirect:/forgotPassword?error=true";
         }
 
         //log the expiry date of the token
@@ -103,8 +109,8 @@ public class ForgotPasswordController {
         //check if the token has expired
         if (forgotPasswordService.hasExpired(resetToken.getExpiryDateTime())) {
             System.out.println("Token has expired.");
-            model.addAttribute("error", "Il token per il reset della password è scaduto, chiedine un altro.");
-            return "redirect:/?error=expired";
+            redirectAttributes.addFlashAttribute("error", "Il token per il reset della password è scaduto, chiedine un altro.");
+            return "redirect:/forgotPassword?error=true";
         }
 
         //continue with the password reset process if the token is valid
@@ -132,8 +138,8 @@ public class ForgotPasswordController {
         user.setPassword(passwordEncoder.encode(password));
         userDAO.save(user);
 
-        model.addAttribute("success", "Password cambiata con successo!");
-        return "redirect:/login?success=passwordReset";
+        redirectAttributes.addFlashAttribute("success", "Password cambiata con successo!");
+        return "redirect:/login?success=true";
     }
     
     //method to validate password using regex 
