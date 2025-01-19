@@ -21,12 +21,6 @@ function changeLanguage(lang) {
           }
         }
       });
-
-      // Update the dropdown toggle to display the selected language
-      const dropdownToggle = document.querySelector(".language-dropdown .dropdown-toggle");
-      const flag = lang === "it" ? "/img/italy-flag.png" : "/img/uk-flag.png"; // Add more flags if necessary
-      const languageName = lang === "it" ? "Italiano" : "English"; // Add more languages if necessary
-      dropdownToggle.innerHTML = `<img src="${flag}" alt="${languageName}" class="flag"> ${languageName}`;
     })
     .catch(error => console.error("Error loading translations:", error));
 }
@@ -37,5 +31,49 @@ document.addEventListener("DOMContentLoaded", function () {
   const savedLanguage = localStorage.getItem("selectedLanguage");
   const defaultLanguage = savedLanguage || "it"; // Always default to Italian if no language is saved
   changeLanguage(defaultLanguage);
+  updateLanguageSwitcher(defaultLanguage);
 });
 
+// Function to update the language switcher based on the selected language
+function updateLanguageSwitcher(lang) {
+  const flagElement = document.getElementById("desktopLanguageFlag");
+  const textElement = document.getElementById("desktopLanguageText");
+
+  if (lang === "en") {
+    flagElement.src = "/img/uk-flag.png";
+    flagElement.alt = "English";
+    textElement.textContent = "English";
+  } else {
+    flagElement.src = "/img/italy-flag.png";
+    flagElement.alt = "Italiano";
+    textElement.textContent = "Italiano";
+  }
+  
+   // For mobile language switcher
+  const mobileFlagElement = document.getElementById("mobileLanguageFlag");
+  const mobileTextElement = document.getElementById("mobileLanguageText");
+
+  if (lang === "en") {
+    mobileFlagElement.src = "/img/uk-flag.png";
+    mobileFlagElement.alt = "English";
+    mobileTextElement.textContent = "English";
+  } else {
+    mobileFlagElement.src = "/img/italy-flag.png";
+    mobileFlagElement.alt = "Italiano";
+    mobileTextElement.textContent = "Italiano";
+  }
+}
+
+function toggleLanguageMobile() {
+  // Get the current language from localStorage (or default to Italian)
+  const currentLanguage = localStorage.getItem("selectedLanguage") || "it";
+
+  // Toggle between 'it' and 'en'
+  const newLanguage = currentLanguage === "it" ? "en" : "it";
+  
+  // Change language by calling the main function
+  changeLanguage(newLanguage);
+
+  // Update the language flags and text based on the selected language
+  updateLanguageSwitcher(newLanguage);
+}
