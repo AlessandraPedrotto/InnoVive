@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,6 +42,7 @@ public class SecurityConfig {
 	    return new BCryptPasswordEncoder();
 	}
 	
+	
     @Bean
     //configures HTTP security settings for the application
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -47,7 +50,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
 
-                .requestMatchers("/set-user-offline", "/struttura", "/submit-booking", "/prenota", "/attivita", "/login", "/error", "/", "/informationForm", "/submit-form", "/generalForm", "/chatbot", "/bookingForm", "/resetPassword/**", "/resetPassword", "/forgotPassword", "/styles/**", "/scripts/**", "/img/**").permitAll()
+                .requestMatchers("/set-user-offline", "/struttura", "/submit-booking", "/prenota", "/attivita", "/login", "/error", "/", "/informationForm", "/submit-form", "/generalForm", "/chatbot", "/bookingForm", "/resetPassword/**", "/resetPassword", "/forgotPassword", "/styles/**", "/scripts/**", "/img/**", "/translation/**").permitAll()
                 
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -108,16 +111,21 @@ public class SecurityConfig {
                     .permitAll()
                 )
                 .sessionManagement(session -> session
-                    .invalidSessionUrl("/")
+                    .invalidSessionUrl("/login?errorSession=sessionExpired")
                     .maximumSessions(1)
                     .maxSessionsPreventsLogin(false)
+                    .sessionRegistry(sessionRegistry())
+                    .expiredSessionStrategy(new CustomSessionExpiredStrategy())
                     .and()
                     .sessionFixation().migrateSession()
                 )
 
         .build();
     }
-    
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
     /*
     @Bean
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {

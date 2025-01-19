@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,6 +60,9 @@ public class UserService implements UserDetailsService{
 	private BookingFormService bookingFormService;
 	@Lazy
 	@Autowired
+	private SessionRegistry sessionRegistry;
+	@Lazy
+	@Autowired
 	private InformationFormService informationFormService;
 	
 	/*
@@ -75,7 +80,7 @@ public class UserService implements UserDetailsService{
 	    userDAO.save(user);
 	}
 	
-	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 30000)
 	public void markInactiveUsersOffline() {
         LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(1); // 1 minute inactivity threshold
         System.out.println("Checking for inactive users before: " + cutoffTime);
@@ -89,8 +94,30 @@ public class UserService implements UserDetailsService{
             System.out.println("Marking user offline: " + user.getEmail());
             user.setState("OFFLINE");
             userDAO.save(user);
+            logoutUserByUsername(user.getEmail());
         }
     }
+	
+	private void logoutUserByUsername(String username) {
+	    List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
+
+	    for (Object principal : allPrincipals) {
+	        if (principal instanceof org.springframework.security.core.userdetails.User) {
+	            org.springframework.security.core.userdetails.User user =
+	                    (org.springframework.security.core.userdetails.User) principal;
+
+	            // Check if the username matches
+	            if (user.getUsername().equals(username)) {
+	                // Expire all sessions for this user
+	                List<SessionInformation> sessions = sessionRegistry.getAllSessions(user, false);
+	                for (SessionInformation session : sessions) {
+	                    session.expireNow(); // Invalidate session
+	                    System.out.println("Session expired for user: " + username);
+	                }
+	            }
+	        }
+	    }
+	}
 	
 	 /*
      * Registers a new user by setting their ID, name, email, password, default profile image, 
