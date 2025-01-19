@@ -1421,10 +1421,13 @@ textarea#content-message {
 #struttura {
   margin-bottom: 70px;
   margin-top: 70px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-struttura {
   display: flex;
+  height: 300px;
 }
 
 .descrizione-struttura {
@@ -1432,21 +1435,53 @@ textarea#content-message {
   padding: 2rem;
 }
 
-
 .foto-struttura {
   width: 50%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  position: relative; 
 }
 
-.foto-struttura img {
-  width: 350px;
+.image-container {
+  position: relative; 
+  width: 350px; 
+  height: auto; 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
 }
+
+.image-container img {
+  position: absolute; 
+  width: 100%; 
+  transition: opacity 0.3s ease-in;
+}
+
+.image-container img:first-child {
+  z-index: 2; 
+  opacity: 1; 
+}
+
+.image-container img:first-child:hover {
+  opacity: 0; 
+}
+
+.image-container img:last-child {
+  z-index: 1; 
+  opacity: 1; 
+}
+
 
 @media screen and (max-width: 768px) {
   .cascina-top-img {
     width: 80%;
     padding: 20px;
+  }
+
+  .image-container img {
+    position: absolute;
+    top: 250px;
   }
 }
 
@@ -1494,6 +1529,11 @@ textarea#content-message {
     text-align: center;
     margin-bottom: 20px;
     padding: 15px;
+    height: 500px;
+  }
+
+  .foto-struttura{
+    width: 100%;
   }
 
   .foto-struttura img {
@@ -1503,6 +1543,7 @@ textarea#content-message {
   }
 
   .descrizione-struttura {
+    width: 100%;
     font-size: 1rem;
     padding: 10px;
     line-height: 1.5;
