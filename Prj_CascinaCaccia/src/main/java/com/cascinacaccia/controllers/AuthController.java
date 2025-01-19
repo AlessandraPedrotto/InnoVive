@@ -16,11 +16,14 @@ public class AuthController {
 	
 	//when the user navigates to "/login", this method is called
 	@GetMapping("/login")
-    public String loginPage(Model model, @RequestParam(value = "error", required = false) String error) {
+    public String loginPage(Model model, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "errorSession", required = false) String errorSession) {
 		
 		//add error and logout messages if available
 	    if (error != null) {
 	        model.addAttribute("error", "Accesso negato, la password e/o email potrebbero essere errate.");
+	    }
+	    if (errorSession != null) {
+	        model.addAttribute("error", "Sessione scaduta, effettua nuovamente il log in.");
 	    }
 	    
 		model.addAttribute("categories", categoryDAO.findAll());
