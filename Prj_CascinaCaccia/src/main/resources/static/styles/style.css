@@ -136,14 +136,24 @@
 /* header */
 .hero {
   background-color: #D9D9D9;
-  background: url('/img/cascina-hero.jpg');
-  background-blend-mode: screen;
+  background-image: url('/img/home/education-hero.avif'); 
+  background-repeat: no-repeat;
+  background-position: center center;  
+  background-size: cover; 
+  background-color: rgba(0, 0, 0, 0.5); 
+  background-blend-mode: darken; 
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center;  
+  align-items: center; 
+  height: 100vh;  
   color: #fff;
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
 }
+
+
 
 .highlited{
   color: #f09321;
