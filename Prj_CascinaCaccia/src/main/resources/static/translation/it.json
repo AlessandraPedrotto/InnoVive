@@ -10,5 +10,19 @@
 	"social": "SOCIAL",
   	"posizione": "Via Serra Alta, 6, San Sebastiano da Po (TO)",
   	"dove_siamo": "DOVE SIAMO",
-  	"education_on": "EducatiON Cascina Caccia"
+  	"education_on": "EducatiON Cascina Caccia",
+  	
+  	"_comment3": "Traduzioni bottoni",
+	"chiudi": "Chiudi",
+  	"reset_password": "Reset Password",
+  	"login": "Login",
+  	"ripristina": "Ripristina",
+  	"indietro": "Indietro",
+  	"accedi": "Accedi",
+  	"password_dimenticata": "Password dimenticata?",
+  	"tutti": "Tutti",
+  	"superiori": "Superiori",
+  	"medie": "Medie",
+  	
+  	"_comment4": "Traduzioni titoli"
 }
