@@ -41,7 +41,7 @@
   height: auto;
 }
 
-.nav-links {
+.nav-links, .language-switcher {
   list-style: none;
   display: flex;
 }
@@ -61,6 +61,20 @@
   border-radius: 20px;
   color: #fff;
   font-weight: 500;
+}
+
+.mobile-menu .language-switcher {
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  margin-top: 10px; 
+}
+
+.language-switcher .flag {
+  width: 25px;
+  height: 25px;
+  margin-top: -3px;
+  margin-right: 10px;
 }
 
 /* Menu hamburger */
@@ -129,6 +143,12 @@
 .mobile-logo img {
   max-width: 200px;
   height: auto;
+}
+
+.mobile-menu .language-switcher .flag {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
 }
 
 /* MAIN STARTS */

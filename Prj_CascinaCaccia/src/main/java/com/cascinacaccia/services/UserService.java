@@ -80,9 +80,9 @@ public class UserService implements UserDetailsService{
 	    userDAO.save(user);
 	}
 	
-	@Scheduled(fixedRate = 30000)
+	@Scheduled(fixedRate = 120000)
 	public void markInactiveUsersOffline() {
-        LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(1); // 1 minute inactivity threshold
+        LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(10); // 1 minute inactivity threshold
         System.out.println("Checking for inactive users before: " + cutoffTime);
         
         // Find users who are still "ONLINE" and have not updated their last access time in the last minute
