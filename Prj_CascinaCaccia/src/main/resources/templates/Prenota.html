@@ -97,21 +97,21 @@
         <div class="form-info" >
             <form id="prenota-form" method="POST" action="/submit-booking" > 
                 <div class="form-field">
-                    <label for="nome">Nome</label>
+                    <label for="nome" data-translate="label_nome"></label>
                     <input type="text" id="nome"  placeholder="Il tuo nome" name="name">
                 </div>
                 <div class="form-field">
-                    <label for="cognome">Cognome</label>
+                    <label for="cognome" data-translate="label_cognome"></label>
                     <input type="text" id="cognome" placeholder="Il tuo cognome" name="surname">
                 </div>
                 <div class="form-field">
-                    <label for="email">E-mail</label>
+                    <label for="email" data-translate="label_mail"></label>
                     <input type="email" id="email" placeholder="La tua email" name="email">
                 </div>
                 <div class="form-field">
-                    <label for="categoryId">Categoria:</label>
+                    <label for="categoryId" data-translate="label_categoria"></label>
 	    <select id="categoryId" name="categoryId" required>
-	        <option value="" disabled selected>Seleziona una categoria</option>
+	        <option value="" disabled selected data-translate="seleziona_categoria"></option>
 	        
 	            <option value="1">Scuola elementare</option>
 	        
@@ -132,7 +132,7 @@
 	    </select>
                 </div>
                 <div class="form-field">
-                    <label for="messaggio">Messaggio</label>
+                    <label for="messaggio" data-translate="label_messaggio"></label>
                     <textarea rows="10" cols="5" name="content" id="messaggio"
                         placeholder="Raccontaci chi sei, cosa ti aspetti da questa visita e dicci le tue esigenze" ></textarea>
                 </div>
@@ -141,11 +141,11 @@
             </form>
         </div>
         <div class="calendar-container">
-            <div class="hidden" id="check-in-time" >Check in: <span id="selected-check-in"></span> </div> <div class="hidden" id="check-out-time" >Check out: <span id="selected-check-out"></span> </div>
+            <div class="hidden" id="check-in-time">Check-in:<span id="selected-check-in"></span> </div> <div class="hidden" id="check-out-time" >Check out: <span id="selected-check-out"></span> </div>
             <div class="calendar">
                 <!-- calendar header -->
                 <div class="calendar-header">
-                    <span class="month-picker" id="month-picker">January</span>
+                    <span class="month-picker" id="month-picker" data-translate="mese_1"></span>
                     <div class="year-picker" id="year-picker">
                         <span class="year-change" id="prev-year">&lt;</span>
                         <span id="year">2025</span>
@@ -156,13 +156,13 @@
                 <!-- calendar body -->
                 <div class="calendar-body">
                     <div class="calendar-week-day">
-                        <div class="domenica">Dom</div>
-                        <div>Lun</div>
-                        <div>Mar</div>
-                        <div>Mer</div>
-                        <div>Gio</div>
-                        <div>Ven</div>
-                        <div>Sab</div>
+                        <div class="domenica" data-translate="giorno_7"></div>
+                        <div data-translate="giorno_1"></div>
+                        <div data-translate="giorno_2"></div>
+                        <div data-translate="giorno_3"></div>
+                        <div data-translate="giorno_4"></div>
+                        <div data-translate="giorno_5"></div>
+                        <div data-translate="giorno_6"></div>
                     </div>
                     <div class="calendar-days">
 
