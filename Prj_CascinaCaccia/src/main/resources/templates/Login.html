@@ -76,7 +76,7 @@
         </div>
     </nav>
     <!-- NAVBAR ENDS -->
-    <h1 class="page-title">EducatiON - Area Riservata</h1>
+    <h1 class="page-title" data-translate="titolo_area"></h1>
 	
 	<!-- Error messages -->
 	<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
@@ -94,13 +94,13 @@
 		    
     <!-- LOGIN STARTS -->
     <div class="login-container">
-        <h2>Login</h2><br>
+        <h2 data-translate="login"></h2><br>
         <!-- Login form -->
         <form class="login-form" th:action="@{/login}" method="post">
-            <label for="email">Email:</label>
+            <label for="email" data-translate="label_mail"></label>
             <input type="email" id="email" name="username" required><br>
 
-            <label for="password">Password:</label>
+            <label for="password" data-translate="password"></label>
             <input type="password" id="password" name="password" required><br>
 
             <button id="accediBtn" type="submit" data-translate="accedi"></button>
@@ -218,7 +218,7 @@
     <!-- Chatbot Container -->
     <div id="chatbotContainer">
         <div id="chatbotHeader">
-            <span>Chat with Caccia</span>
+            <span data-translate="chatbot_nome"></span>
             <button id="closeChatbot" onclick="toggleChatbot()"><svg width="30px" height="30px" viewBox="0 0 24 24"
                     fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path

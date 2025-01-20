@@ -47,8 +47,9 @@
   	"titolo_camera3": "White Room",
   	"titolo_camera4": "Multipurpose Hall",
   	"titolo_camera5": "Barn",
+  	"chatbot_nome": "Chat with Caccia",
   	
-  	"_comment5": "Traduzioni form prenotazione",
+    "_comment5": "Traduzioni form prenotazione",
 	"label_nome": "Name",
   	"label_cognome": "Surname",
   	"label_mail": "E-mail",
@@ -69,5 +70,12 @@
   	
   	"_comment6": "Traduzioni form informazione",
 	"invia": "Send",
-	"titolo_info_form": "Send a request for information"
+	"titolo_info_form": "Send a request for information",
+	
+	"_comment7": "Traduzioni area riservata",
+	"titolo_area": "EducatiON - Reserved area",
+  	"password": "Password",
+  	"new_password": "New Password",
+  	"onfirm_password": "Confirm Password",
+  	"istruzioni_reset": "By entering your account email address you will receive a link to reset your password."
 }

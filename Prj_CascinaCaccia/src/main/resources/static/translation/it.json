@@ -47,6 +47,7 @@
   	"titolo_camera3": "Camera bianca",
   	"titolo_camera4": "Salone polifunzionale",
   	"titolo_camera5": "Fienile",
+  	"chatbot_nome": "Parla con Caccia",
   	
   	"_comment5": "Traduzioni form prenotazione",
 	"label_nome": "Nome",
@@ -69,5 +70,12 @@
   	
   	"_comment6": "Traduzioni form informazione",
 	"invia": "Invia",
-	"titolo_info_form": "Invia una richiesta di informazioni"
+	"titolo_info_form": "Invia una richiesta di informazioni",
+	
+	"_comment7": "Traduzioni area riservata",
+	"titolo_area": "EducatiON - Area Riservata",
+  	"password": "Password",
+  	"new_password": "Nuova Password",
+  	"onfirm_password": "Conferma Password",
+  	"istruzioni_reset": "Inserendo l'indirizzo e-mail del tuo account riceverai un link per resettare la password."
 }
