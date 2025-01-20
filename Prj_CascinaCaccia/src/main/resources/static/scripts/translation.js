@@ -7,6 +7,7 @@ function changeLanguage(lang) {
   fetch(`/translation/${lang}.json`)
     .then(response => response.json())
     .then(translations => {
+	  localStorage.setItem(`translations_${lang}`, JSON.stringify(translations));
       // Update all elements with data-translate attributes
       const elementsToTranslate = document.querySelectorAll("[data-translate]");
       elementsToTranslate.forEach(element => {
@@ -28,6 +29,25 @@ function changeLanguage(lang) {
     })
     .catch(error => console.error("Error loading translations:", error));
 }
+
+// Listen for the language change event
+document.addEventListener('languageChange', (event) => {
+  const lang = event.detail.lang;
+  const chatMessages = document.querySelectorAll('#chatMessages .message');
+
+  chatMessages.forEach(message => {
+    const textElement = message.querySelector('.text');
+    if (textElement) {
+      const originalText = textElement.getAttribute('data-original-text');
+      if (originalText) {
+        // Update the text content using getLocalizedText
+        textElement.textContent = getLocalizedText(originalText, originalText);
+      }
+    }
+  });
+
+  scrollToBottom(); // Scroll to the bottom of the chat
+});
 
 // Set the default language (Italian) when the page loads
 document.addEventListener("DOMContentLoaded", function () {
