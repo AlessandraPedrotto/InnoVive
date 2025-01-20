@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const buttons = document.querySelectorAll('.secondary a');  // secondary navbar links
   const sections = {  // object with section to display/hide
-    'Medie': document.getElementById('medie'),
-    'Superiori': document.getElementById('superiori'),
-    'Tutti': document.getElementById('tutti')
+    'medie': document.getElementById('medie'),
+    'superiori': document.getElementById('superiori'),
+    'tutti': document.getElementById('tutti')
   };
 
   buttons.forEach(button => {
@@ -25,8 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // remove active class from all buttons
       buttons.forEach(btn => btn.classList.remove('active'));
 
-      // remove hidden class and add attivita class to the selected section
-      const section = sections[button.textContent];
+	  const target = button.getAttribute('data-target');
+      const section = sections[target];
+      
       if (section) {
         section.classList.remove('hidden');
         section.classList.add('attivita');

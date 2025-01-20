@@ -13,7 +13,9 @@ function changeLanguage(lang) {
         const translationKey = element.getAttribute("data-translate");
         if (translations[translationKey]) {
           // Update text content for non-input elements
-          if (element.tagName !== "INPUT" && element.tagName !== "TEXTAREA") {
+          if (element.hasAttribute("data-translate-html")) {
+            element.innerHTML = translations[translationKey]; // Allow HTML translations
+          } else if (element.tagName !== "INPUT" && element.tagName !== "TEXTAREA") {
             element.textContent = translations[translationKey];
           } else {
             // Update placeholder for input and textarea elements
