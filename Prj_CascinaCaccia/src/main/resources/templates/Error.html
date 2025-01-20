@@ -165,39 +165,39 @@
 
     <div id="informationFormContainer">
 
-        <h3>Invia una richiesta di informazioni</h3>
+        <h3 data-translate="titolo_info_form"></h3>
 
         <!-- Information form -->
         <form action="/submit-form" method="post">
             <div class="form-box">
                 <div class="form-column">
                     <div class="info-form-field">
-                        <label for="name">Nome:</label>
+                        <label for="name" data-translate="label_nome"></label>
                         <input type="text" id="name" name="name" required><br>
                     </div>
                     <div class="info-form-field">
-                        <label for="surname">Cognome:</label>
+                        <label for="surname" data-translate="label_cognome"></label>
                         <input type="text" id="surname" name="surname" required><br>
                     </div>
 
                     <div class="info-form-field">
-                        <label for="email">Email:</label>
+                        <label for="email" data-translate="label_mail"></label>
                         <input type="email" id="email" name="email" required><br>
                     </div>
                 </div>
                 <div class="form-column">
                     <div class="info-form-field">
 
-                        <label for="categoryId">Categoria:</label>
+                        <label for="categoryId" data-translate="label_categoria"></label>
                         <select id="categoryId" name="categoryId" required>
-                            <option value="" disabled selected>Seleziona una categoria</option>
+                            <option value="" disabled selected data-translate="seleziona_categoria"></option>
                             <th:block th:each="category : ${categories}">
                                 <option th:value="${category.id}" th:text="${category.name}"></option>
                             </th:block>
                         </select><br>
                     </div>
                     <div class="info-form-field">
-                        <label for="content-message">Messaggio:</label>
+                        <label for="content-message" data-translate="label_messaggio"></label>
                         <textarea rows="4" col="2" type="text" id="content-message" name="content" required></textarea>
                     </div>
                 </div>
@@ -205,7 +205,7 @@
 
 
 
-            <button id="sendInfoButton" type="submit">Invia</button>
+            <button id="sendInfoButton" type="submit" data-translate="invia"></button>
         </form>
     </div>
 

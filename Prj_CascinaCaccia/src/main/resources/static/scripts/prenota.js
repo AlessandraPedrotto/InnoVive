@@ -33,12 +33,74 @@ const setFebruaryDays = (year) => {
     return isBisestile(year) ? 29 : 28;
 };
 
-// month names
-const monthNames = [
-    'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
-    'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
-];
+// Month names, dynamically updated based on the selected language
+let monthNames = [];
 
+/**
+ * Update the month names and calendar UI when the language changes
+ * @param {object} translations - The loaded translations object
+ */
+const updateMonthNames = (translations) => {
+    monthNames = translations['calendar_month_names'] || [];
+    // Refresh the calendar UI
+    getCalendar(currentMonth.value, currentYear.value); 
+
+    // Update month picker options
+    monthList.textContent = '';
+    monthNames.forEach((m, index) => {
+        let month = document.createElement('div');
+        month.textContent = m;
+        month.onclick = () => {
+            monthList.classList.remove('show');
+            currentMonth.value = index;
+            getCalendar(currentMonth.value, currentYear.value);
+        };
+        monthList.appendChild(month);
+    });
+
+    // Update the selected date display
+    if (dateSelection.checkIn) {
+        updateSelectedDateDisplay('check-in', dateSelection.checkIn);
+    }
+    if (dateSelection.checkOut) {
+        updateSelectedDateDisplay('check-out', dateSelection.checkOut);
+    }
+};
+
+/**
+ * Update the text content of the selected check-in or check-out dates
+ * @param {string} type - Either 'check-in' or 'check-out'
+ * @param {string} date - The selected date (in format 'YYYY-MM-DD')
+ */
+const updateSelectedDateDisplay = (type, date) => {
+    const dateObj = new Date(date);
+    const monthIndex = dateObj.getMonth();
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+
+    const monthName = monthNames[monthIndex]; 
+
+    if (type === 'check-in') {
+        document.getElementById('selected-check-in').textContent = `${day} ${monthName} ${year}`;
+        document.getElementById('check-in-confirm').textContent = `${day} ${monthName} ${year}`;
+    } else if (type === 'check-out') {
+        document.getElementById('selected-check-out').textContent = `${day} ${monthName} ${year}`;
+        document.getElementById('check-out-confirm').textContent = `${day} ${monthName} ${year}`;
+    }
+};
+
+/**
+ * Reload month names when language changes
+ * @param {string} lang - The selected language
+ */
+const reloadMonthNames = (lang) => {
+    fetch(`/translation/${lang}.json`)
+        .then(response => response.json())
+        .then(translations => {
+            updateMonthNames(translations);
+        })
+        .catch(error => console.error('Error updating calendar translations:', error));
+};
 
 /**
  * main function to get the calendar 
@@ -60,7 +122,7 @@ const getCalendar = (month, year) => {
     let currentDate = new Date();
 
     // setting the month and the year
-    monthPicker.textContent = monthNames[month];
+    monthPicker.textContent = monthNames[month] || 'Month';
     calendarYear.textContent = year;
 
     // get the first day of the selected month and year
@@ -141,25 +203,20 @@ let calendar = document.querySelector('.calendar');
 let monthPicker = document.querySelector('#month-picker');
 let monthList = calendar.querySelector('.month-list');
 
-
-monthNames.forEach((m, index) => {
-    let month = document.createElement('div');
-    month.textContent = m;
-    month.onclick = () => {
-        monthList.classList.remove('show');
-        currentMonth.value = index;
-        getCalendar(currentMonth.value, currentYear.value);
-    };
-    monthList.appendChild(month);
-});
-
-
-
 let currentDate = new Date();
 let currentMonth = { value: currentDate.getMonth() };
 let currentYear = { value: currentDate.getFullYear() };
 
-getCalendar(currentMonth.value, currentYear.value);
+// Initialize with the default language
+document.addEventListener('DOMContentLoaded', () => {
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'it'; 
+    reloadMonthNames(savedLanguage);
+});
+
+// Language change event listener
+document.addEventListener('languageChange', (e) => {
+    reloadMonthNames(e.detail.lang);
+});
 
 // buttons to navigate the year
 const prevYear = document.getElementById('prev-year');

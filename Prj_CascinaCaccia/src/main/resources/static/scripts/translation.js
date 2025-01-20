@@ -23,6 +23,8 @@ function changeLanguage(lang) {
           }
         }
       });
+      
+      document.dispatchEvent(new CustomEvent('languageChange', { detail: { lang: lang } }));
     })
     .catch(error => console.error("Error loading translations:", error));
 }
