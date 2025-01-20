@@ -7,6 +7,8 @@ function toggleMenu() {
     menu.classList.toggle('active');
   }
 
+let currentLanguage = localStorage.getItem('selectedLanguage') || 'it'; 
+
 /**
  * toggle the visibility of the chatbot container
  * @returns {void} 
@@ -19,6 +21,18 @@ function toggleChatbot() {
   if (chatbotContainer.style.display === 'flex' && document.getElementById('chatMessages').childElementCount === 0) {
       showInitialMessage();
   }
+}
+
+/**
+ * Toggle between languages (Italian or English)
+ * @param {string} language - The selected language ('it' or 'en')
+ */
+function toggleLanguage(language) {
+  currentLanguage = language;
+  
+  // Clear the chat messages and re-render the initial message in the selected language
+  document.getElementById('chatMessages').innerHTML = ''; // Clear previous messages
+  showInitialMessage(); // Re-render initial message with the new language
 }
 
 /**
@@ -68,11 +82,11 @@ function handleQuestionClick(question, buttonsContainer) {
       buttonsContainer.classList.add('buttons-container');
 
       // Handle additional questions for "Informazioni sulla cascina"
-      if (question === "Informazioni sulla cascina") {
+      if (question === getLocalizedText("Informazioni sulla cascina", "Information about the farm")) {
           const followUpQuestions = [
-              "Dove si trova la cascina?",
-              "Come posso contattarvi?",
-              "Come prenoto una visita?"
+              getLocalizedText("Dove si trova la cascina?", "Where is the farm located?"),
+              getLocalizedText("Come posso contattarvi?", "How can I contact you?"),
+              getLocalizedText("Come prenoto una visita?", "How can I book a visit?")
           ];
 
           followUpQuestions.forEach(followUp => {
@@ -84,10 +98,10 @@ function handleQuestionClick(question, buttonsContainer) {
       }
       
       // Handle additional questions for "La storia di Cascina Caccia"
-      if (question === "La storia di Cascina Caccia") {
+      if (question === getLocalizedText("La storia di Cascina Caccia", "History of Cascina Caccia")) {
           const followUpQuestions = [
-              "Cos'è Cascina Caccia?",
-              "Chi era Bruno Caccia?"
+              getLocalizedText("Cos'è Cascina Caccia?", "What is Cascina Caccia?"),
+              getLocalizedText("Chi era Bruno Caccia?", "Who was Bruno Caccia?")
           ];
 
           followUpQuestions.forEach(followUp => {
@@ -100,7 +114,7 @@ function handleQuestionClick(question, buttonsContainer) {
 
       // Add "Ask something else" button
       const askMoreButton = document.createElement('button');
-      askMoreButton.textContent = "Chiedi altro";
+      askMoreButton.textContent = getLocalizedText("Chiedi altro", "Ask something else");
       askMoreButton.onclick = function () {
           // Disable all buttons in the current group
           disableAllButtons();
@@ -111,7 +125,7 @@ function handleQuestionClick(question, buttonsContainer) {
 
           const userText = document.createElement('div');
           userText.classList.add('text');
-          userText.textContent = "Chiedi altro";
+          userText.textContent = getLocalizedText("Chiedi altro", "Ask something else");
           userMessage.appendChild(userText);
           document.getElementById('chatMessages').appendChild(userMessage);
 
@@ -132,6 +146,25 @@ function handleQuestionClick(question, buttonsContainer) {
   }, 500);
 }
 
+function changeLanguage(lang) {
+  // Store the selected language in localStorage
+  localStorage.setItem('selectedLanguage', lang);
+
+  // Load the corresponding JSON file for the selected language
+  fetch(`/translation/${lang}.json`)
+    .then(response => response.json())
+    .then(translations => {
+      window.translations = translations; // Store translations globally
+
+      // Update current language
+      currentLanguage = lang;
+
+      // Trigger the language change event for the chatbot
+      document.dispatchEvent(new CustomEvent('languageChange', { detail: { lang: lang } }));
+    })
+    .catch(error => console.error("Error loading translations:", error));
+}
+
 /**
 * function that show initial message and disable the previous buttons
 * @returns {void} 
@@ -142,25 +175,25 @@ function showInitialMessage() {
 
   const botMessage = document.createElement('div');
   botMessage.classList.add('message', 'bot');
-  
+
   const botText = document.createElement('div');
   botText.classList.add('text');
-  botText.textContent = "Come posso aiutarti?";
-  
+  botText.textContent = getLocalizedText("Come posso aiutarti?", "How can I help you?");
+
   const buttonsContainer = document.createElement('div');
   buttonsContainer.classList.add('buttons-container');
-  
+
   const questions = [
-      "La storia di Cascina Caccia",
-      "Informazioni sulla cascina",
-      "Attività da svolgere"
+    getLocalizedText("La storia di Cascina Caccia", "History of Cascina Caccia"),
+    getLocalizedText("Informazioni sulla cascina", "Information about the farm"),
+    getLocalizedText("Attività da svolgere", "Activities to do")
   ];
 
   questions.forEach(question => {
-      const button = document.createElement('button');
-      button.textContent = question;
-      button.onclick = () => handleQuestionClick(question, buttonsContainer);
-      buttonsContainer.appendChild(button);
+    const button = document.createElement('button');
+    button.textContent = question;
+    button.onclick = () => handleQuestionClick(question, buttonsContainer);
+    buttonsContainer.appendChild(button);
   });
 
   botMessage.appendChild(botText);
@@ -189,19 +222,28 @@ function disableAllButtons() {
 */
 function getBotResponse(userMessage) {
   const responses = {
-      "La storia di Cascina Caccia": "Cosa desideri sapere?",
-      "Informazioni sulla cascina": "Cosa desideri sapere?",
-      "Attività da svolgere": "Oltre alle attività di sensibilizzazione sull'argomento mafia, offriamo anche laboratori manuali, che includono la raccolta dei frutti prodotti in cascina e la loro preparazione in cucina, oltre a attività artistiche per la creazione di candele. Per avere maggiori dettagli clicca <a href='/attivita' target='_blank'>qui</a>.",
-      "Dove si trova la cascina?": "La Cascina si trova a San Sebastiano da Po, in provincia di Torino, Piemonte.",
-      "Come posso contattarvi?": "Puoi contattarci compilando il modulo per le informazioni, che trovi cliccando sul pulsante rotondo con la 'i' qua di lato oppure <a href='#informationFormContainer' onclick='toggleInformationForm()'>qui</a>.",
-      "Come prenoto una visita?": "Puoi prenotare una visita cliccando sul tasto 'Prenota' nel menu in alto oppure <a href='/prenota' target='_blank'>qui</a>.",
-    "Cos'è Cascina Caccia?": "Cascina Caccia era un bene della famiglia Belfiore, legata alla 'Ndrangheta, e fu confiscata dopo la condanna di Domenico Belfiore, mandante dell’omicidio del giudice Bruno Caccia. Oggi è un luogo simbolo di riscatto. Rappresenta la vittoria della giustizia sulla criminalità organizzata.",
-    "Chi era Bruno Caccia?": "Bruno Caccia era un giudice torinese ucciso nel 1983 per la sua lotta contro la criminalità organizzata. La sua morte, causata da Domenico Belfiore, mandante dell'omicidio, ha portato alla confisca di beni legati alla famiglia Belfiore, tra cui questa Cascina."
+      [getLocalizedText("La storia di Cascina Caccia", "History of Cascina Caccia")]: getLocalizedText("Cosa desideri sapere?", "What would you like to know?"),
+      [getLocalizedText("Informazioni sulla cascina", "Information about the farm")]: getLocalizedText("Cosa desideri sapere?", "What would you like to know?"),
+      [getLocalizedText("Attività da svolgere", "Activities to do")]: getLocalizedText("Oltre alle attività di sensibilizzazione sull'argomento mafia, offriamo anche laboratori manuali, che includono la raccolta dei frutti prodotti in cascina e la loro preparazione in cucina, oltre a attività artistiche per la creazione di candele. Per avere maggiori dettagli clicca <a href='http://localhost:8080/attivita' target='_blank'>qui</a>.", "In addition to activities raising awareness about mafia issues, we also offer hands-on workshops, including fruit picking from the farm and cooking, as well as artistic activities like candle-making. For more details, click <a href='http://localhost:8080/attivita' target='_blank'>here</a>."),
+      [getLocalizedText("Dove si trova la cascina?", "Where is the farm located?")]: getLocalizedText("La Cascina si trova a San Sebastiano da Po, in provincia di Torino, Piemonte.", "The farm is located in San Sebastiano da Po, in the province of Turin, Piedmont."),
+      [getLocalizedText("Come posso contattarvi?", "How can I contact you?")]: getLocalizedText("Puoi contattarci compilando il modulo per le informazioni, che trovi cliccando sul pulsante rotondo con la 'i' qua di lato oppure <a href='javascript:void(0);' onclick='toggleInformationForm(); toggleChatbot();'>qui</a>.", "You can contact us by filling out the information form, which you can find by clicking the round button with the 'i' or <a href='javascript:void(0);' onclick='toggleInformationForm(); toggleChatbot();'>here</a>."),
+      [getLocalizedText("Come prenoto una visita?", "How can I book a visit?")]: getLocalizedText("Puoi prenotare una visita cliccando sul tasto 'Prenota' nel menu in alto oppure  <a href='http://localhost:8080/prenota' target='_blank'>qui</a>.", "You can book a visit by clicking the 'Book' button in the top menu or <a href='http://localhost:8080/prenota' target='_blank'>here</a>."),
+      [getLocalizedText("Cos'è Cascina Caccia?", "What is Cascina Caccia?")]: getLocalizedText("Cascina Caccia era un bene della famiglia Belfiore, legata alla 'Ndrangheta, e fu confiscata dopo la condanna di Domenico Belfiore, mandante dell’omicidio del giudice Bruno Caccia. Oggi è un luogo simbolo di riscatto. Rappresenta la vittoria della giustizia sulla criminalità organizzata.", "Cascina Caccia was once a property of the Belfiore family, linked to the 'Ndrangheta, and was confiscated after the conviction of Domenico Belfiore, the mastermind behind the murder of Judge Bruno Caccia. Today it stands as a symbol of redemption. It represents the victory of justice over organized crime."),
+      [getLocalizedText("Chi era Bruno Caccia?", "Who was Bruno Caccia?")]: getLocalizedText("Bruno Caccia era un giudice torinese ucciso nel 1983 per la sua lotta contro la criminalità organizzata. La sua morte, causata da Domenico Belfiore, mandante dell'omicidio, ha portato alla confisca di beni legati alla famiglia Belfiore, tra cui questa Cascina.", "Bruno Caccia was a Turin judge murdered in 1983 for his fight against organized crime. His death, orchestrated by Domenico Belfiore, led to the confiscation of assets tied to the Belfiore family, including this farm.")
   };
 
-  return responses[userMessage] || "Scusami, non ho capito.";
+  return responses[userMessage] || getLocalizedText("Scusami, non ho capito.", "Sorry, I didn't understand.");
 }
 
+/**
+* Function to return localized text based on the selected language
+* @param {string} italianText - The Italian version of the text
+* @param {string} englishText - The English version of the text
+* @returns {string} - The text based on the current selected language
+*/
+function getLocalizedText(italianText, englishText) {
+  return currentLanguage === 'it' ? italianText : englishText;
+}
 
 /**
 * function to scroll to the bottom of the chat
