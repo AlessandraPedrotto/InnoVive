@@ -16,6 +16,8 @@ public class HomeController {
 	//handles requests to the root URL ("/")
     @GetMapping("/")
     public String home(Model model) {
+    	String selectedLanguage = "it"; // You can set this based on the user's stored preference
+        model.addAttribute("selectedLanguage", selectedLanguage);
     	model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
     	//return the Home page

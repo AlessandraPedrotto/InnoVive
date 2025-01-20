@@ -7,8 +7,6 @@ function toggleMenu() {
     menu.classList.toggle('active');
   }
 
-let currentLanguage = localStorage.getItem('selectedLanguage') || 'it'; 
-
 /**
  * toggle the visibility of the chatbot container
  * @returns {void} 
@@ -28,7 +26,7 @@ function toggleChatbot() {
  * @param {string} language - The selected language ('it' or 'en')
  */
 function toggleLanguage(language) {
-  currentLanguage = language;
+  localStorage.setItem('selectedLanguage', language);
   
   // Clear the chat messages and re-render the initial message in the selected language
   document.getElementById('chatMessages').innerHTML = ''; // Clear previous messages
