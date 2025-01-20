@@ -58,11 +58,16 @@
   	"check_in": "Check-in:",
   	"check_out": "Check-out:",
   	"mese_1": "Jenuary",
+  	"calendar_month_names": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
   	"giorno_1": "Mon",
   	"giorno_2": "Tue",
   	"giorno_3": "Wed",
   	"giorno_4": "Thu",
   	"giorno_5": "Fri",
   	"giorno_6": "Sat",
-  	"giorno_7": "Sun"
+  	"giorno_7": "Sun",
+  	
+  	"_comment6": "Traduzioni form informazione",
+	"invia": "Send",
+	"titolo_info_form": "Send a request for information"
 }
