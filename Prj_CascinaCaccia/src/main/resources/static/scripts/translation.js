@@ -1,13 +1,23 @@
-// The changeLanguage function remains the same
+let currentLanguage = localStorage.getItem('selectedLanguage') || 'it';
+// Function to change language
 function changeLanguage(lang) {
   // Store the selected language in localStorage
   localStorage.setItem('selectedLanguage', lang);
+  currentLanguage = lang;
+  // Update the lang attribute in the HTML tag
+  document.documentElement.setAttribute('lang', lang);
 
   // Load the corresponding JSON file for the selected language
   fetch(`/translation/${lang}.json`)
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Translation file for ${lang} could not be loaded.`);
+      }
+      return response.json();
+    })
     .then(translations => {
-	  localStorage.setItem(`translations_${lang}`, JSON.stringify(translations));
+      localStorage.setItem(`translations_${lang}`, JSON.stringify(translations));
+
       // Update all elements with data-translate attributes
       const elementsToTranslate = document.querySelectorAll("[data-translate]");
       elementsToTranslate.forEach(element => {
@@ -24,40 +34,49 @@ function changeLanguage(lang) {
           }
         }
       });
-      
+
+      // Update UI with translations (if necessary)
+      updateUIWithTranslations(translations);
+
+      // Trigger the custom language change event
       document.dispatchEvent(new CustomEvent('languageChange', { detail: { lang: lang } }));
     })
-    .catch(error => console.error("Error loading translations:", error));
+    .catch(error => {
+      console.error("Error loading translations:", error);
+      // Optionally handle the error here, maybe fallback to default language or show an error message
+    });
 }
 
-// Listen for the language change event
-document.addEventListener('languageChange', (event) => {
-  const lang = event.detail.lang;
-  const chatMessages = document.querySelectorAll('#chatMessages .message');
-
-  chatMessages.forEach(message => {
-    const textElement = message.querySelector('.text');
-    if (textElement) {
-      const originalText = textElement.getAttribute('data-original-text');
-      if (originalText) {
-        // Update the text content using getLocalizedText
-        textElement.textContent = getLocalizedText(originalText, originalText);
-      }
-    }
-  });
-
-  scrollToBottom(); // Scroll to the bottom of the chat
-});
-
-// Set the default language (Italian) when the page loads
+// Consolidate the DOMContentLoaded listeners
 document.addEventListener("DOMContentLoaded", function () {
-  // Check if there's a saved language in localStorage, otherwise default to 'it'
-  const savedLanguage = localStorage.getItem("selectedLanguage");
-  const defaultLanguage = savedLanguage || "it"; // Always default to Italian if no language is saved
-  changeLanguage(defaultLanguage);
-  updateLanguageSwitcher(defaultLanguage);
+  // Check if there's a saved language in localStorage
+  let selectedLanguage = localStorage.getItem("selectedLanguage");
+
+  // If no language is saved, default to 'it' (Italian)
+  if (!selectedLanguage) {
+    selectedLanguage = 'it';  // Default language
+    localStorage.setItem('selectedLanguage', selectedLanguage);  // Save default language to localStorage
+  }
+
+  // Set the lang attribute on the HTML element
+  document.documentElement.setAttribute('lang', selectedLanguage);
+
+  // Change the language and update UI
+  changeLanguage(selectedLanguage);
+  updateLanguageSwitcher(selectedLanguage);
+
+  // Log the selected language
+  console.log("Selected language:", selectedLanguage);
 });
 
+// Function to update the UI with translations (this can be customized)
+function updateUIWithTranslations(translations) {
+  // For now, just log the translations
+  console.log("Translations loaded:", translations);
+}
+function getLocalizedText(italianText, englishText) {
+  return currentLanguage === 'it' ? italianText : englishText;
+}
 // Function to update the language switcher based on the selected language
 function updateLanguageSwitcher(lang) {
   const flagElement = document.getElementById("desktopLanguageFlag");
@@ -72,8 +91,8 @@ function updateLanguageSwitcher(lang) {
     flagElement.alt = "Italiano";
     textElement.textContent = "Italiano";
   }
-  
-   // For mobile language switcher
+
+  // For mobile language switcher
   const mobileFlagElement = document.getElementById("mobileLanguageFlag");
   const mobileTextElement = document.getElementById("mobileLanguageText");
 
@@ -88,13 +107,14 @@ function updateLanguageSwitcher(lang) {
   }
 }
 
+// Function to toggle language on mobile view
 function toggleLanguageMobile() {
   // Get the current language from localStorage (or default to Italian)
   const currentLanguage = localStorage.getItem("selectedLanguage") || "it";
 
   // Toggle between 'it' and 'en'
   const newLanguage = currentLanguage === "it" ? "en" : "it";
-  
+
   // Change language by calling the main function
   changeLanguage(newLanguage);
 
