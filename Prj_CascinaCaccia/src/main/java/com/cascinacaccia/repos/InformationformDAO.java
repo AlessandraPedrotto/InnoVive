@@ -10,7 +10,10 @@ import com.cascinacaccia.entities.User;
 
 /*
  * The InformationformDAO interface extends JpaRepository to provide standard CRUD operations for the Informationform entity.
- * This interface allows interaction with the Informationform entity, providing basic operations like saving, deleting, and querying information forms.
+ * This interface allows interaction with the Informationform entity, providing basic operations like saving, deleting, and querying information forms
+ * with support for:
+ * - Finding by Id
+ * - Finding by assigned user
  */
 public interface InformationformDAO extends JpaRepository<Informationform,String>{
 	

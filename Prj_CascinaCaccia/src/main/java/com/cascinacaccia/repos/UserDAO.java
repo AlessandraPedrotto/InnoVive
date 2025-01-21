@@ -13,7 +13,13 @@ import com.cascinacaccia.entities.User;
 /*
  * The UserDAO interface extends JpaRepository to provide standard CRUD operations for the User entity.
  * This interface facilitates interaction with the User entity, offering various methods to perform CRUD operations
- * and custom queries based on user attributes such as name, surname, and email.
+ * and custom queries based on user attributes, such as: 
+ * - Id (primary key)
+ * - Email
+ * - Name
+ * - Surname
+ * - State
+ * - Last access
  */
 public interface UserDAO extends JpaRepository<User, String>{
 	
