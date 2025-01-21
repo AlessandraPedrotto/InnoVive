@@ -56,7 +56,7 @@ public class RequestController {
     		@RequestParam(name = "sort", required = false) Boolean sortAscending,
             @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
 			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-	        @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+	        @RequestParam(name = "size", required = false, defaultValue = "12") int size,
 	        @RequestParam(name = "categories", required = false) List<String> categoryIds,
 	        @RequestParam(name = "statuses", required = false) List<String> statuses,
 	        @RequestParam(name = "formType", defaultValue = "all") String formType,
@@ -153,6 +153,13 @@ public class RequestController {
         } else if (page > totalPages) {
             page = totalPages; 
         }
+        
+        int blockSize = 5;
+        int currentPage = page;
+        
+	    //calculate the start and end pages for the current block
+        int startPage = ((currentPage - 1) / blockSize) * blockSize + 1;
+        int endPage = Math.min(startPage + blockSize - 1, totalPages);
 
         //paginate the list of users
         List<Generalform> paginatedForms = FilterService.getPaginatedList(generalForms, page, size);
@@ -190,7 +197,12 @@ public class RequestController {
             
         //set session attribute to reset new form count
         session.setAttribute("newFormCount", newFormCount);
-        
+	
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("blockSize", blockSize);
+	    model.addAttribute("hasPreviousBlock", startPage > 1);
+	    model.addAttribute("hasNextBlock", endPage < totalPages);
         model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages); 
         model.addAttribute("currentPage", page); 
