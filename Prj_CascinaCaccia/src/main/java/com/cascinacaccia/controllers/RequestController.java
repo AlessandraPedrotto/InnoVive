@@ -78,12 +78,12 @@ public class RequestController {
         
         session.setAttribute("newFormCount", 0);
         
-        // Update the 'lastSeen' timestamp for the user
+        //update the 'lastSeen' timestamp for the user
         LocalDateTime now = LocalDateTime.now();
         user.setLastSeen(now);
         userDAO.save(user);
         
-        // Optionally, reset the "lastSeen" cookie to update the timestamp of when the user last viewed the requests
+        //reset the "lastSeen" cookie to update the timestamp of when the user last viewed the requests
         Cookie lastSeenCookie = new Cookie("lastSeen", LocalDateTime.now().toString());
         lastSeenCookie.setMaxAge(60 * 60 * 24 * 365); // 1 year
         lastSeenCookie.setPath("/");
@@ -111,7 +111,7 @@ public class RequestController {
             generalForms = FilterService.filterByAssignment(generalForms, isAssigned);
         }
         
-        // Apply filter by date range if provided
+        //apply filter by date range if provided
         if (startDate != null && endDate != null) {
             generalForms = FilterService.filterByDateRange(generalForms, startDate, endDate);
         }
@@ -131,6 +131,7 @@ public class RequestController {
                 generalForms = FilterService.sortBySubmissionDate(generalForms, true);
                 break;
             default:
+            	
                 //default to newest
                 generalForms = FilterService.sortBySubmissionDate(generalForms, false);
         }
@@ -161,7 +162,7 @@ public class RequestController {
         
         AtomicReference<LocalDateTime> lastSeenRef = new AtomicReference<>(LocalDateTime.now().minusDays(30));
         
-        // Read cookies and get the "lastSeen" timestamp
+        //read cookies and get the "lastSeen" timestamp
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -171,22 +172,23 @@ public class RequestController {
                         DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
                         lastSeenRef.set(LocalDateTime.parse(lastSeenStr, formatter));
                     } catch (Exception e) {
-                        // Error parsing cookie
+                        
+                    	//error parsing cookie
                         System.err.println("Error parsing lastSeen cookie: " + e.getMessage());
                     }
                 }
             }
         }
         
-        LocalDateTime lastSeen = user.getLastSeen() != null ? user.getLastSeen() : LocalDateTime.now().minusDays(30);  // Use the user's own lastSeen value
+        LocalDateTime lastSeen = user.getLastSeen() != null ? user.getLastSeen() : LocalDateTime.now().minusDays(30);
         
-        // Calculate the new form count based on lastSeen for the specific user
+        //calculate the new form count based on lastSeen for the specific user
         long newFormCount = generalForms.stream()
             .filter(generalForm -> generalForm.getSubmissionDate() != null &&
                 generalForm.getSubmissionDate().isAfter(lastSeen))
             .count();
             
-        // Set session attribute to reset new form count
+        //set session attribute to reset new form count
         session.setAttribute("newFormCount", newFormCount);
         
         model.addAttribute("query", query);
