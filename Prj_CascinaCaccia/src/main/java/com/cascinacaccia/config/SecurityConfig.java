@@ -73,7 +73,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
 
-                .requestMatchers("/set-user-offline", "/struttura", "/submit-booking", "/prenota", "/attivita", "/login", "/error", "/", "/submit-form", "/resetPassword/**", "/resetPassword", "/forgotPassword", "/styles/**", "/scripts/**", "/img/**", "/translation/**").permitAll()
+                .requestMatchers("/set-user-offline", "/struttura", "/docs/**", "/submit-booking", "/prenota", "/attivita", "/login", "/error", "/", "/submit-form", "/resetPassword/**", "/resetPassword", "/forgotPassword", "/styles/**", "/scripts/**", "/img/**", "/translation/**").permitAll()
                 
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
