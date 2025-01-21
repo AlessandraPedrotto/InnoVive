@@ -14,6 +14,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+/*
+ * The User entity is used to register and manage users in the system.
+ * It contains the user's personal information, authentication details, and associations 
+ * with other entities such as roles, user images, and password reset tokens.
+ */
 @Entity
 @Table(name="user")
 public class User {
@@ -28,7 +33,7 @@ public class User {
     private LocalDateTime lastSeen;
     
     @Column(name = "state", nullable = true)
-    private String state = "OFFLINE";; // ONLINE or OFFLINE
+    private String state = "OFFLINE";
 
     @Column(name = "last_access")
     private LocalDateTime lastAccess;
@@ -57,54 +62,69 @@ public class User {
 	public String getId() {
 		return id;
 	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
 	public String getSurname() {
 		return surname;
 	}
+	
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public String getPassword() {
 		return password;
 	}
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
 	public UserImage getUserImage() {
 		return userImage;
 	}
+	
 	public void setUserImage(UserImage userImage) {
 		this.userImage = userImage;
 	}
+	
 	public List<Role> getRoles() {
         return roles;
     }
+	
     public void setRoles(List<Role> roles) {
         if (roles.size() < 1 || roles.size() > 2) {
             throw new IllegalArgumentException("User must have at least 1 role and a maximum of 2 roles.");
         }
         this.roles = roles;
     }
+    
 	public List<PasswordResetToken> getPasswordResetToken() {
 		return passwordResetToken;
 	}
+	
 	public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
 		this.passwordResetToken.add(passwordResetToken);
 	}
+	
 	public String getState() {
         return state;
     }
@@ -120,9 +140,11 @@ public class User {
     public void setLastAccess(LocalDateTime lastAccess) {
         this.lastAccess = lastAccess;
     }
+    
 	public LocalDateTime getLastSeen() {
 		return lastSeen;
 	}
+	
 	public void setLastSeen(LocalDateTime lastSeen) {
 		this.lastSeen = lastSeen;
 	}

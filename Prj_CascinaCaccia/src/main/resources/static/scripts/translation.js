@@ -43,7 +43,7 @@ function changeLanguage(lang) {
     })
     .catch(error => {
       console.error("Error loading translations:", error);
-      // Optionally handle the error here, maybe fallback to default language or show an error message
+      changeLanguage('it'); 
     });
 }
 

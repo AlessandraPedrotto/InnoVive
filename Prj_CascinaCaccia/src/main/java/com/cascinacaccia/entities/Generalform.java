@@ -10,8 +10,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
+/*
+ * The Generalform entity represents the common information shared between the 
+ * BookingForm and InformationForm entities. By centralizing these common fields,
+ * data duplication is avoided in the database tables.
+ */
 @Entity
 @Table(name = "general_form")
 public class Generalform {
@@ -23,13 +27,16 @@ public class Generalform {
 	private String surname; 
 	private String email; 
 	
+	//relationship with the Category entity
 	@ManyToOne
 	private Category category;
 	
+	//relationship with the InformationForm entity
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "generalform_id")
 	public List<Informationform> informationForms;
 	
+	//relationship with the BookingForm entity
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "generalform_id")
 	public List<BookingForm> bookingForms;
@@ -40,6 +47,7 @@ public class Generalform {
     public Generalform() {
     }
 	
+    //parameterized constructor to initialize the fields.
 	public Generalform(String id, String name, String surname, String email, Category category) {
 		
 		this.id = id;

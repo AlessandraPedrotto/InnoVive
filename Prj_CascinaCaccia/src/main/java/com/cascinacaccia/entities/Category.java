@@ -4,6 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/*
+ * The Category entity represents a table containing all possible categories
+ * that can be associated with the booking form and information form.
+ * Each category has a unique identifier (ID) and a name.
+ */
 @Entity
 @Table(name="category")
 public class Category {
