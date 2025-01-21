@@ -1265,6 +1265,14 @@ select:focus {
   width: 100%;
 }
 
+.checkboxes{
+  padding: 10px 0;
+}
+
+.checkboxes input[type="checkbox"] {
+  accent-color: #f09321;    
+}
+
 .form-box {
   display: flex;
   justify-content: space-around;
