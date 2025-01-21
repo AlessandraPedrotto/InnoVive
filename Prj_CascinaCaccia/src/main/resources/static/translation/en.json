@@ -48,6 +48,9 @@
   	"titolo_camera4": "Multipurpose Hall",
   	"titolo_camera5": "Barn",
   	"chatbot_nome": "Chat with Caccia",
+  	"errore_titolo": "Something went wrong",
+  	"errore_codice": "Error 404",
+  	"errore_messaggio": "An error occurred while loading the page",
   	
     "_comment5": "Traduzioni form prenotazione",
 	"label_nome": "Name",

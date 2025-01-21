@@ -91,19 +91,18 @@
     
     <!-- main starts -->
     <main>
+    	<h1 class="page-title" data-translate="errore_titolo"></h1>
         <div class="error-message-container">
-            <h2 class="error-header">Something Went Wrong</h2>
-    
+            
             <!-- Details of the error -->
-            <div class="error-details-container">
-                <h3>Errore nella prenotazione !</h3>
-                <p>Status Code: <span th:text="${status}"></span></p>
-                <p>Error: <span th:text="${error}"></span></p>
-            </div>
+            <div class="error-details-container"><br><br>
+                <h2 data-translate="errore_codice"></h2><br><br>
+                <p data-translate="errore_messaggio"></p>
+            </div><br><br>
             
              
             <!-- Exit page button -->
-            <a class="error-exit-button" href="/" data-translate="indietro">Indietro</a>
+            <a class="error-exit-button" href="/" data-translate="indietro"></a>
         </div>
 
 	</main>

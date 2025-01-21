@@ -48,7 +48,10 @@
   	"titolo_camera4": "Salone polifunzionale",
   	"titolo_camera5": "Fienile",
   	"chatbot_nome": "Parla con Caccia",
-  	
+  	"errore_titolo": "Qualcosa è andato storto",
+  	"errore_codice": "Errore 404",
+  	"errore_messaggio": "Si è verificato un errore durante il caricamento della pagina",
+
   	"_comment5": "Traduzioni form prenotazione",
 	"label_nome": "Nome",
   	"label_cognome": "Cognome",

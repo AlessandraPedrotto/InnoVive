@@ -1651,6 +1651,13 @@ textarea#content-message {
   padding: 20px;
 }
 
+.error-message-container h2,
+.error-message-container p {
+  display: block; /* Ensure default block behavior */
+  text-align: center; /* Center text horizontally */
+  margin: 0.5rem 0; /* Add spacing */
+}
+
 .error-exit-button {
   border: none;
   background: linear-gradient(90deg, #fcdd11, #e1097e);
