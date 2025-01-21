@@ -466,14 +466,26 @@
 					<a class="pagination-button" th:if="${currentPage > 1}"
 						th:href="@{/yourTasks(page=${currentPage - 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}">Previous</a>
 
+					<!-- Previous Block -->
+			        <a class="pagination-button" th:if="${startPage > 1}" 
+			           th:href="@{/yourTasks(page=${startPage - blockSize}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}">
+			            &laquo; ...
+			        </a>
+			        
 					<!-- Page Numbers -->
-					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<span th:each="i : ${#numbers.sequence(startPage, endPage)}">
 						<a class="pagination-button"
 							th:href="@{/yourTasks(page=${i}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}"
 							th:classappend="${i == currentPage ? 'btn-primary text-white' : 'btn-light'}"
 							th:text="${i}"></a>
 					</span>
 
+					<!-- Next Block -->
+			        <a class="pagination-button" th:if="${endPage < totalPages}" 
+			           th:href="@{/yourTasks(page=${endPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}">
+			            ... &raquo;
+			        </a>
+			        
 					<!-- Next Page -->
 					<a class="pagination-button" th:if="${currentPage < totalPages}"
 						th:href="@{/yourTasks(page=${currentPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, startDate=${startDate}, endDate=${endDate})}">Next</a>

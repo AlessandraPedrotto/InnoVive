@@ -496,13 +496,25 @@
 					<a class="pagination-button" th:if="${currentPage > 1}"
 						th:href="@{/request(page=${currentPage - 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, assignation=${assignation}, startDate=${startDate}, endDate=${endDate})}">Pagina precedente</a>
 
+					<!-- Previous Block -->
+			        <a class="pagination-button" th:if="${startPage > 1}" 
+			           th:href="@{/request(page=${startPage - blockSize}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, assignation=${assignation}, startDate=${startDate}, endDate=${endDate})}">
+			            &laquo; ...
+			        </a>
+			        
 					<!-- Page Numbers -->
-					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<span th:each="i : ${#numbers.sequence(startPage, endPage)}">
 						<a class="pagination-button" th:href="@{/request(page=${i}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, assignation=${assignation}, startDate=${startDate}, endDate=${endDate})}"
 							th:classappend="${i == currentPage ? 'btn-primary text-white' : 'btn-light'}"
 							th:text="${i}"></a>
 					</span>
-
+					
+					<!-- Next Block -->
+			        <a class="pagination-button" th:if="${endPage < totalPages}" 
+			           th:href="@{/request(page=${endPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, assignation=${assignation}, startDate=${startDate}, endDate=${endDate})}">
+			            ... &raquo;
+			        </a>
+        
 					<!-- Next Page -->
 					<a class="pagination-button" th:if="${currentPage < totalPages}"
 						th:href="@{/request(page=${currentPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, assignation=${assignation}, startDate=${startDate}, endDate=${endDate})}">Pagina successiva</a>

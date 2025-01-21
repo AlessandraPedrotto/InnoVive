@@ -166,13 +166,23 @@
 					<a th:if="${currentPage > 1}"
 						th:href="@{/admin/listUsers(page=${currentPage - 1}, query=${query}, sortBy=${sortBy})}">Pagina precedente</a>
 
+					<!-- Previous Block -->
+			        <a th:if="${startPage > 1}" 
+			           th:href="@{/admin/listUsers(page=${startPage - blockSize}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, assignation=${assignation}, startDate=${startDate}, endDate=${endDate})}">
+			            &laquo; ...
+			        </a>
 
 					<!-- Display page numbers -->
-					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<span th:each="i : ${#numbers.sequence(startPage, endPage)}">
 						<a th:href="@{/admin/listUsers(page=${i}, query=${query}, sortBy=${sortBy})}" th:text="${i}"
 							th:classappend="${i == currentPage ? 'btn-primary text-white' : ''}"></a>
 					</span>
-
+					
+					<!-- Next Block -->
+			        <a th:if="${endPage < totalPages}" 
+			           th:href="@{/admin/listUsers(page=${endPage + 1}, sortBy=${sortBy}, categories=${#strings.arrayJoin(categoriesSelected, ',')}, statuses=${#strings.arrayJoin(statusesSelected, ',')}, formType=${formType}, assignation=${assignation}, startDate=${startDate}, endDate=${endDate})}">
+			            ... &raquo;
+			        </a>
 
 					<!-- Next Page -->
 					<a th:if="${currentPage < totalPages}"

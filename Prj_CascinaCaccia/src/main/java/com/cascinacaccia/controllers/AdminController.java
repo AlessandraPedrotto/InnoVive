@@ -77,7 +77,7 @@ public class AdminController {
 				    		@RequestParam(name = "sort", required = false) Boolean sortAscending,
 				            @RequestParam(name = "sortBy", required = false, defaultValue = "surnameAsc") String sortBy,
             				@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            		        @RequestParam(name = "size", required = false, defaultValue = "3") int size,
+            		        @RequestParam(name = "size", required = false, defaultValue = "12") int size,
             		        @AuthenticationPrincipal org.springframework.security.core.userdetails.User loggedInUser, 
             		        @AuthenticationPrincipal Object principal,
             		        HttpSession session,
@@ -149,6 +149,13 @@ public class AdminController {
             page = totalPages; 
         }
 
+        int blockSize = 5;
+        int currentPage = page;
+        
+	    //calculate the start and end pages for the current block
+        int startPage = ((currentPage - 1) / blockSize) * blockSize + 1;
+        int endPage = Math.min(startPage + blockSize - 1, totalPages);
+        
         //paginate the list of users
         List<User> paginatedUsers = FilterService.getPaginatedList(users, page, size);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -186,6 +193,10 @@ public class AdminController {
         //set session attribute to reset new form count
         session.setAttribute("newFormCount", newFormCount);
         
+        model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("blockSize", blockSize);
+	    model.addAttribute("hasPreviousBlock", startPage > 1);
         model.addAttribute("users", paginatedUsers);
         model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages); 
@@ -271,7 +282,7 @@ public class AdminController {
 					    		@RequestParam(name = "sort", required = false) Boolean sortAscending,
 					            @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
 					    		@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-					    	    @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+					    	    @RequestParam(name = "size", required = false, defaultValue = "12") int size,
 					    	    @RequestParam(name = "categories", required = false) List<String> categoryIds,
 		                        @RequestParam(name = "statuses", required = false) List<String> statuses,
 		                        @RequestParam(name = "formType", defaultValue = "all") String formType, 
@@ -367,7 +378,14 @@ public class AdminController {
         } else if (page > totalPages) {
             page = totalPages;
         }
-
+        
+        int blockSize = 5;
+        int currentPage = page;
+        
+	    //calculate the start and end pages for the current block
+        int startPage = ((currentPage - 1) / blockSize) * blockSize + 1;
+        int endPage = Math.min(startPage + blockSize - 1, totalPages);
+        
         //paginate the list of assigned forms
         List<Generalform> paginatedAssignedForms = FilterService.getPaginatedList(allAssignedForms, page, size);
         List<Category> categories = categoryDAO.findAll();
@@ -407,6 +425,11 @@ public class AdminController {
         session.setAttribute("newFormCount", newFormCount);
         
         //add data to the model
+        model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("blockSize", blockSize);
+	    model.addAttribute("hasPreviousBlock", startPage > 1);
+	    model.addAttribute("hasNextBlock", endPage < totalPages);
         model.addAttribute("assignedForms", paginatedAssignedForms);
         model.addAttribute("user", user); 
         model.addAttribute("users", users);
