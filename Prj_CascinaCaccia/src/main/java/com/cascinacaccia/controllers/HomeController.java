@@ -35,6 +35,8 @@ public class HomeController {
     
     @GetMapping("/prenota")
     public String prenota(Model model) {
+    	String selectedLanguage = "it"; // You can set this based on the user's stored preference
+        model.addAttribute("selectedLanguage", selectedLanguage);
     	model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
     	

@@ -4,6 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/*
+ * The Role entity represents all the possible roles that can be associated with a user.
+ * Each role has a unique identifier (ID) and a name.
+ * The table roles include Admin and Employee.
+ */
 @Entity
 @Table(name="role")
 public class Role {

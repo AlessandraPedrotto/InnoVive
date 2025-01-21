@@ -10,6 +10,12 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
+/*
+ * The BookingForm entity represents the parts of a form specific to booking-related details, 
+ * distinguishing it from the InformationForm entity. It includes fields for managing 
+ * booking-specific data such as check-in and check-out dates, while sharing common 
+ * data with the Generalform entity.
+ */
 @Entity
 @Table(name="booking_form")
 public class BookingForm {
@@ -18,11 +24,13 @@ public class BookingForm {
 	@Id
 	private String id;
 	
+	//relationship with the Generalform entity
 	@ManyToOne
 	private Generalform generalform;
 	
 	private String content;
 	
+	//relationship with the User entity
 	@ManyToOne
 	@JoinColumn(name = "user_id")
     private User assignedUser;
@@ -40,6 +48,7 @@ public class BookingForm {
     	
     }
     
+    //parameterized constructor to initialize the fields
 	public BookingForm(String id, Generalform generalform, String content) {
 		super();
 		this.id = id;

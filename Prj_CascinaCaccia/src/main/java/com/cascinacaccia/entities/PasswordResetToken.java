@@ -11,6 +11,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+/*
+ * The PasswordResetToken entity represents the tokens generated when a user
+ * requests to reset their password after forgetting it. Each token is associated 
+ * with a specific user and has an expiration date and time.
+ */
 @Entity
 @Table(name = "password_reset")
 public class PasswordResetToken {
@@ -22,6 +27,7 @@ public class PasswordResetToken {
 	private String token;
 	private LocalDateTime expiryDateTime;
 	
+	//relationship between PasswordResetToken and User
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable=false)
 	private User user;
