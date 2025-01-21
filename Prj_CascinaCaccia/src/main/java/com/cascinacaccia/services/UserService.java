@@ -19,7 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.cascinacaccia.entities.BookingForm;
 import com.cascinacaccia.entities.Generalform;
 import com.cascinacaccia.entities.Role;
 import com.cascinacaccia.entities.User;
@@ -80,16 +79,25 @@ public class UserService implements UserDetailsService{
 	    userDAO.save(user);
 	}
 	
+	/*
+	 * Checks for inactive users and updates their state to "OFFLINE" if they have been inactive for more than 10 minutes.
+	 * 
+	 * This method runs periodically every 2 minutes (as defined by the @Scheduled annotation with fixedRate = 120000).
+	 * It looks for users who are still marked as "ONLINE" but haven't updated their last access time in the last 10 minutes. 
+	 * If such users are found, their state is updated to "OFFLINE", and they are logged out.
+	 * 
+	 * @Scheduled(fixedRate = 120000) ensures that this method is executed every 2 minutes to check for inactive users.
+	 */
 	@Scheduled(fixedRate = 120000)
 	public void markInactiveUsersOffline() {
-        LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(10); // 1 minute inactivity threshold
+        LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(10); //10 minute inactivity threshold
         System.out.println("Checking for inactive users before: " + cutoffTime);
         
-        // Find users who are still "ONLINE" and have not updated their last access time in the last minute
+        //find users who are still "ONLINE" and have not updated their last access time in the last minute
         List<User> inactiveUsers = userDAO.findUsersByStateAndLastAccessBefore("ONLINE", cutoffTime);
         System.out.println("Inactive users found: " + inactiveUsers.size());
         
-        // Loop through the users and mark them "OFFLINE"
+        //loop through the users and mark them "OFFLINE"
         for (User user : inactiveUsers) {
             System.out.println("Marking user offline: " + user.getEmail());
             user.setState("OFFLINE");
@@ -106,12 +114,13 @@ public class UserService implements UserDetailsService{
 	            org.springframework.security.core.userdetails.User user =
 	                    (org.springframework.security.core.userdetails.User) principal;
 
-	            // Check if the username matches
+	            //check if the username matches
 	            if (user.getUsername().equals(username)) {
-	                // Expire all sessions for this user
+	                
+	            	//expire all sessions for this user
 	                List<SessionInformation> sessions = sessionRegistry.getAllSessions(user, false);
 	                for (SessionInformation session : sessions) {
-	                    session.expireNow(); // Invalidate session
+	                    session.expireNow(); //invalidate session
 	                    System.out.println("Session expired for user: " + username);
 	                }
 	            }
@@ -197,7 +206,7 @@ public class UserService implements UserDetailsService{
     	user.setState("ONLINE");
         user.setLastAccess(LocalDateTime.now());
 
-        // Save the updated user state to the database
+        //save the updated user state to the database
         userDAO.save(user);
         System.out.println("User state updated to ONLINE for email: " + email);
 
@@ -277,9 +286,9 @@ public class UserService implements UserDetailsService{
                 if (informationForm.getAssignedUser() != null && 
                     informationForm.getAssignedUser().getId().equals(userId)) {
                     
-                	// Nullify the user reference in the information form
+                	//nullify the user reference in the information form
                     informationForm.setAssignedUser(null);
-                    informationFormService.saveInformationForm(informationForm); // Save the update
+                    informationFormService.saveInformationForm(informationForm);
                 }
             });
         }
@@ -291,9 +300,9 @@ public class UserService implements UserDetailsService{
 	        	if (bookingForm.getAssignedUser() != null && 
 		                bookingForm.getAssignedUser().getId().equals(userId)) {
 		                
-		                // Nullify the user reference in the booking form
+		                //nullify the user reference in the booking form
 		                bookingForm.setAssignedUser(null);
-		                bookingFormService.saveBookingForm(bookingForm); // Save the update
+		                bookingFormService.saveBookingForm(bookingForm);
 		            }
         		});
         }

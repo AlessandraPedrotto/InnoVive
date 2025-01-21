@@ -1,7 +1,6 @@
 package com.cascinacaccia.services;
 
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -247,7 +246,7 @@ public class FilterService {
         }
 
         return generalForms.stream()
-                .filter(form -> categoryIds.contains(form.getCategory().getId())) // Assuming each Generalform has a 'category' field with 'getId()' returning a String
+                .filter(form -> categoryIds.contains(form.getCategory().getId()))
                 .collect(Collectors.toList());
     }
     
@@ -261,7 +260,7 @@ public class FilterService {
      */
     public static List<Generalform> filterFormsByStatuses(List<Generalform> generalForms, List<String> statuses) {
         if (statuses == null || statuses.isEmpty()) {
-            return generalForms; // Return all if no statuses are selected
+            return generalForms;
         }
 
         System.out.println("Filtering Generalforms with statuses: " + statuses);
@@ -308,7 +307,7 @@ public class FilterService {
      */
     public static List<Generalform> filterByInformationForm(List<Generalform> generalForms) {
         return generalForms.stream()
-                .filter(form -> form.getInformationForms() != null && !form.getInformationForms().isEmpty())  // Assuming the relation is set up
+                .filter(form -> form.getInformationForms() != null && !form.getInformationForms().isEmpty())
                 .collect(Collectors.toList());
     }
 
@@ -320,7 +319,7 @@ public class FilterService {
      */
     public static List<Generalform> filterByBookingForm(List<Generalform> generalForms) {
         return generalForms.stream()
-                .filter(form -> form.getBookingForms() != null && !form.getBookingForms().isEmpty())  // Assuming the relation is set up
+                .filter(form -> form.getBookingForms() != null && !form.getBookingForms().isEmpty())
                 .collect(Collectors.toList());
     }
     
@@ -343,8 +342,8 @@ public class FilterService {
                                                      form.getBookingForms().stream()
                                                          .anyMatch(bookingForm -> bookingForm.getAssignedUser() != null);
                     
-                    // If isAssigned is true, filter for forms with assigned Informationforms or Bookingforms
-                    // If isAssigned is false, filter for forms with no assigned Informationforms or Bookingforms
+                    //if isAssigned is true, filter for forms with assigned Informationforms or Bookingforms
+                    //if isAssigned is false, filter for forms with no assigned Informationforms or Bookingforms
                     return (isAssigned && (hasAssignedInformationform || hasAssignedBookingform)) ||
                            (!isAssigned && !hasAssignedInformationform && !hasAssignedBookingform);
                 })
@@ -362,7 +361,8 @@ public class FilterService {
     public static List<Generalform> filterByDateRange(List<Generalform> generalForms, LocalDate startDate, LocalDate endDate) {
         return generalForms.stream()
                 .filter(form -> {
-                    // Extract the LocalDate part of submissionDate (assuming submissionDate is LocalDateTime)
+                    
+                	//extract the LocalDate part of submissionDate (assuming submissionDate is LocalDateTime)
                     LocalDate submissionDate = form.getSubmissionDate().toLocalDate();
                     return !submissionDate.isBefore(startDate) && !submissionDate.isAfter(endDate);
                 })

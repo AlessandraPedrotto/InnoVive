@@ -276,11 +276,16 @@ public class InformationFormService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        helper.setTo(toEmail);
-        helper.setSubject(subject);
-        helper.setText(htmlBody, true); 
-
-        mailSender.send(message);
+        try {
+	        helper.setTo(toEmail);
+	        helper.setSubject(subject);
+	        helper.setText(htmlBody, true); 
+	
+	        mailSender.send(message);
+	    } catch (MessagingException e) {
+	        System.err.println("Error sending email to " + toEmail + ": " + e.getMessage());
+	        throw e; // Rethrow the exception so it can be handled elsewhere if needed
+	    }
     }
     
     /*
