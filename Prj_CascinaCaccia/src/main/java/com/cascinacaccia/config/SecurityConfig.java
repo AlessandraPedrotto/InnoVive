@@ -1,6 +1,5 @@
 package com.cascinacaccia.config;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.cascinacaccia.entities.User;
 import com.cascinacaccia.repos.UserDAO;
@@ -26,6 +24,15 @@ import com.cascinacaccia.services.UserService;
 
 import jakarta.servlet.http.Cookie;
 
+/*
+ * SecurityConfig is a configuration class for Spring Security, enabling various security features 
+ * and customizing login, session management, and authorization mechanisms.
+ * 
+ * This class defines beans and configurations for:
+ * - Password encoding using BCrypt.
+ * - HTTP security settings, including CSRF, authorization rules, form login, and logout.
+ * - Session management, including session expiry handling and restricting concurrent sessions.
+ */
 @Configuration
 @EnableScheduling
 public class SecurityConfig {
@@ -36,13 +43,29 @@ public class SecurityConfig {
 	@Autowired
 	private UserService userService;
 	
+	/*
+     * Defines a BCrypt password encoder for securely hashing passwords before storing them in the database.
+     * 
+     * @return A BCryptPasswordEncoder bean for password hashing.
+     */
 	@Bean
 	//hash passwords before storing them in the database
 	public PasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();
 	}
 	
-	
+	/*
+     * Configures HTTP security for the application, including:
+     * - Disabling CSRF protection (not recommended for production environments).
+     * - Defining which URL paths are publicly accessible and which require authentication.
+     * - Customizing login behavior, including a success handler that stores user information in session attributes.
+     * - Configuring logout behavior, including invalidating the session and deleting cookies.
+     * - Setting up session management, including handling session expiration, session fixation, and concurrent sessions.
+     * 
+     * @param http The HttpSecurity object used to configure the security settings.
+     * @return The configured SecurityFilterChain.
+     * @throws Exception If there is an error in setting up HTTP security.
+     */
     @Bean
     //configures HTTP security settings for the application
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -62,12 +85,12 @@ public class SecurityConfig {
                     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                     String email = userDetails.getUsername();
 
-                    // Create a cookie with the user's email
+                    //create a cookie with the user's email
                     Cookie emailCookie = new Cookie("userEmail", email);
-                    emailCookie.setHttpOnly(false);  // Allows JavaScript to access the cookie
-                    emailCookie.setSecure(false);    // Set to true in production if using HTTPS
-                    emailCookie.setPath("/");        // Make it available across the site
-                    emailCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+                    emailCookie.setHttpOnly(false);
+                    emailCookie.setSecure(false);
+                    emailCookie.setPath("/");
+                    emailCookie.setMaxAge(7 * 24 * 60 * 60);
                     
                     Optional<User> optionalUser = userDAO.findByEmail(email);
                     if (optionalUser.isPresent()) {
@@ -99,7 +122,7 @@ public class SecurityConfig {
                             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                             String email = userDetails.getUsername();
 
-                            // Update user state to "OFFLINE"
+                            //update user state to "OFFLINE"
                             userService.markInactiveUsersOffline();
                         }
 
@@ -122,10 +145,17 @@ public class SecurityConfig {
 
         .build();
     }
+    
+    /*
+     * Defines a SessionRegistry bean used to keep track of active sessions.
+     * 
+     * @return A SessionRegistryImpl instance for managing user sessions.
+     */
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
+    
     /*
     @Bean
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
