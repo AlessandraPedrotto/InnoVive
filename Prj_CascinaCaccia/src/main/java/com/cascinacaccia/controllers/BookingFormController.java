@@ -2,25 +2,19 @@ package com.cascinacaccia.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cascinacaccia.entities.BookingForm;
 import com.cascinacaccia.entities.Category;
 import com.cascinacaccia.entities.Generalform;
-import com.cascinacaccia.entities.Informationform;
 import com.cascinacaccia.repos.BookingFormDAO;
 import com.cascinacaccia.repos.CategoryDAO;
 import com.cascinacaccia.repos.GeneralformDAO;
@@ -33,13 +27,10 @@ public class BookingFormController {
 
 	@Autowired
     private CategoryDAO categoryDAO;
-	
     @Autowired
     private GeneralformDAO generalFormDAO;
-    
     @Autowired
     private BookingFormDAO bookingFormDAO;
-    
     @Autowired
     private BookingFormService bookingFormService;
     
