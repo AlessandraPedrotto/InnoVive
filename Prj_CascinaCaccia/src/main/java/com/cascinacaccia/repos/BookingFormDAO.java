@@ -10,7 +10,9 @@ import com.cascinacaccia.entities.User;
 
 /*
  * The BookingFormDAO interface extends JpaRepository to provide standard CRUD operations for the BookingForm entity.
- * This interface allows interaction with the BookingForm entity, providing basic operations like saving, deleting, and querying information forms.
+ * This interface allows interaction with the BookingForm entity, providing basic operations like saving, deleting, and querying information forms, with support for:
+ * - Finding by Id
+ * - Finding by assigned user
  */
 public interface BookingFormDAO extends JpaRepository<BookingForm,String> {
 
