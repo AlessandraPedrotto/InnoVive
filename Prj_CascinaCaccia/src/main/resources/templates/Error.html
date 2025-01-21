@@ -8,6 +8,7 @@
     <title>Error</title>
     <link rel="stylesheet" href="/styles/normalize.css">
     <link rel="stylesheet" href="/styles/style.css?v=1.0">
+    <link rel="stylesheet" href="../static/styles/style.css">
 
     <link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
@@ -90,16 +91,21 @@
     
     <!-- main starts -->
     <main>
-    	<h1>Something Went Wrong</h1>
+        <div class="error-message-container">
+            <h2 class="error-header">Something Went Wrong</h2>
     
-	    <!-- Details of the error -->
-	    <p>Status Code: <span th:text="${status}"></span></p>
-	    <p>Error: <span th:text="${error}"></span></p>
-	    <p>Message: <span th:text="${message}"></span></p>
-	    <p>Path: <span th:text="${path}"></span></p>
-	     
-	    <!-- Exit page button -->
-	    <a href="/" data-translate="indietro"></a>
+            <!-- Details of the error -->
+            <div class="error-details-container">
+                <h3>Errore nella prenotazione !</h3>
+                <p>Status Code: <span th:text="${status}"></span></p>
+                <p>Error: <span th:text="${error}"></span></p>
+            </div>
+            
+             
+            <!-- Exit page button -->
+            <a class="error-exit-button" href="/" data-translate="indietro">Indietro</a>
+        </div>
+
 	</main>
 
     <!-- footer -->
