@@ -26,6 +26,9 @@ function changeLanguage(lang) {
           // Update text content for non-input elements
           if (element.hasAttribute("data-translate-html")) {
             element.innerHTML = translations[translationKey]; // Allow HTML translations
+          } else if (element.tagName === "OPTION") {
+		    // Handle <option> elements in dropdowns
+		    element.textContent = translations[translationKey]; 
           } else if (element.tagName !== "INPUT" && element.tagName !== "TEXTAREA") {
             element.textContent = translations[translationKey];
           } else {

@@ -197,9 +197,14 @@
                         <label for="categoryId" data-translate="label_categoria"></label>
                         <select id="categoryId" name="categoryId" required>
                             <option value="" disabled selected data-translate="seleziona_categoria"></option>
-                            <th:block th:each="category : ${categories}">
-                                <option th:value="${category.id}" th:text="${category.name}"></option>
-                            </th:block>
+                            <option value="1" data-translate="category_1">Scuola elementare</option>
+				              <option value="2" data-translate="category_2">Scuola media</option>
+				              <option value="3" data-translate="category_3">Scuola superiore</option>
+				              <option value="4" data-translate="category_4">Università</option>
+				              <option value="5" data-translate="category_5">Oratorio</option>
+				              <option value="6" data-translate="category_6">Evento privato generico</option>
+				              <option value="7" data-translate="category_7">Evento pubblico generico</option>
+				              <option value="8" data-translate="category_8">Altro</option>
                         </select><br>
                     </div>
                     <div class="info-form-field">

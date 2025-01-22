@@ -30,7 +30,7 @@
   	"titolo_sezione_attivita_home": "Attività  per le scuole e per tutti",
   	"titolo_sezione_contatti_home": "Contattaci o prenota",
   	"titolo_sezione_scopri_home": "Scopri di più sulla cascina",
-  	"titolo_sezione_pdf_home": "Scarica ora il PDF del Piano Educativo 20XX-20XX",
+  	"titolo_sezione_pdf_home": "Scarica ora il PDF del Piano Educativo 2024-2025",
   	"educati": "Education<span class='highlited'>ON</span>",
     "titolo_sezione_medie_regole": "Le regole",
   	"titolo_sezione_medie_gioco": "Mondo del gioco",
@@ -95,10 +95,10 @@
   	
   	"_comment9": "Traduzioni testi home",
   	"introduzione": "Da simbolo di mafia a luogo di speranza: costruiamo insieme il futuro della legalità.",
-  	"box_1": "Proponiamo <strong>attivitÃ  formative</strong> ed esperienziali per scuole, famiglie e gruppi. Esplora i nostri <strong>laboratori educativi</strong> sulla legalitÃ  e i percorsi pratici nella nostra cascina. Scopri come trasformare una giornata o un soggiorno in unâoccasione per apprendere e divertirti!",
-  	"box_2": "Benvenuti a Cascina Caccia, un luogo simbolo di <strong>riscatto e comunitÃ </strong>. Scopri la nostra struttura storica, le stanze e gli spazi condivisi. Vivi la cascina e immergiti in un ambiente autentico e accogliente.",
-  	"box_3": "Hai domande o vuoi prenotare unâattivitÃ ? Il nostro team Ã¨ a disposizione per fornirti tutte le informazioni necessarie. Che si tratti di una visita guidata, di un laboratorio o di un evento, siamo pronti ad accoglierti e creare con te <strong>unâesperienza unica</strong> e formativa.",
-  	"box_4": "Vuoi scoprire nel dettaglio il nostro progetto educativo? <strong>Scarica il Piano Educativo 20XX-20XX</strong> e lasciati ispirare dai percorsi, laboratori e opportunitÃ  che offriamo a studenti e gruppi.",
+  	"box_1": "Proponiamo <strong>attività  formative</strong> ed esperienziali per scuole, famiglie e gruppi. Esplora i nostri <strong>laboratori educativi</strong> sulla legalità  e i percorsi pratici nella nostra cascina. Scopri come trasformare una giornata o un soggiorno in unâoccasione per apprendere e divertirti!",
+  	"box_2": "Benvenuti a Cascina Caccia, un luogo simbolo di <strong>riscatto e comunità </strong>. Scopri la nostra struttura storica, le stanze e gli spazi condivisi. Vivi la cascina e immergiti in un ambiente autentico e accogliente.",
+  	"box_3": "Hai domande o vuoi prenotare un'attività ? Il nostro team è a disposizione per fornirti tutte le informazioni necessarie. Che si tratti di una visita guidata, di un laboratorio o di un evento, siamo pronti ad accoglierti e creare con te <strong>un'esperienza unica</strong> e formativa.",
+  	"box_4": "Vuoi scoprire nel dettaglio il nostro progetto educativo? <strong>Scarica il Piano Educativo 2024-2025</strong> e lasciati ispirare dai percorsi, laboratori e opportunità che offriamo a studenti e gruppi.",
   	"checkbox_1": "Acconsento al trattemento dei dati",
   	"checkbox_2": "Iscriviti alla newsletter",
   	
@@ -107,5 +107,15 @@
 	"stanza_2": "Calda e luminosa, la Stanza Gialla è uno spazio accogliente per pernottare, progettata per far sentire ogni ospite a casa. La semplicità  dell'ambiente riflette la filosofia della Cascina, orientata alla condivisione e alla valorizzazione del tempo trascorso insieme.",
 	"stanza_3": "Elegante e luminosa, la Stanza Bianca è arricchita da un divanetto rosso che aggiunge un tocco di colore e calore all'ambiente. E' uno spazio confortevole e rilassante, perfetto per ricaricare le energie immersi nella tranquillità  del luogo.",
 	"stanza_4": "Un'ampia sala versatile, cuore pulsante delle attività  comunitarie di Cascina Caccia. Adatta per conferenze, proiezioni, e momenti di aggregazione, la Sala Polifunzionale accoglie gruppi numerosi offrendo spazio per presentazioni, dibattiti e celebrazioni, sempre nel segno dell'educazione e della partecipazione.",
-	"stanza_5": "Ristrutturato con cura, il Fienile è uno spazio multifunzionale che collega tradizione e innovazione. Qui si svolgono eventi culturali, laboratori pratici e attività  manuali come il lavoro agricolo. Perfetto per immergersi nella natura e riscoprire il valore del lavoro condiviso."
+	"stanza_5": "Ristrutturato con cura, il Fienile è uno spazio multifunzionale che collega tradizione e innovazione. Qui si svolgono eventi culturali, laboratori pratici e attività  manuali come il lavoro agricolo. Perfetto per immergersi nella natura e riscoprire il valore del lavoro condiviso.",
+	
+	"_comment11": "Traduzioni categorie",
+    "category_1": "Scuola elementare",
+    "category_2": "Scuola media",
+    "category_3": "Scuola superiore",	
+    "category_4": "Università",
+    "category_5": "Oratorio",
+    "category_6": "Evento privato generico",
+    "category_7": "Evento pubblico generico",
+    "category_8": "Altro"
 }
