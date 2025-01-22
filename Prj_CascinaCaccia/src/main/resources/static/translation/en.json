@@ -31,7 +31,7 @@
   	"titolo_sezione_attivita_home": "Activities for schools and everyone",
   	"titolo_sezione_contatti_home": "Contact us or book a visit",
   	"titolo_sezione_scopri_home": "Learn more about us",
-  	"titolo_sezione_pdf_home": "Download the Educational Plan PDF 20XX-20XX",
+  	"titolo_sezione_pdf_home": "Download the Educational Plan PDF 2024-2025",
   	"titolo_sezione_medie_regole": "The rules",
   	"titolo_sezione_medie_gioco": "World of play",
   	"titolo_sezione_superiori_cinema": "The mafia and cinema",
@@ -98,7 +98,7 @@
 	"box_1": "We offer <strong>training</strong> and experiential activities for schools, families, and groups. Explore our <strong>educational workshops</strong> on legality and the practical pathways in our cascina. Discover how to turn a day or stay into an opportunity to learn and have fun!",
 	"box_2": "Welcome to Cascina Caccia, a symbol of <strong>redemption and community</strong>. Discover our historic structure, rooms, and shared spaces. Live the cascina and immerse yourself in an authentic and welcoming environment.",
 	"box_3": "Do you have questions or want to book an activity? Our team is available to provide you with all the necessary information. Whether it's a guided tour, workshop, or event, we are ready to welcome you and create with you <strong>a unique and educational experience</strong>.",
-	"box_4": "Want to discover more about our educational project? <strong>Download the Educational Plan 20XX-20XX</strong> and get inspired by the pathways, workshops, and opportunities we offer to students and groups.",
+	"box_4": "Want to discover more about our educational project? <strong>Download the Educational Plan 2024-2025</strong> and get inspired by the pathways, workshops, and opportunities we offer to students and groups.",
 	"checkbox_1": "I consent to the processing of data",
 	"checkbox_2": "Subscribe to the newsletter",
 	
@@ -107,6 +107,15 @@
 	"stanza_2": "Warm and bright, the Yellow Room is a cozy space for overnight stays, designed to make every guest feel at home. The simplicity of the environment reflects the philosophy of the Cascina, focused on sharing and valuing the time spent together.",
 	"stanza_3": "Elegant and bright, the White Room is enhanced by a red armchair that adds a touch of color and warmth to the space. It is a comfortable and relaxing room, perfect for recharging your energy while immersed in the tranquility of the place.",
 	"stanza_4": "A large, versatile hall, the heart of the community activities at Cascina Caccia. Suitable for conferences, screenings, and moments of gathering, the Multifunctional Room welcomes large groups, offering space for presentations, debates, and celebrations, always in the spirit of education and participation.",
-	"stanza_5": "Carefully renovated, the Barn is a multifunctional space that blends tradition and innovation. Here, cultural events, practical workshops, and hands-on activities such as agricultural work take place. Perfect for immersing yourself in nature and rediscovering the value of shared labor."
-
+	"stanza_5": "Carefully renovated, the Barn is a multifunctional space that blends tradition and innovation. Here, cultural events, practical workshops, and hands-on activities such as agricultural work take place. Perfect for immersing yourself in nature and rediscovering the value of shared labor.",
+	
+	"_comment11": "Traduzioni categorie",
+    "category_1": "Elementary School",
+	"category_2": "Middle School",
+	"category_3": "High School",
+	"category_4": "University",
+	"category_5": "Oratory",
+	"category_6": "Generic Private Event",
+	"category_7": "Generic Public Event",
+	"category_8": "Other"
 }
