@@ -23,48 +23,48 @@
             <div class="sidebar-logo">
                 <img src="/img/logo.png" alt="Education logo">
             </div>
-            <a href="/profile">Home</a>
+            <a href="/profile">Profilo</a>
             <!-- Admin-specific buttons -->
             <a class="active-item" sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">Lista utenti</a>
             <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Registra utente</a>
 
             <!-- Buttons for every user -->
-            <a href="/yourTasks">Le tue tasks</a>
+            <a href="/yourTasks">I tuoi tasks</a>
             <a href="/changePassword">Cambia password</a>
             <a href="/request" id="viewRequestsButton">Visualizza richieste<span class="badge" id="notificationBadge" th:text="${newFormCount}"></span></a>
-            <a href="/profileImage">Immagine del profilo</a>
+            <a href="/profileImage">Immagine profilo</a>
 
             <!-- Logout link -->
             <a id="logoutBtn" th:href="@{/logout}">Esci</a>
 
         </div>
-		<div class="backoffice-content">
+		<div class="backoffice-content profile-wrapper">
 			<div id="user-container">
-				<div class="container">
+				<div class="profile-header">
 					<h2>Profilo Utente</h2>
 			
 					<!-- User personal details -->
-					<div class="user-details">
-						<p><strong>Nome:</strong> <span id="nome" th:text="${fullName}">Nessun nome trovato</span></p>
-						<p><strong>Cognome:</strong> <span id="cognome" th:text="${surname}">Nessun cognome trovato</span></p>
-						<p><strong>Email:</strong> <span th:text="${email}">Nessuna mail trovata</span></p>
-						<p><strong>Stato:</strong> <span th:text="${state != null && !state.isEmpty() ? state : 'Nessuno stato trovato'}"></span></p>
-						<p th:if="${state != null && state == 'OFFLINE'}">
-					        <strong>Ultimo accesso:</strong> 
-					        <span th:text="${lastAccess != null ? lastAccess.format(formatter) : 'N/A'}"></span>
-					    </p>
-						<div class="profile-img">
-							<img src="https://cdn-icons-png.freepik.com/256/3985/3985214.png?ga=GA1.1.1838490280.1706974849&amp;semt=ais_hybrid" 
-								 alt="Profile Image" 
-								 width="100" 
-								 height="100">
+					<div class="user-details"><br>
+						<div class="profile-image-container">
+							<img th:src="@{${profileImageUrl}}" 
+								 alt="Profile Image" >
+						</div><br>
+						<div class="profile-account-info">
+							<p><strong>Nome:</strong> <span id="nome" th:text="${fullName}">Nessun nome trovato</span></p>
+							<p><strong>Cognome:</strong> <span id="cognome" th:text="${surname}">Nessun cognome trovato</span></p>
+							<p><strong>Email:</strong> <span th:text="${email}">Nessuna email trovata</span></p>
+							<p><strong>Stato:</strong> <span th:text="${state != null && !state.isEmpty() ? state : 'Nessuno stato trovato'}"></span></p>
+							<p th:if="${state != null && state == 'OFFLINE'}">
+						        <strong>Ultimo accesso:</strong> 
+						        <span th:text="${lastAccess != null ? lastAccess.format(formatter) : 'N/A'}"></span>
+						    </p>
 						</div>
-					</div>
-			
-					<!-- Exit page button and view tasks button -->
-					<div class="button-container">
-						<a th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id})}">Visualizza tasks</a>
-						<a href="/admin/listUsers" class="button-secondary">Indietro</a>
+				
+						<!-- Exit page button and view tasks button -->
+						<div class="button-container">
+							<a th:href="@{/admin/yourTasksPublic/{userId}(userId=${user.id})}">Visualizza tasks</a>
+							<a href="/admin/listUsers" class="button-secondary">Indietro</a>
+						</div>
 					</div>
 				</div>
 			</div>

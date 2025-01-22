@@ -3,9 +3,10 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Form Requests</title>
-	<link rel="stylesheet" href="/styles/style.css">
-	<link rel="stylesheet" href="/styles/backoffice.css">
+	<title>Richieste</title>
+	<link rel="stylesheet" href="/styles/normalize.css">
+	<link rel="stylesheet" href="/styles/style.css?v=1.0">
+	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
 	<link rel="stylesheet" href="/styles/notification.css?v=1.0">
 	<script src="/scripts/request.js"></script>
 
@@ -25,16 +26,16 @@
             <div class="sidebar-logo">
                 <img src="/img/logo.png" alt="Education logo">
             </div>
-            <a href="/profile">Home</a>
+            <a href="/profile">Profilo</a>
             <!-- Admin-specific buttons -->
             <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">Lista utenti</a>
             <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Registra utente</a>
 
             <!-- Buttons for every user -->
-            <a href="/yourTasks">Le tue tasks</a>
+            <a href="/yourTasks">I tuoi tasks</a>
             <a href="/changePassword">Cambia password</a>
             <a class="active-item" href="/request" id="viewRequestsButton">Visualizza richieste<span class="badge" id="notificationBadge" th:text="${newFormCount}"></span></a>
-            <a href="/profileImage">Immagine del profilo</a>
+            <a href="/profileImage">Immagine profilo</a>
 
             <!-- Logout link -->
             <a id="logoutBtn" th:href="@{/logout}">Esci</a>
@@ -45,8 +46,10 @@
 			<div class="content">
 
 				<div class="request-page-header">
-					<h2 class="requests-welcome">Benvenuto,</h2>
-					
+					<div class="profile-header">
+						<h2>Tutte le richieste</h2><br>
+					</div>
+					<p>Applica dei filtri per facilitare la ricerca</p><br>
 					<!-- Error messages -->
 					<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
 					<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
@@ -63,7 +66,7 @@
 					    </div>
     				</div>	
 					<!-- Exit page button -->
-					<a href="/profile" class="requests-back-button">Indietro</a>
+					<!--<a href="/profile" class="requests-back-button">Indietro</a>-->
 				</div>
 
 				<!-- Category Filter Form -->
@@ -88,7 +91,7 @@
 
 						<!-- Status Checkbox Filters -->
 						<div class="status-filter">
-							<label for="statuses">Status:</label><br />
+							<label for="statuses">Stato:</label><br />
 							<div class="status-container">
 								<div class="status-item">
 									<input type="checkbox" name="statuses" value="TO DO"
@@ -124,13 +127,13 @@
 							<div class="sort-type-item">
 								<label for="sortBy">Ordina per:</label>
 								<select name="sortBy">
-									<option value="newest" th:selected="${sortBy == 'newest'}">Date: Newest to Oldest
+									<option value="newest" th:selected="${sortBy == 'newest'}">Data: Nuovo -> Vecchio
 									</option>
-									<option value="oldest" th:selected="${sortBy == 'oldest'}">Date: Oldest to Newest
+									<option value="oldest" th:selected="${sortBy == 'oldest'}">Data: Vecchio -> Nuovo
 									</option>
-									<option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Surname: A to Z
+									<option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Cognome: A -> Z
 									</option>
-									<option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Surname: Z to A
+									<option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Cognome: Z -> A
 									</option>
 								</select>
 							</div>
@@ -138,26 +141,26 @@
 
 							<!-- Form Type Filter (Information Form or Booking Form) -->
 							<div class="sort-type-item">
-								<label for="formType">Tipo di form:</label>
+								<label for="formType">Tipo richiesta:</label>
 								<select class="form-control" name="formType">
-									<option value="all" th:selected="${formType == 'all'}">All</option>
+									<option value="all" th:selected="${formType == 'all'}">Tutte</option>
 									<option value="informationForm" th:selected="${formType == 'informationForm'}">
-										Information Form</option>
-									<option value="bookingForm" th:selected="${formType == 'bookingForm'}">Booking Form
+										Richiesta informazione</option>
+									<option value="bookingForm" th:selected="${formType == 'bookingForm'}">Richiesta prenotazione
 									</option>
 								</select>
 							</div>
 							
 							<!-- Assignation Filter -->
 							<div class="assignation-filter">
-							    <label for="assignation">Task assegnato:</label>
+							    <label for="assignation">Richiesta assegnata:</label>
 							    <select name="assignation">
-							        <option value="" th:selected="${assignation == null or assignation == ''}">All</option>
-							        <option value="assigned" th:selected="${assignation == 'assigned'}">Assigned</option>
-							        <option value="notAssigned" th:selected="${assignation == 'notAssigned'}">Not Assigned</option>
+							        <option value="" th:selected="${assignation == null or assignation == ''}">Tutte</option>
+							        <option value="assigned" th:selected="${assignation == 'assigned'}">Assegnata</option>
+							        <option value="notAssigned" th:selected="${assignation == 'notAssigned'}">Non assegnata</option>
 							    </select>
 							</div>
-						</div>
+						</div><br>
 
 						<div class="sort-buttons-container">
 							<button type="submit" class="requests-back-button">Applica filtri</button>
@@ -169,7 +172,7 @@
 				</div>
 				<!-- Table for the requests -->
 				<div class="request-container">
-					<h3>Richieste Informazioni recenti</h3>
+					<h3>Richieste</h3>
 
 					<!-- Loop through GeneralForms -->
 					<div th:each="generalForm : ${generalForms}" class="request">
@@ -191,7 +194,7 @@
 												<th>Messaggio</th>
 												<th>Data</th>
 												<th>Stato</th>
-												<th>Impiegato</th>
+												<th>Utente</th>
 												<th>Azioni</th>
 											</tr>
 										</thead>
@@ -215,12 +218,12 @@
 															<!-- User image -->
 															<img th:src="${informationForm.getAssignedUser().getUserImage() != null ? informationForm.getAssignedUser().getUserImage().imgPath : '/default-user-image.png'}"
 																class="profile-image"
-																th:alt="'Image of ' + ${informationForm.getAssignedUser().name + ' ' + informationForm.getAssignedUser().surname}"
+																th:alt="'Immagine di ' + ${informationForm.getAssignedUser().name + ' ' + informationForm.getAssignedUser().surname}"
 																data-toggle="tooltip"
 																th:title="${informationForm.getAssignedUser().name + ' ' + informationForm.getAssignedUser().surname}" />
 														</div>
 														<div th:if="${informationForm.getAssignedUser() == null}">
-															<span>Nessun utente assegnato</span>
+															<span th:if="${informationForm.getAssignedUser() == null}">Nessun utente assegnato</span>
 														</div>
 													</div>
 												</td>
@@ -231,7 +234,7 @@
 														class="form-button assign-user-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignUserModal-' + ${informationForm.id}">
-														Assegna un utente
+														Assegna utente
 													</button>
 
 													<!-- Form to remove the currently assigned user from the InformationForm -->
@@ -242,7 +245,7 @@
 															th:value="${informationForm.id}" />
 														<input type="hidden" name="userId"
 															th:value="${informationForm.getAssignedUser().id}" />
-														<button type="submit" class="form-button ">Rimuovi l'utente</button>
+														<button type="submit" class="form-button ">Rimuovi utente</button>
 													</form>
 
 													<!-- Button to open the assignment modal for status-->
@@ -264,11 +267,11 @@
 
 																		<!-- User dropdown list -->
 																		<div class="assignment-form">
-																			<label for="userSelect">Seleziona un utente</label>
+																			<label for="userSelect">Seleziona utente</label>
 																			<select class="form-control" id="userSelect"
 																				name="userId" required>
 																				<option value="" disabled selected>
-																					Seleziona un utente
+																					Seleziona utente
 																				</option>
 																				<option th:each="user : ${users}"
 																					th:value="${user.id}"
@@ -278,7 +281,7 @@
 																		</div>
 																		<div class="request-action-button-container">
 																			<button type="submit"
-																				class="assign-user-submit-button">Assegna un utente</button>
+																				class="assign-user-submit-button">Assegna utente</button>
 																			<button type="button"
 																				class="request-action-close-modal close-user-assignment">x</button>
 																		</div>
@@ -299,12 +302,12 @@
 
 																		<!-- Status dropdown list -->
 																		<div class="assignment-form">
-																			<label for="statusSelect">Seleziona uno stato</label>
+																			<label for="statusSelect">Seleziona stato</label>
 																			<select class="form-control"
 																				id="statusSelect"
 																				name="informationFormStatus" required>
 																				<option value="" disabled selected>
-																					Seleziona uno stato
+																					Seleziona stato
 																				</option>
 																				<option value="TO DO">To do</option>
 																				<option value="IN PROGRESS">In progress
@@ -342,7 +345,7 @@
 												<th>Check-In</th>
 												<th>Check-Out</th>
 												<th>Stato</th>
-												<th>Impiegato</th>
+												<th>Utente</th>
 												<th>Azioni</th>
 											</tr>
 										</thead>
@@ -372,7 +375,7 @@
 																th:title="${bookingForm.getAssignedUser().name + ' ' + bookingForm.getAssignedUser().surname}" />
 														</div>
 														<div th:if="${bookingForm.getAssignedUser() == null}">
-															<span>Nessun impiegato assegnato</span>
+															<span>Nessun utente assegnato</span>
 														</div>
 													</div>
 												</td>
@@ -383,7 +386,7 @@
 														class="form-button assign-user-button" type="button"
 														data-toggle="modal"
 														th:data-target="'#assignUserModal-' + ${bookingForm.id}">
-														Assegna un utente
+														Assegna utente
 													</button>
 
 													<!-- Form to remove the currently assigned user from the InformationForm -->
@@ -394,7 +397,7 @@
 															th:value="${bookingForm.id}" />
 														<input type="hidden" name="userId"
 															th:value="${bookingForm.getAssignedUser().id}" />
-														<button type="submit" class="form-button">Rimuovi l'utente</button>
+														<button type="submit" class="form-button">Rimuovi utente</button>
 													</form>
 
 													<!-- Button to open the assignment modal for status-->
@@ -416,11 +419,11 @@
 
 																		<!-- User dropdown list -->
 																		<div class="assignment-form">
-																			<label for="userSelect">Seleziona un utente</label>
+																			<label for="userSelect">Seleziona utente</label>
 																			<select class="form-control" id="userSelect"
 																				name="userId" required>
 																				<option value="" disabled selected>
-																					Seleziona un utente</option>
+																					Seleziona utente</option>
 																				<option th:each="user : ${users}"
 																					th:value="${user.id}"
 																					th:text="${user.name + ' ' + user.surname}">
@@ -429,7 +432,7 @@
 																		</div>
 																		<div class="request-action-button-container">
 																			<button type="submit"
-																				class="assign-user-submit-button">Assegna un utente</button>
+																				class="assign-user-submit-button">Assegna utente</button>
 																			<button type="button"
 																				class="request-action-close-modal close-user-assignment">x</button>
 																		</div>
@@ -450,12 +453,12 @@
 
 																		<!-- Status dropdown list -->
 																		<div class="assignment-form">
-																			<label for="statusSelect">Seleziona uno stato</label>
+																			<label for="statusSelect">Seleziona stato</label>
 																			<select class="form-control"
 																				id="statusSelect"
 																				name="bookingFormStatus" required>
 																				<option value="" disabled selected>
-																					Seleziona uno stato</option>
+																					Seleziona stato</option>
 																				<option value="TO DO">To do</option>
 																				<option value="IN PROGRESS">In progress
 																				</option>

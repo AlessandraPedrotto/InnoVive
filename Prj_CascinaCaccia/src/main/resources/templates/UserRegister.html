@@ -40,7 +40,9 @@
         </div>
         <div class="backoffice-content user-registration-wrapper">
             <div class="user-registration-container">
-                <h2>Registra utente</h2><br>
+                <div class="profile-header">	
+                	<h2>Registra utente</h2><br>
+                </div>
 				<p>Inserisci i dati all'interno del modulo per creare un nuovo utente</p><br>
 				<!-- Error messages -->
 				<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>

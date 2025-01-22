@@ -41,8 +41,10 @@
 
         </div>
 		<div class="backoffice-content" id="listUsers-container">
-			<h2>Lista Utenti</h2>
-
+			<div class="profile-header">
+				<h2>Lista Utenti</h2>
+			</div>
+			<p>Lista di tutti gli account</p><br>
 			<!-- Error messages -->
 			<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
 			<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
