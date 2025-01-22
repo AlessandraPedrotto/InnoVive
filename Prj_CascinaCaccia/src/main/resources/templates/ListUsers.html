@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>List Users</title>
+	<title>Lista utenti</title>
 	<link rel="stylesheet" href="/styles/normalize.css">
 	<link rel="stylesheet" href="/styles/style.css?v=1.0">
 	<link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
@@ -25,16 +25,16 @@
             <div class="sidebar-logo">
                 <img src="/img/logo.png" alt="Education logo">
             </div>
-            <a href="/profile">Home</a>
+            <a href="/profile">Profilo</a>
             <!-- Admin-specific buttons -->
             <a class="active-item" sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">Lista utenti</a>
             <a  sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Registra utente</a>
 
             <!-- Buttons for every user -->
-            <a href="/yourTasks">Le tue tasks</a>
+            <a href="/yourTasks">I tuoi tasks</a>
             <a href="/changePassword">Cambia password</a>
             <a href="/request" id="viewRequestsButton">Visualizza richieste<span class="badge" id="notificationBadge" th:text="${newFormCount}"></span></a>
-            <a href="/profileImage">Immagine del profilo</a>
+            <a href="/profileImage">Immagine profilo</a>
 
             <!-- Logout link -->
             <a id="logoutBtn" th:href="@{/logout}">Esci</a>
@@ -61,7 +61,7 @@
 			
 			<!-- Form for searching users -->
 			<form method="get" th:action="@{/admin/listUsers}">
-				<input type="text" name="query" th:value="${query}" placeholder="Search by email, name, or surname" />
+				<input type="text" name="query" th:value="${query}" placeholder="Cerca per nome, cognome o email" />
 				<button type="submit">
 					<svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -83,8 +83,8 @@
 					<input type="hidden" name="page" th:value="${currentPage}" />
 					<input type="hidden" name="size" th:value="${size}" />
 					<select name="sortBy" onchange="this.form.submit()">
-						<option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Cognome: A to Z</option>
-						<option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Cognome: Z to A</option>
+						<option value="surnameAsc" th:selected="${sortBy == 'surnameAsc'}">Cognome: A -> Z</option>
+						<option value="surnameDesc" th:selected="${sortBy == 'surnameDesc'}">Cognome: Z -> A</option>
 					</select>
 					<noscript>
 						<button type="submit">Ordina</button>
@@ -94,7 +94,7 @@
 
 
 			<!-- Exit page button -->
-			<a href="/profile">Indietro</a>
+			<!--<a href="/profile">Indietro</a>-->
 
 			<div th:if="${hasUsers}">
 
@@ -121,7 +121,7 @@
 							<td th:text="${user.state}"></td>
 							<td> 
 								<span th:if="${user.state == 'OFFLINE' and user.lastAccess != null}" th:text="${user.lastAccess.format(formatter)}"></span>
-								<span th:if="${user.state == 'OFFLINE' and user.lastAccess == null}">Never accessed</span>
+								<span th:if="${user.state == 'OFFLINE' and user.lastAccess == null}">Mai effettuato l'accesso</span>
 							</td>
 							<td class="user-controls">
 
