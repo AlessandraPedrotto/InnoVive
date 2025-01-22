@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Profile</title>
+    <title>Profilo</title>
     <link rel="stylesheet" href="/styles/normalize.css">
     <link rel="stylesheet" href="/styles/style.css?v=1.0">
     <link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
@@ -23,16 +23,16 @@
             <div class="sidebar-logo">
                 <img src="/img/logo.png" alt="Education logo">
             </div>
-            <a class="active-item" href="/profile">Home</a>
+            <a class="active-item" href="/profile">Profilo</a>
             <!-- Admin-specific buttons -->
             <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">Lista utenti</a>
             <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Registra utente</a>
 
             <!-- Buttons for every user -->
-            <a href="/yourTasks">Le tue tasks</a>
+            <a href="/yourTasks">I tuoi tasks</a>
             <a href="/changePassword">Cambia password</a>
             <a href="/request" id="viewRequestsButton">Visualizza richieste<span class="badge" id="notificationBadge" th:text="${newFormCount}"></span></a>
-            <a href="/profileImage">Immagine del profilo</a>
+            <a href="/profileImage">Immagine profilo</a>
 
             <!-- Logout link -->
             <a id="logoutBtn" th:href="@{/logout}">Esci</a>
@@ -41,8 +41,10 @@
         <div class="backoffice-content profile-wrapper">
             <div class="profile-content">
                 <div class="profile-header">
-                    <h2>Benvenuto sul tuo profilo</h2>
-                    <p>Login effettuato!</p>
+                    <h2>Benvenuto 
+	                    <span th:text="${fullName}"></span>
+	                    <span th:text="${surname}"></span>
+                    </h2>
                 </div>
 
 				<!-- Error messages -->
@@ -59,19 +61,20 @@
 				</div>
 				
                 <!-- Display user details -->
-                <div class="profile-details">
-                    <p>La tua immagine del profilo</p>
+                <div class="profile-details"><br>
                     <div class="profile-image-container">
                         <img th:src="@{${profileImageUrl}}" alt="Profile Image" />
-                    </div>
+                    </div><br>
                     <div class="profile-account-info">
-                        <p><strong>Email:</strong> <span th:text="${email}">No email found</span></p>
+                        <p><strong>Email:</strong> <span th:text="${email}">Nessuna email trovata</span></p><br>
                         <p>
-                            <strong>Name:</strong>
-                            <span id="name-display" th:text="${fullName}">No name found</span>
-                            <strong>Surname:</strong>
-                            <span id="surname-display" th:text="${surname}">No surname found</span>
-                        </p>
+                            <strong>Nome:</strong>
+                            <span id="name-display" th:text="${fullName}">Nessun nome trovato</span>
+                        </p><br>
+                        <p>
+                            <strong>Cognome:</strong>
+                            <span id="surname-display" th:text="${surname}">Nessun cognome trovato</span>
+                        </p><br>
 
                         <div class="profile-buttons-container">
                             <button id="edit-name-btn" class="requests-back-button" onclick="toggleEditName()">
@@ -86,16 +89,16 @@
                                 <label class="profile-info-labels" for="name">Nome:</label>
                                 <input type="text" id="name" name="name" class="profile-info-forms"
                                     th:value="${fullName}" required />
-                            </div>
+                            </div><br>
                             <div class="profile-info-group">
                                 <label class="profile-info-labels" for="surname">Cognome:</label>
                                 <input type="text" id="surname" name="surname" class="profile-info-forms"
                                     th:value="${surname}" required />
-                            </div>
+                            </div><br>
                             <div class="profile-buttons-container">
-                                <button type="submit" class="requests-back-button">Save</button>
-                                <button type="button" class="requests-back-button"
-                                    onclick="toggleEditName()">Cancel</button>
+                                <button type="submit" class="requests-back-button">Salva</button>
+                                <button type="button" class="requests-back-button back-button-spacing"
+                                    onclick="toggleEditName()">Indietro</button>
                             </div>
                         </form>
                         <!-- Role of the authenticated user 

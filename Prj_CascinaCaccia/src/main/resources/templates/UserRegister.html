@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="ISO-8859-1">
-    <title>User Register</title>
+    <title>Registra utenti</title>
     <link rel="stylesheet" href="/styles/normalize.css">
     <link rel="stylesheet" href="/styles/style.css?v=1.0">
     <link rel="stylesheet" href="/styles/backoffice.css?v=1.0">
@@ -23,16 +23,16 @@
             <div class="sidebar-logo">
                 <img src="/img/logo.png" alt="Education logo">
             </div>
-            <a href="/profile">Home</a>
+            <a href="/profile">Profilo</a>
             <!-- Admin-specific buttons -->
             <a sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/listUsers">Lista utenti</a>
             <a class="active-item" sec:authorize="hasRole('ADMIN')" href="http://localhost:8080/admin/register">Registra utente</a>
 
             <!-- Buttons for every user -->
-            <a href="/yourTasks">Le tue tasks</a>
+            <a href="/yourTasks">I tuoi tasks</a>
             <a href="/changePassword">Cambia password</a>
             <a href="/request" id="viewRequestsButton">Visualizza richieste<span class="badge" id="notificationBadge" th:text="${newFormCount}"></span></a>
-            <a href="/profileImage">Immagine del profilo</a>
+            <a href="/profileImage">Immagine profilo</a>
 
             <!-- Logout link -->
             <a id="logoutBtn" th:href="@{/logout}">Esci</a>
@@ -40,8 +40,8 @@
         </div>
         <div class="backoffice-content user-registration-wrapper">
             <div class="user-registration-container">
-                <h2>Registrazione</h2>
-
+                <h2>Registra utente</h2><br>
+				<p>Inserisci i dati all'interno del modulo per creare un nuovo utente</p><br>
 				<!-- Error messages -->
 				<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
 				<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
@@ -61,25 +61,26 @@
                     <div class="profile-info-group">
                         <label class="profile-info-labels" for="name">Nome:</label>
                         <input class="profile-info-forms" type="text" name="name" required><br>
-                    </div>
+                    </div><br>
                     <div class="profile-info-group">
                         <label class="profile-info-labels" for="surname">Cognome:</label>
                         <input class="profile-info-forms" type="text" name="surname" required><br>
-                    </div>
+                    </div><br>
                     <div class="profile-info-group">
                         <label class="profile-info-labels" for="email">Email:</label>
                         <input class="profile-info-forms" type="email" name="email" required><br>
-                    </div>
+                    </div><br>
                     <div class="profile-info-group">
                         <label class="profile-info-labels" for="password">Password:</label>
                         <input class="profile-info-forms" type="password" name="password" required><br>
-                    </div>
+                    </div><br>
 
                     <div class="profile-buttons-container">
                         <button class="requests-back-button" type="submit">Registra</button>
+                    	<!-- <a class="requests-back-button back-button-spacing" href="/profile">Indietro </a>-->
                     </div>
                 </form>
-                <a class="requests-back-button" href="/profile">Indietro </a>
+                
             </div>
 
         </div>
