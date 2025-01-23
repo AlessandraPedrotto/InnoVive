@@ -565,8 +565,7 @@ CREATE TABLE `user` (
   `user_img_id` bigint(20) DEFAULT NULL,
   `last_access` datetime(6) DEFAULT NULL,
   `state` varchar(255) NOT NULL,
-  `last_seen` datetime(6) DEFAULT NULL,
-  `last_seen_tasks` datetime(6) DEFAULT NULL
+  `last_seen` datetime(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -574,20 +573,20 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `surname`, `email`, `password`, `user_img_id`, `last_access`, `state`, `last_seen`, `last_seen_tasks`) VALUES
-('02ae1c9e-c8c4-49b6-997f-2cff993033d0', 'Giorgia', 'Pons', 'giorgia.pons.emp@gmail.com', '$2a$10$OfzLMGEVvSZwrJmVKg70SemlKb1gwB2Vi.l43wgRI56iFQCOQng8K', 12, NULL, 'OFFLINE', NULL, NULL),
-('180cb2d7-f269-48ff-833e-901f05f64dfb', 'Andrea', 'Daga', 'andrea.daga.emp@gmail.com', '$2a$10$swSNsVtB7VTJjC03gpFwru/HaSv9XuK3oLLkXU.s1zG0mtOSNSbFe', 12, NULL, 'OFFLINE', NULL, NULL),
-('252259e8-b6e3-40c1-887e-e6c1524898f1', 'Beatrice', 'Ferrari', 'beatrice.ferrari.emp@gmail.com', '$2a$10$BFngrGLLqMuQNeGqDORDi.zLgzkgNjrCNPUbkWV26gTPJ40DLXmPG', 12, '2025-01-23 13:35:31.232498', 'OFFLINE', NULL, NULL),
-('2c5bce10-aa81-4cdb-884b-d608e3a98074', 'Enrico', 'Romano', 'enrico.romano.emp@gmail.com', '$2a$10$DnXjILVIyQHZA9Hc1AAhO.lX/KurULS80K09eSS4LI1nKOnwz2BPG', 12, '2025-01-23 13:33:35.640529', 'OFFLINE', NULL, NULL),
-('5bbb6b29-a009-4d49-a1d2-5b9b37564735', 'Carola', 'Esposito', 'carola.esposito.emp@gmail.com', '$2a$10$xF33z0sX2/IOWmg1B8/BmuprTi77aSmXkShwdoz8oMuVpX8WzqEvW', 12, '2025-01-23 13:32:34.721371', 'OFFLINE', NULL, NULL),
-('5eadf6fb-14c7-4579-b0fa-403a51775fba', 'Giulia', 'Tapparo', 'giulia.tapparo.emp@gmail.com', '$2a$10$85tnOs7hkrGPCUDqgMI8AekeubHRCF8XrfkH.uL4CopWGTTbzr1/a', 12, NULL, 'OFFLINE', NULL, NULL),
-('6a550ee7-3f33-41a7-9a49-4fcd9ea6794e', 'Luca', 'Esposito', 'luca.esposito.emp@gmail.com', '$2a$10$T3JBZe0LuXnQlxUlyGJu1.wcA8veDegmDCcBlz4JR.n.um/4nDYUa', 12, NULL, 'OFFLINE', NULL, NULL),
-('6de81b9e-9c66-48d0-83f2-4cca0dc228d3', 'Simone', 'Musu', 'simone.musu.emp@gmail.com', '$2a$10$pfsQDAd6bOY/XBeFpYb/Zu37IV0EnPDExMdFA/OiRZmjpb7GtRueq', 12, NULL, 'OFFLINE', NULL, NULL),
-('7436f7bc-f635-4a9c-8b4f-44c491dd16c4', 'Domenico', 'Bianchi', 'domenico.bianchi.emp@gmail.com', '$2a$10$Fd/yVVi2ylOfleuEfUgkUuFt8HWzIX/qmdmA9Qigp.EeANgY3YZRW', 12, '2025-01-23 13:37:04.092524', 'OFFLINE', NULL, NULL),
-('827f5897-9970-4b2c-9a84-02594523813c', 'Elisa', 'Pozzo', 'elisa.pozzo.emp@gmail.com', '$2a$10$ThK5JTjRkfqwxYo/pQEyVOwIxbxSw0n36TL2qrvJlOKdb7G5FL5oC', 12, NULL, 'OFFLINE', NULL, NULL),
-('b76bcf8d-4dcc-4635-9584-0720cc2a1ab2', 'Luigi', 'Zutta', 'luigi.zutta.emp@gmail.com', '$2a$10$OltIpYQwfAOU2DbtmuGWqe0fuR7aODAd/NaUOznMH.GAnB3Lr10Nm', 12, NULL, 'OFFLINE', NULL, NULL),
-('bad3ad59-c90d-42a3-a12b-602ccfa2dc14', 'Alessandra', 'Pedrotto', 'alessandra.pedrotto@edu.itspiemonte.it', '$2a$10$thwotTgSIcykEdHtWUQrweh/S0Vy0//Q.DjoZfxCYls4hWLNTpTTe', 28, '2025-01-23 14:20:11.785665', 'OFFLINE', '2025-01-23 14:16:47.731457', '2025-01-22 12:17:31.515167'),
-('d058b959-86a6-4a90-afa3-81f5704d334a', 'Amelia', 'Russo', 'amelia.russo.emp@gmail.com', '$2a$10$0u26A5HguBeR2qD27xdhaOFXVXVpUSAOVr7mTw9EP4SCulNUlBlOG', 16, '2025-01-23 12:43:49.201220', 'OFFLINE', '2025-01-17 16:19:21.056889', NULL),
-('dccf76d3-1a94-4076-88d3-e3d447441d30', 'Logan', 'Paul', 'admin.employee@gmail.com', '$2a$10$3B5WxFfLQBl465KwyHj1HOAgEiAdBYgV2yUemN2luLxUwO4MY1BSm', 28, '2025-01-23 13:31:40.283380', 'OFFLINE', '2025-01-23 12:42:56.939180', '2025-01-22 12:16:58.655625');
+('02ae1c9e-c8c4-49b6-997f-2cff993033d0', 'Giorgia', 'Pons', 'giorgia.pons.emp@gmail.com', '$2a$10$OfzLMGEVvSZwrJmVKg70SemlKb1gwB2Vi.l43wgRI56iFQCOQng8K', 12, NULL, 'OFFLINE', NULL),
+('180cb2d7-f269-48ff-833e-901f05f64dfb', 'Andrea', 'Daga', 'andrea.daga.emp@gmail.com', '$2a$10$swSNsVtB7VTJjC03gpFwru/HaSv9XuK3oLLkXU.s1zG0mtOSNSbFe', 12, NULL, 'OFFLINE', NULL),
+('252259e8-b6e3-40c1-887e-e6c1524898f1', 'Beatrice', 'Ferrari', 'beatrice.ferrari.emp@gmail.com', '$2a$10$BFngrGLLqMuQNeGqDORDi.zLgzkgNjrCNPUbkWV26gTPJ40DLXmPG', 12, '2025-01-23 13:35:31.232498', 'OFFLINE', NULL),
+('2c5bce10-aa81-4cdb-884b-d608e3a98074', 'Enrico', 'Romano', 'enrico.romano.emp@gmail.com', '$2a$10$DnXjILVIyQHZA9Hc1AAhO.lX/KurULS80K09eSS4LI1nKOnwz2BPG', 12, '2025-01-23 13:33:35.640529', 'OFFLINE', NULL),
+('5bbb6b29-a009-4d49-a1d2-5b9b37564735', 'Carola', 'Esposito', 'carola.esposito.emp@gmail.com', '$2a$10$xF33z0sX2/IOWmg1B8/BmuprTi77aSmXkShwdoz8oMuVpX8WzqEvW', 12, '2025-01-23 13:32:34.721371', 'OFFLINE', NULL),
+('5eadf6fb-14c7-4579-b0fa-403a51775fba', 'Giulia', 'Tapparo', 'giulia.tapparo.emp@gmail.com', '$2a$10$85tnOs7hkrGPCUDqgMI8AekeubHRCF8XrfkH.uL4CopWGTTbzr1/a', 12, NULL, 'OFFLINE', NULL),
+('6a550ee7-3f33-41a7-9a49-4fcd9ea6794e', 'Luca', 'Esposito', 'luca.esposito.emp@gmail.com', '$2a$10$T3JBZe0LuXnQlxUlyGJu1.wcA8veDegmDCcBlz4JR.n.um/4nDYUa', 12, NULL, 'OFFLINE', NULL),
+('6de81b9e-9c66-48d0-83f2-4cca0dc228d3', 'Simone', 'Musu', 'simone.musu.emp@gmail.com', '$2a$10$pfsQDAd6bOY/XBeFpYb/Zu37IV0EnPDExMdFA/OiRZmjpb7GtRueq', 12, NULL, 'OFFLINE', NULL),
+('7436f7bc-f635-4a9c-8b4f-44c491dd16c4', 'Domenico', 'Bianchi', 'domenico.bianchi.emp@gmail.com', '$2a$10$Fd/yVVi2ylOfleuEfUgkUuFt8HWzIX/qmdmA9Qigp.EeANgY3YZRW', 12, '2025-01-23 13:37:04.092524', 'OFFLINE', NULL),
+('827f5897-9970-4b2c-9a84-02594523813c', 'Elisa', 'Pozzo', 'elisa.pozzo.emp@gmail.com', '$2a$10$ThK5JTjRkfqwxYo/pQEyVOwIxbxSw0n36TL2qrvJlOKdb7G5FL5oC', 12, NULL, 'OFFLINE', NULL),
+('b76bcf8d-4dcc-4635-9584-0720cc2a1ab2', 'Luigi', 'Zutta', 'luigi.zutta.emp@gmail.com', '$2a$10$OltIpYQwfAOU2DbtmuGWqe0fuR7aODAd/NaUOznMH.GAnB3Lr10Nm', 12, NULL, 'OFFLINE', NULL),
+('bad3ad59-c90d-42a3-a12b-602ccfa2dc14', 'Alessandra', 'Pedrotto', 'alessandra.pedrotto@edu.itspiemonte.it', '$2a$10$thwotTgSIcykEdHtWUQrweh/S0Vy0//Q.DjoZfxCYls4hWLNTpTTe', 28, '2025-01-23 14:20:11.785665', 'OFFLINE', '2025-01-23 14:16:47.731457'),
+('d058b959-86a6-4a90-afa3-81f5704d334a', 'Amelia', 'Russo', 'amelia.russo.emp@gmail.com', '$2a$10$0u26A5HguBeR2qD27xdhaOFXVXVpUSAOVr7mTw9EP4SCulNUlBlOG', 16, '2025-01-23 12:43:49.201220', 'OFFLINE', '2025-01-17 16:19:21.056889'),
+('dccf76d3-1a94-4076-88d3-e3d447441d30', 'Logan', 'Paul', 'admin.employee@gmail.com', '$2a$10$3B5WxFfLQBl465KwyHj1HOAgEiAdBYgV2yUemN2luLxUwO4MY1BSm', 28, '2025-01-23 13:31:40.283380', 'OFFLINE', '2025-01-23 12:42:56.939180');
 
 -- --------------------------------------------------------
 
