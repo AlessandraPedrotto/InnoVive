@@ -7,15 +7,27 @@
       <priority>1.0</priority>
    </url>
    <url>
-      <loc>https://www.educatiOn.com/</loc>
+      <loc>https://www.educatiOn.com/attivita</loc>
       <lastmod>2025-01-20</lastmod>
-      <changefreq>monthly</changefreq>
+      <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://www.tuosito.com/contact</loc>
+      <loc>https://www.educatiOn.com/struttura</loc>
       <lastmod>2025-01-15</lastmod>
-      <changefreq>yearly</changefreq>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+      <url>
+      <loc>https://www.educatiOn.com/prenota</loc>
+      <lastmod>2025-01-15</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+      <url>
+      <loc>https://www.educatiOn.com/login</loc>
+      <lastmod>2025-01-15</lastmod>
+      <changefreq>weekly</changefreq>
       <priority>0.5</priority>
    </url>
 </urlset>
