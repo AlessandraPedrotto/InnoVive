@@ -572,7 +572,7 @@ CREATE TABLE `user` (
 -- Dump dei dati per la tabella `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `surname`, `email`, `password`, `user_img_id`, `last_access`, `state`, `last_seen`, `last_seen_tasks`) VALUES
+INSERT INTO `user` (`id`, `name`, `surname`, `email`, `password`, `user_img_id`, `last_access`, `state`, `last_seen`) VALUES
 ('02ae1c9e-c8c4-49b6-997f-2cff993033d0', 'Giorgia', 'Pons', 'giorgia.pons.emp@gmail.com', '$2a$10$OfzLMGEVvSZwrJmVKg70SemlKb1gwB2Vi.l43wgRI56iFQCOQng8K', 12, NULL, 'OFFLINE', NULL),
 ('180cb2d7-f269-48ff-833e-901f05f64dfb', 'Andrea', 'Daga', 'andrea.daga.emp@gmail.com', '$2a$10$swSNsVtB7VTJjC03gpFwru/HaSv9XuK3oLLkXU.s1zG0mtOSNSbFe', 12, NULL, 'OFFLINE', NULL),
 ('252259e8-b6e3-40c1-887e-e6c1524898f1', 'Beatrice', 'Ferrari', 'beatrice.ferrari.emp@gmail.com', '$2a$10$BFngrGLLqMuQNeGqDORDi.zLgzkgNjrCNPUbkWV26gTPJ40DLXmPG', 12, '2025-01-23 13:35:31.232498', 'OFFLINE', NULL),
