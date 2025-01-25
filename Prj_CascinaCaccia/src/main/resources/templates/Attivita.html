@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html th:lang="${selectedLanguage}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html th:lang="${selectedLanguage}" xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="ISO-8859-1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Scopri tutte le nostre attività educative: scuole medie, scuole superiori e attività per tutti!">
+  <meta name="description"
+    content="Scopri tutte le nostre attività educative: scuole medie, scuole superiori e attività per tutti!">
   <meta name="author" content="InnoVive">
   <title>Attività | EducatiON</title>
   <script type="application/ld+json">
@@ -234,29 +236,34 @@
     </div>
     <ul class="nav-links">
       <li class="language-toggle">
-	    <a href="javascript:void(0);" class="language-switcher" onclick="toggleLanguageMobile()">
-	      <img src="/img/italy-flag.png" alt="Italiano" class="flag" id="desktopLanguageFlag">
-	      <span id="desktopLanguageText">Italiano</span>
-	    </a>
-	  </li>
-      <li><a title="Home" href="/" data-translate="home"></a></li>
-      <li class="item-active"><a title="Attività" href="#" data-translate="attivita"></a></li>
-      <li><a title="Struttura" href="/struttura" data-translate="struttura"></a></li>
-      <li><a title="Prenota" href="/prenota" data-translate="prenota"></a></li>
-      <li><a title="Area riservata" href="/login" class="area-riservata" data-translate="area_riservata"></a></li>
+        <a href="javascript:void(0);" class="language-switcher" onclick="toggleLanguageMobile()"
+          aria-label="cambio lingua">
+          <img src="/img/italy-flag.png" alt="Italiano" class="flag" id="desktopLanguageFlag"
+            aria-label="bandiera italiana">
+          <span id="desktopLanguageText">Italiano</span>
+        </a>
+      </li>
+      <li><a title="Home" href="/" data-translate="home" aria-label="" aria-label="home"></a></li>
+      <li class="item-active"><a title="Attività" href="#" data-translate="attivita" aria-label="attivita"></a></li>
+      <li><a title="Struttura" href="/struttura" data-translate="struttura" aria-label="struttura"></a></li>
+      <li><a title="Prenota" href="/prenota" data-translate="prenota" aria-label="prenota"></a></li>
+      <li><a title="Area riservata" href="/login" class="area-riservata" data-translate="area_riservata"
+          aria-label="area riservata"></a></li>
     </ul>
     <!-- hamburger menu -->
     <div class="hamburger" onclick="toggleMenu()">
-      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50"
+        aria-label="icona hamburger menu">
         <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z">
         </path>
       </svg>
     </div>
 
     <!-- mobile menu -->
-    <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu" id="mobileMenu" aria-label="menu mobile">
       <div class="close" onclick="toggleMenu()">
-        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50"
+          aria-label="icona chiusura menu mobile">
           <path
             d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z">
           </path>
@@ -264,17 +271,18 @@
       </div>
       <ul>
         <li class="language-toggle">
-		  <a href="javascript:void(0);" class="language-switcher" onclick="toggleLanguageMobile()">
-		    <img src="/img/italy-flag.png" alt="Italiano" class="flag" id="mobileLanguageFlag">
-		    <span id="mobileLanguageText">Italiano</span>
-		  </a>
-		</li>
-        <li><a title="Home" href="/" data-translate="home"></a></li>
-        <li><a title="Attività" href="#" data-translate="attivita"></a></li>
-        <li><a title="Struttura" href="/struttura" data-translate="struttura"></a></li>
-        <li><a title="Prenota" href="/prenota" data-translate="prenota"></a></li>
+          <a href="javascript:void(0);" class="language-switcher" onclick="toggleLanguageMobile()">
+            <img src="/img/italy-flag.png" alt="Italiano" class="flag" id="mobileLanguageFlag">
+            <span id="mobileLanguageText">Italiano</span>
+          </a>
+        </li>
+        <li><a title="Home" href="/" data-translate="home" aria-label="home"></a></li>
+        <li><a title="Attività" href="#" data-translate="attivita" aria-label="attivita"></a></li>
+        <li><a title="Struttura" href="/struttura" data-translate="struttura" aria-label="struttura"></a></li>
+        <li><a title="Prenota" href="/prenota" data-translate="prenota" aria-label="prenota"></a></li>
         <!-- Anchor links for Login and Registration -->
-        <li><a title="Area riservata" href="/login" class="area-riservata" data-translate="area_riservata"></a></li>
+        <li><a title="Area riservata" href="/login" class="area-riservata" data-translate="area_riservata"
+            aria-label="area riservata"></a></li>
       </ul>
       <div class="mobile-logo">
         <img src="/img/logo.png" alt="Education logo">
@@ -283,33 +291,37 @@
   </nav>
   <!-- NAVBAR ENDS -->
   <script src="/scripts/main.js"></script>
-  
+
   <!-- Error messages -->
-  <div th:if="${success}" th:attr="data-success=${success}, data-claim-success=popup.success.claim" class="hidden"></div>
+  <div th:if="${success}" th:attr="data-success=${success}, data-claim-success=popup.success.claim" class="hidden">
+  </div>
   <div th:if="${error}" th:attr="data-error=${error}, data-claim-error=popup.error.claim" class="hidden"></div>
   <div id="custom-popup" class="popup hidden">
     <div class="popup-content">
-        <span id="popup-logo"></span>
-        <span id="popup-claim" th:attr="data-translate=${success != null ? 'popup.success.claim' : (error != null ? 'popup.error.claim' : '')}"></span>
-        <span id="popup-message"></span>
-        <button id="popup-close" data-translate="chiudi"></button>
+      <span id="popup-logo"></span>
+      <span id="popup-claim"
+        th:attr="data-translate=${success != null ? 'popup.success.claim' : (error != null ? 'popup.error.claim' : '')}"></span>
+      <span id="popup-message"></span>
+      <button id="popup-close" data-translate="chiudi"></button>
     </div>
-</div>
-		    
+  </div>
+
   <!-- ATTIVITA STARTS -->
   <h1 class="page-title" data-translate="attivita"></h1>
   <div class="secondary">
-    <a title="Attività per le scuole medie" class="active" data-target="medie" href="#medie" data-translate="medie"></a>
-    <a title="Attività per le scuole uperiori" data-target="superiori" href="#superiori" data-translate="superiori"></a>
-    <a title="Attività per tutti" data-target="tutti" href="#tutti" data-translate="tutti"></a>
+    <a title="Attività per le scuole medie" class="active" data-target="medie" href="#medie" data-translate="medie"
+      aria-label="attivita per scuole medie"></a>
+    <a title="Attività per le scuole uperiori" data-target="superiori" href="#superiori" data-translate="superiori"
+      aria-label="attivita per scuole superiori"></a>
+    <a title="Attività per tutti" data-target="tutti" href="#tutti" data-translate="tutti"
+      aria-label="attivita per tutti"></a>
   </div>
 
-  <div id="medie" class="attivita">
+  <div id="medie" class="attivita" aria-label="attivita per scuole medie">
     <div class="card-attivita">
       <div class="foto-attivita">
 
-        <img src="/img/attivita/le-regole.avif"
-          alt="Attività per le medie: le regole">
+        <img src="/img/attivita/le-regole.avif" alt="Attività per le medie: le regole">
       </div>
       <div class="descrizione-attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_medie_regole"></h3>
@@ -317,14 +329,13 @@
       </div>
     </div>
 
-    <div class="card-attivita">
+    <div class="card-attivita" aria-label="attivita per scuole medie">
       <div class="descrizione-attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_medie_gioco"></h3>
         <p data-translate="attivita_medie_2"></p>
       </div>
       <div class="foto-attivita">
-        <img src="/img/attivita/mondo-del-gioco.avif"
-        alt="Attività per le medie: mondo del gioco">
+        <img src="/img/attivita/mondo-del-gioco.avif" alt="Attività per le medie: mondo del gioco">
       </div>
 
     </div>
@@ -333,8 +344,8 @@
   </div>
 
   </div>
-  <div id="superiori" class="hidden">
-    <div class="card-attivita">
+  <div id="superiori" class="hidden" aria-label="attivita per scuole superiori">
+    <div class="card-attivita" aria-label="attivita per scuole superiori">
       <div class="foto-attivita">
         <img src="/img/attivita/mafia-e-cinema.avif" alt="Attività per le superiori: mafia e cinema">
       </div>
@@ -344,46 +355,40 @@
       </div>
 
     </div>
-    <div class="card-attivita">
+    <div class="card-attivita" aria-label="attivita per scuole superiori">
       <div class="descrizione-attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_superiori_rischi"></h3>
         <p data-translate="attivita_superiori_2"></p>
       </div>
       <div class="foto-attivita">
-        <img src="/img/attivita/rischi-del-gioco.avif"
-        alt="Attività per le superiori: i rischi del gioco">
+        <img src="/img/attivita/rischi-del-gioco.avif" alt="Attività per le superiori: i rischi del gioco">
       </div>
-
-
     </div>
   </div>
 
-  <div id="tutti" class="hidden">
-    <div class="card-attivita">
+  <div id="tutti" class="hidden" aria-label="attivita per tutti">
+    <div class="card-attivita" aria-label="attivita per tutti">
       <div class="foto-attivita">
-        <img src="/img/attivita/storia-cascina.avif"
-        alt="Attività per le tutti: storia della cascina">
+        <img src="/img/attivita/storia-cascina.avif" alt="Attività per le tutti: storia della cascina">
       </div>
       <div class="descrizione-attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_cascina"></h3>
         <p data-translate="attivita_tutti_1"></p>
       </div>
     </div>
-    <div class="card-attivita">
+    <div class="card-attivita" aria-label="attivita per tutti">
       <div class="descrizione-attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_caccia"></h3>
         <p data-translate="attivita_tutti_2"></p>
       </div>
       <div class="foto-attivita">
-        <img src="/img/attivita/bruno-caccia.avif"
-        alt="Attività per le tutti: figura di Bruno Caccia">
+        <img src="/img/attivita/bruno-caccia.avif" alt="Attività per le tutti: figura di Bruno Caccia">
       </div>
 
     </div>
-    <div class="card-attivita">
+    <div class="card-attivita" aria-label="attivita per tutti">
       <div class="foto-attivita">
-        <img src="/img/attivita/agromafie.avif"
-        alt="Attività per le tutti: agromafie">
+        <img src="/img/attivita/agromafie.avif" alt="Attività per le tutti: agromafie">
       </div>
       <div class="descrizione-attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_agromafie"></h3>
@@ -391,21 +396,19 @@
       </div>
 
     </div>
-    <div class="card-attivita">
+    <div class="card-attivita" aria-label="attivita per tutti">
       <div class="descrizione-attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_beni"></h3>
         <p data-translate="attivita_tutti_4"></p>
       </div>
       <div class="foto-attivita">
-        <img src="/img/attivita/beni-confiscati.avif"
-        alt="Attività per le tutti: beni confiscati">
+        <img src="/img/attivita/beni-confiscati.avif" alt="Attività per le tutti: beni confiscati">
       </div>
 
     </div>
-    <div class="card-attivita">
+    <div class="card-attivita" aria-label="attivita per tutti">
       <div class="foto-attivita">
-        <img src="/img/attivita/miele-e-api.avif"
-        alt="Attività per le tutti: miele e api">
+        <img src="/img/attivita/miele-e-api.avif" alt="Attività per le tutti: miele e api">
       </div>
       <div class="descrizione-attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_miele"></h3>
@@ -415,46 +418,49 @@
     </div>
   </div>
   <!-- ATTIVITA ENDS -->
-    <!-- footer -->
-    <footer>
-      <div class="footer">
-          <div class="footer-content footer-map">
-              <h3 data-translate="dove_siamo"></h3>
-              <div class="map-container">
-                  <iframe class="map"
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d34112.41367341239!2d7.929175114028833!3d45.16229478153038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4787d83975557773%3A0xce98a033bd811358!2sCascina%20Caccia!5e0!3m2!1sit!2sit!4v1734621088019!5m2!1sit!2sit"
-                      width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                      referrerpolicy="no-referrer-when-downgrade">
-                  </iframe>
-                  <p data-translate="posizione"></p>
-              </div>
+  <!-- footer -->
+  <footer>
+    <div class="footer">
+      <div class="footer-content footer-map">
+        <h3 data-translate="dove_siamo"></h3>
+        <div class="map-container">
+          <iframe class="map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d34112.41367341239!2d7.929175114028833!3d45.16229478153038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4787d83975557773%3A0xce98a033bd811358!2sCascina%20Caccia!5e0!3m2!1sit!2sit!4v1734621088019!5m2!1sit!2sit"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" aria-label="posizione di cascina caccia su google maps">
+          </iframe>
+          <p data-translate="posizione"></p>
+        </div>
 
-          </div>
-          <div class="footer-content footer-links">
-              <h3 data-translate="education_on">&nbsp;</h3>
-              <div class="links">
-                  <a href="/attivita" data-translate="attivita"></a>
-                  <a href="/struttura" data-translate="struttura"></a>
-                  <a href="/prenota" data-translate="prenota"></a>
-              </div>
-          </div>
-          <div class="footer-content footer-social">
-              <h3 data-translate="social"></h3>
-              <div class="social-links-container">
-                  <a class="social-links" href="https://www.facebook.com/cascinacaccia/?locale=it_IT"
-                      target="_blank"><img class="social-icons" src="/img/facebook-logo.svg" alt="facebook"></a>
-                  <a class="social-links" href="https://www.instagram.com/cascina_caccia/" target="_blank"><img
-                          class="social-icons" src="/img/instagram-logo.svg" alt="instagram"></a>
-                  <a class="social-links" href="https://www.youtube.com/@AcmosNet99" target="_blank"><img
-                          class="social-icons" src="/img/youtube-logo.svg" alt="twitter"></a>
-              </div>
-          </div>
       </div>
-      <div class="footer-logo">
-          <img src="img/footer-logo.png" alt="Education logo">
+      <div class="footer-content footer-links">
+        <h3 data-translate="education_on">&nbsp;</h3>
+        <div class="links">
+          <a href="/attivita" data-translate="attivita" aria-label="attivita"></a>
+          <a href="/struttura" data-translate="struttura" aria-label="struttura"></a>
+          <a href="/prenota" data-translate="prenota" aria-label="prenota"></a>
+        </div>
       </div>
+      <div class="footer-content footer-social">
+        <h3 data-translate="social"></h3>
+        <div class="social-links-container">
+          <a class="social-links" href="https://www.facebook.com/cascinacaccia/?locale=it_IT" target="_blank"
+            aria-label="link alla pagina facebook"><img class="social-icons" src="/img/facebook-logo.svg"
+              alt="facebook"></a>
+          <a class="social-links" href="https://www.instagram.com/cascina_caccia/" target="_blank"
+            aria-label="link alla pagina instagram"><img class="social-icons" src="/img/instagram-logo.svg"
+              alt="instagram"></a>
+          <a class="social-links" href="https://www.youtube.com/@AcmosNet99" target="_blank"
+            aria-label="link alla pagina youtube"><img class="social-icons" src="/img/youtube-logo.svg"
+              alt="twitter"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-logo">
+      <img src="img/footer-logo.png" alt="Education logo">
+    </div>
   </footer>
-  <div id="informationButton" onclick="toggleInformationForm()">
+  <div id="informationButton" onclick="toggleInformationForm()" aria-label="bottone form di contatto">
     <svg height="30px" width="30px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke="">
       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -477,12 +483,10 @@
     </svg>
   </div>
 
-  <div id="informationFormContainer">
-
+  <div id="informationFormContainer" aria-label="form di contatto">
     <h3 data-translate="titolo_info_form"></h3>
-
     <!-- Information form -->
-    <form action="/submit-form" method="post">
+    <form action="/submit-form" method="post" aria-label="form di contatto">
       <input type="hidden" name="lang" id="lang-flag">
       <div class="form-box">
         <div class="form-column">
@@ -523,27 +527,23 @@
           <div class="checkboxes">
 
             <div>
-              <input required type="checkbox" id="newsletter" name="newsletter"  />
+              <input required type="checkbox" id="newsletter" name="newsletter" />
               <label for="newsletter" data-translate="checkbox_1"></label>
             </div>
             <div>
-              <input type="checkbox" id="privacy" name="privacy"  />
+              <input type="checkbox" id="privacy" name="privacy" />
               <label for="privacy" data-translate="checkbox_2"></label>
             </div>
           </div>
-          
         </div>
       </div>
-
-
-
-      <button id="sendInfoButton" type="submit" data-translate="invia"></button>
+      <button id="sendInfoButton" type="submit" data-translate="invia" aria-label="submit form"></button>
     </form>
   </div>
 
   <!-- Chatbot Button -->
-  <div id="chatbotButton" onclick="toggleChatbot()"><svg width="40px" viewBox="0 0 24 24" fill="none"
-      xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+  <div id="chatbotButton" onclick="toggleChatbot()" aria-label="bottone chatbot"><svg width="40px" viewBox="0 0 24 24"
+      fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" aria-label="apri chatbot">
       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
       <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
       <g id="SVGRepo_iconCarrier">
@@ -554,7 +554,7 @@
     </svg></div>
 
   <!-- Chatbot Container -->
-  <div id="chatbotContainer">
+  <div id="chatbotContainer" aria-label="chatbot">
     <div id="chatbotHeader">
       <span data-translate="chatbot_nome"></span>
       <button id="closeChatbot" onclick="toggleChatbot()"><svg width="30px" height="30px" viewBox="0 0 24 24"
