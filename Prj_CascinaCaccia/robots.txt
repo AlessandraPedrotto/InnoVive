@@ -1,0 +1,6 @@
+# Bloccare l'accesso alla cartella
+User-agent: *
+Disallow: /login
+
+# Specificare la sitemap
+Sitemap: https://www.educatiOn.com/sitemap.xml
