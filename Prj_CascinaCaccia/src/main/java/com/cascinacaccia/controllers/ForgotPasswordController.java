@@ -38,7 +38,9 @@ public class ForgotPasswordController {
 	
 	//navigation to the page forgot password
     @GetMapping("/forgotPassword")
-    public String showForgotPasswordPage(Model model) {
+    public String showForgotPasswordPage(Model model,
+    		@RequestParam(value = "lang", required = false) String lang) {
+    	model.addAttribute("selectedLanguage", lang);
     	model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
     	
@@ -47,21 +49,43 @@ public class ForgotPasswordController {
     
     //process to change the password forgotten
     @PostMapping("/forgotPassword")
-    public String processForgotPassword(@RequestParam("email") String email, Model model) {
+    public String processForgotPassword(@RequestParam("email") String email,
+    		@RequestParam(value = "lang", required = false) String lang,
+    		Model model) {
+    	
+    	if (lang == null || lang.isEmpty()) {
+            lang = "it"; // Default to Italian
+        }
+    	
         Optional<User> optionalUser = userDAO.findByEmail(email);
-
+        model.addAttribute("selectedLanguage", lang);
+        
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             String userName = user.getName();
             String userSurname = user.getSurname(); 
             String result = forgotPasswordService.sendResetEmail(user, userName, userSurname); 
+            
             if ("success".equals(result)) {
-                model.addAttribute("success", "Email inviata con successo all'indirizzo " + email);
+            	if (lang.equals("it")) {
+                    model.addAttribute("success", "Email inviata con successo all'indirizzo " + email);
+                } else {
+                    model.addAttribute("success", "An email has been successfully sent to " + email);
+                }
             } else {
-                model.addAttribute("error", "Errore durante l'invio della mail, riprova.");
+            	if (lang.equals("it")) {
+                    model.addAttribute("error", "Errore durante l'invio della mail, riprova.");
+                } else {
+                    model.addAttribute("error", "Error while sending the email, please try again.");
+                }
             }
         } else {
-            model.addAttribute("error", "Non esiste nessun utente con questa mail.");
+        	if(lang.equals("it")) {
+        		 model.addAttribute("error", "Non esiste nessun utente con questa mail.");
+        	}else {
+        		 model.addAttribute("error", "english");
+        	}
+           
         }
 
         return "ForgotPassword"; 
@@ -69,7 +93,13 @@ public class ForgotPasswordController {
     
     //show the password reset form when the user clicks on the link
     @GetMapping("/resetPassword/{token}")
-    public String showResetPasswordForm(@PathVariable String token, Model model, RedirectAttributes redirectAttributes) {
+    public String showResetPasswordForm(@PathVariable String token, Model model, RedirectAttributes redirectAttributes,@RequestParam(value = "lang", required = false) String lang) {
+    	
+    	if (lang == null || lang.isEmpty()) {
+	        lang = "it"; // Fallback to Italian
+	    }
+    	
+    	model.addAttribute("selectedLanguage", lang);
     	
     	//check if the token is correctly passed
         System.out.println("Received token: " + token);  
@@ -80,7 +110,8 @@ public class ForgotPasswordController {
             return "ResetPassword";
         }
         
-        redirectAttributes.addFlashAttribute("error", "Il token per il reset della password non è stato trovato o è scaduto, chiedine uno.");
+        String errorMessage = (lang.equals("en")) ? "The password reset token was not found or has expired, please ask for one." : "Il token per il reset della password non è stato trovato o è scaduto, chiedine uno.";
+        redirectAttributes.addFlashAttribute("error", errorMessage);
         return "redirect:/forgotPassword?error=true";
     }
 
@@ -89,9 +120,17 @@ public class ForgotPasswordController {
     public String processResetPassword(@RequestParam("token") String token,
                                        @RequestParam("password") String password, 
                                        @RequestParam("confirmPassword") String confirmPassword,
+                                       @RequestParam(value = "lang", required = false) String lang,
                                        HttpServletRequest request,
                                        RedirectAttributes redirectAttributes,
                                        Model model) {
+    	
+    	if (lang == null || lang.isEmpty()) {
+            lang = "it";
+        }
+    	
+    	model.addAttribute("selectedLanguage", lang);
+    	
         //log the received token
         System.out.println("Received token in POST: " + token);
         
@@ -99,7 +138,10 @@ public class ForgotPasswordController {
         PasswordResetToken resetToken = forgotPasswordService.findResetTokenByToken(token);
         if (resetToken == null) {
             System.out.println("Token not found in POST request!");
-            redirectAttributes.addFlashAttribute("error", "Il token per il reset della password non è stato trovato, chiedine uno.");
+            
+            String errorMessage = (lang.equals("it")) ? "Il token per il reset della password non è stato trovato, chiedine uno." : "The reset password token was not found, request a new one.";
+            model.addAttribute("error", errorMessage);
+            
             return "redirect:/forgotPassword?error=true";
         }
 
@@ -109,13 +151,18 @@ public class ForgotPasswordController {
         //check if the token has expired
         if (forgotPasswordService.hasExpired(resetToken.getExpiryDateTime())) {
             System.out.println("Token has expired.");
-            redirectAttributes.addFlashAttribute("error", "Il token per il reset della password è scaduto, chiedine un altro.");
+            
+            String errorMessage = (lang.equals("it")) ? "Il token per il reset della password è scaduto, chiedine un altro." : "The reset password token has expired, request another one.";
+            model.addAttribute("error", errorMessage);
+            
             return "redirect:/forgotPassword?error=true";
         }
 
         //continue with the password reset process if the token is valid
         if (!password.equals(confirmPassword)) {
-            model.addAttribute("error", "Le due password non coincidono.");
+        	
+        	String errorMessage = (lang.equals("it")) ? "Le due password non coincidono." : "The passwords do not match.";
+            model.addAttribute("error", errorMessage);
             model.addAttribute("token", token);
             return "ResetPassword";
         }
@@ -124,21 +171,28 @@ public class ForgotPasswordController {
 
         // Check if the new password is the same as the current one
         if (passwordEncoder.matches(password, user.getPassword())) {
-            model.addAttribute("error", "La nuova password non può essere uguale a quella vecchia.");
-            model.addAttribute("token", token);
+        	
+        	String errorMessage = (lang.equals("it")) ? "La nuova password non può essere uguale a quella vecchia." : "The new password cannot be the same as the old one.";
+            model.addAttribute("error", errorMessage);
+        	
+        	model.addAttribute("token", token);
             return "ResetPassword";
         }
         
         if (!isValidPassword(confirmPassword)) {
-        	model.addAttribute("error", "La password deve essere di almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale.");
-            model.addAttribute("token", token);
+        	
+        	String errorMessage = (lang.equals("it")) ? "La password deve essere di almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale." : "The password must be at least 8 characters, contain an uppercase letter, a number, and a special character.";
+            model.addAttribute("error", errorMessage);
+        	
+        	model.addAttribute("token", token);
         	return "ResetPassword";
         }
 
         user.setPassword(passwordEncoder.encode(password));
         userDAO.save(user);
 
-        redirectAttributes.addFlashAttribute("success", "Password cambiata con successo!");
+        String successMessage = (lang.equals("it")) ? "Password cambiata con successo!" : "Password changed successfully!";
+        model.addAttribute("success", successMessage);
         return "redirect:/login?success=true";
     }
     

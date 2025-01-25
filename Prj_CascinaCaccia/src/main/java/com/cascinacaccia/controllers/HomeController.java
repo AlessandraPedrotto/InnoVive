@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cascinacaccia.repos.CategoryDAO;
 
@@ -21,10 +22,11 @@ public class HomeController {
      * @return The name of the view to render (Home page).
      */
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, @RequestParam(value = "lang", required = false) String lang) {
     	model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
-    	
+        model.addAttribute("selectedLanguage", lang);
+        
         //return the Home page
         return "Home"; 
     }
@@ -53,10 +55,11 @@ public class HomeController {
      * @return The name of the view to render (Prenota page).
      */
     @GetMapping("/prenota")
-    public String prenota(Model model) {
+    public String prenota(Model model, @RequestParam(value = "lang", required = false) String lang) {
     	model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
-    	
+        model.addAttribute("selectedLanguage", lang);
+        
         //return the Prenota page
         return "Prenota"; 
     }
@@ -69,10 +72,11 @@ public class HomeController {
      * @return The name of the view to render (Attivita page).
      */
     @GetMapping("/attivita")
-    public String attivita(Model model) {
+    public String attivita(Model model, @RequestParam(value = "lang", required = false) String lang) {
     	model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
-    	
+        model.addAttribute("selectedLanguage", lang);
+        
         //return the Attivita page
         return "Attivita"; 
     }
@@ -85,9 +89,10 @@ public class HomeController {
      * @return The name of the view to render (Struttura page).
      */
     @GetMapping("/struttura")
-    public String struttura(Model model) {
+    public String struttura(Model model, @RequestParam(value = "lang", required = false) String lang) {
     	model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
+        model.addAttribute("selectedLanguage", lang);
         
     	//return the Struttura page
         return "Struttura"; 

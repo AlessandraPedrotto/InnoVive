@@ -144,14 +144,13 @@
     <h1 class="page-title" data-translate="titolo_area"></h1>
 	
 	<!-- Error messages -->
-	<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
-	<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
-	<div th:if="${errorSession}" th:attr="data-error-session=${errorSession}" class="hidden"></div>
-	
+	<div th:if="${success}" th:attr="data-success=${success}, data-claim-success=popup.success.claim" class="hidden"></div>
+	<div th:if="${error}" th:attr="data-error=${error}, data-claim-error=popup.error.claim" class="hidden"></div>
+	<div th:if="${errorSession}" th:attr="data-error-session=${errorSession}, data-claim-error=popup.error.claim" class="hidden"></div>
     <div id="custom-popup" class="popup hidden">
         <div class="popup-content">
             <span id="popup-logo"></span>
-            <span id="popup-claim"></span>
+            <span id="popup-claim" th:attr="data-translate=${success != null ? 'popup.success.claim' : (error != null ? 'popup.error.claim' : '')}"></span>
             <span id="popup-message"></span>
             <button id="popup-close" data-translate="chiudi"></button>
         </div>
@@ -162,6 +161,7 @@
         <h2 data-translate="login"></h2><br>
         <!-- Login form -->
         <form class="login-form" th:action="@{/login}" method="post">
+       		<input type="hidden" name="lang" id="lang-flag">
             <label for="email" data-translate="label_mail"></label>
             <input type="email" id="email" name="username" required><br>
 
@@ -228,6 +228,7 @@
 	
 	<!-- Information form -->
 	<form action="/submit-form" method="post">
+	    <input type="hidden" name="lang" id="lang-flag">
         <div class="form-box">
             <div class="form-column">
                 <div class="info-form-field">
