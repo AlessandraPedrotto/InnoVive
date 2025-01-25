@@ -49,8 +49,16 @@ public class InformationFormController {
         @RequestParam String categoryId,
         @RequestParam String content, 
         RedirectAttributes redirectAttributes, 
-        HttpServletRequest request) {
+        HttpServletRequest request,
+        @RequestParam(value = "lang", required = false) String lang,
+    	Model model){
 
+    	if (lang == null || lang.isEmpty()) {
+            lang = "it"; // Default to Italian
+        }
+    	
+    	model.addAttribute("selectedLanguage", lang);
+    	
         try {
         	
             //fetch Category
@@ -75,12 +83,16 @@ public class InformationFormController {
             informationFormService.sendEmailToAdmin("innovive2024@gmail.com", generalform.getName(), generalform.getSurname(), generalform.getEmail(), categoryName, informationForm.getContent());
             informationFormService.sendConfirmationEmail(email, name, surname, email, categoryName, content);
 
-            redirectAttributes.addFlashAttribute("success", "Modulo inviato con successo!");
-            return "redirect:"+ request.getHeader("Referer");
+            String successMessage = (lang.equals("en")) ? "Form submitted successfully!" : "Modulo inviato con successo!";
+            redirectAttributes.addFlashAttribute("success", successMessage);
+            String referer = request.getHeader("Referer");
+            return "redirect:" + (referer != null ? referer : "/") + "?lang=" + lang;
 
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Errore durante l'invio del modulo, prova ad inviarlo di nuovo.");
-            return "redirect:"+ request.getHeader("Referer");
+        	String errorMessage = (lang.equals("en")) ? "Error during form submission, please try again." : "Errore durante l'invio del modulo, prova ad inviarlo di nuovo.";
+            redirectAttributes.addFlashAttribute("error", errorMessage);
+            String referer = request.getHeader("Referer");
+            return "redirect:" + (referer != null ? referer : "/") + "?lang=" + lang;
         }
     }
     

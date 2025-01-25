@@ -28,19 +28,32 @@ public class AuthController {
 	@GetMapping("/login")
     public String loginPage(Model model, 
     						@RequestParam(value = "error", required = false) String error, 
-    						@RequestParam(value = "errorSession", required = false) String errorSession) {
+    						@RequestParam(value = "errorSession", required = false) String errorSession,
+    						@RequestParam(value = "lang", required = false) String lang) {
 		
-		//add error and logout messages
-	    if (error != null) {
-	        model.addAttribute("error", "Accesso negato, la password e/o email potrebbero essere errate.");
+		if (lang == null || lang.isEmpty()) {
+	        lang = "it"; // Fallback to Italian
 	    }
-	    if (errorSession != null) {
-	        model.addAttribute("error", "Sessione scaduta, effettua nuovamente il log in.");
-	    }
+		
+		// Handle error and session expired messages
+		if (error != null) {
+		    // Check if the language is English or Italian and set the error message accordingly
+		    String errorMessage = (lang.equals("en")) ? "Access denied, password and/or email may be incorrect."
+		                                              : "Accesso negato, la password e/o l'email potrebbero essere errati.";
+		    model.addAttribute("error", errorMessage);
+		}
+
+		// Handle session expired error
+		if (errorSession != null) {
+		    // Check if the language is English or Italian and set the session expired message accordingly
+		    String sessionExpiredMessage = (lang.equals("en")) ? "Session expired, please log in again."
+		                                                       : "Sessione scaduta, per favore accedi di nuovo.";
+		    model.addAttribute("errorSession", sessionExpiredMessage);
+		}
 	    
 		model.addAttribute("categories", categoryDAO.findAll());
         model.addAttribute("categoryId", "");
-        
+        model.addAttribute("selectedLanguage", lang);
         //return the Login page
         return "Login";
     }

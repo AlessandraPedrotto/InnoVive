@@ -113,6 +113,13 @@ public class SecurityConfig {
                     //redirect to the profile page after login
                     response.sendRedirect("/profile");
                 })
+                .failureHandler((request, response, exception) -> {
+                	String lang = request.getParameter("lang");
+                    if (lang == null || lang.isEmpty()) {
+                        lang = "it"; // Default to English
+                    }
+                    response.sendRedirect("/login?lang=en&error=true");
+                })
                 .defaultSuccessUrl("/profile", true) 
                 .permitAll()
             )

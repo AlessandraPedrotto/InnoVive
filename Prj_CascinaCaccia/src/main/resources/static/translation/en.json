@@ -117,5 +117,11 @@
 	"category_5": "Oratory",
 	"category_6": "Generic Private Event",
 	"category_7": "Generic Public Event",
-	"category_8": "Other"
+	"category_8": "Other",
+	
+    "popup.success.claim": "Thank you for contacting us!",
+    "popup.success.user.claim": "Success!",
+    "popup.error.claim": "Attention!",
+    "popup.no.results": "No results",
+    "popup.no.result": "No result found"
 }

@@ -1,4 +1,6 @@
+
 let currentLanguage = localStorage.getItem('selectedLanguage') || 'it';
+
 // Function to change language
 function changeLanguage(lang) {
   // Store the selected language in localStorage
@@ -6,7 +8,9 @@ function changeLanguage(lang) {
   currentLanguage = lang;
   // Update the lang attribute in the HTML tag
   document.documentElement.setAttribute('lang', lang);
-
+  const currentUrl = new URL(window.location.href);
+  currentUrl.searchParams.set('lang', lang);
+  window.history.replaceState({}, '', currentUrl.toString());
   // Load the corresponding JSON file for the selected language
   fetch(`/translation/${lang}.json`)
     .then(response => {
@@ -43,6 +47,7 @@ function changeLanguage(lang) {
 
       // Trigger the custom language change event
       document.dispatchEvent(new CustomEvent('languageChange', { detail: { lang: lang } }));
+      	
     })
     .catch(error => {
       console.error("Error loading translations:", error);
@@ -50,16 +55,33 @@ function changeLanguage(lang) {
     });
 }
 
+function setLangFlagFromStorage() {
+    let langFlagValue = localStorage.getItem('selectedLanguage') || 'it';
+
+    // Get all elements with the id "lang-flag" (though IDs should be unique, let's handle as per your request)
+    const elements = document.querySelectorAll('#lang-flag');
+    
+    // Loop through each element and set its content to the lang-flag value
+    elements.forEach((element) => {
+        element.value = langFlagValue;
+    });
+}
+
 // Consolidate the DOMContentLoaded listeners
 document.addEventListener("DOMContentLoaded", function () {
   // Check if there's a saved language in localStorage
-  let selectedLanguage = localStorage.getItem("selectedLanguage");
+  let selectedLanguage = localStorage.getItem("selectedLanguage") || "it";
 
-  // If no language is saved, default to 'it' (Italian)
-  if (!selectedLanguage) {
-    selectedLanguage = 'it';  // Default language
-    localStorage.setItem('selectedLanguage', selectedLanguage);  // Save default language to localStorage
-  }
+  // Check if the URL already has the lang parameter
+  const currentUrl = new URL(window.location.href);
+  const urlLang = currentUrl.searchParams.get("lang");
+
+
+  // If the URL lang parameter is missing or doesn't match the selected language
+  if (!urlLang || urlLang !== selectedLanguage) {
+    currentUrl.searchParams.set("lang", selectedLanguage);
+    window.history.replaceState({}, '', currentUrl.toString());
+  };
 
   // Set the lang attribute on the HTML element
   document.documentElement.setAttribute('lang', selectedLanguage);
@@ -70,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Log the selected language
   console.log("Selected language:", selectedLanguage);
+  window.onload = setLangFlagFromStorage;
 });
 
 // Function to update the UI with translations (this can be customized)
@@ -119,8 +142,10 @@ function toggleLanguageMobile() {
   const newLanguage = currentLanguage === "it" ? "en" : "it";
 
   // Change language by calling the main function
-  changeLanguage(newLanguage);
+  localStorage.setItem("selectedLanguage", newLanguage);
 
-  // Update the language flags and text based on the selected language
-  updateLanguageSwitcher(newLanguage);
+  // Reload the page with the new language as a query parameter, preserving the lang
+  const currentUrl = new URL(window.location.href);
+  currentUrl.searchParams.set('lang', newLanguage);
+  window.location.href = currentUrl.toString(); 
 }

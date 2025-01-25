@@ -143,12 +143,12 @@
     <!-- NAVBAR ENDS -->
     <script src="/scripts/main.js"></script>
     <!-- Error messages -->
-	<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
-	<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
+	<div th:if="${success}" th:attr="data-success=${success}, data-claim-success=popup.success.claim" class="hidden"></div>
+	<div th:if="${error}" th:attr="data-error=${error}, data-claim-error=popup.error.claim" class="hidden"></div>
     <div id="custom-popup" class="popup hidden">
         <div class="popup-content">
             <span id="popup-logo"></span>
-            <span id="popup-claim"></span>
+            <span id="popup-claim" th:attr="data-translate=${success != null ? 'popup.success.claim' : (error != null ? 'popup.error.claim' : '')}"></span>
             <span id="popup-message"></span>
             <button id="popup-close" data-translate="chiudi"></button>
         </div>
@@ -275,6 +275,7 @@
 
 <!-- Information form -->
 <form action="/submit-form" method="post">
+	<input type="hidden" name="lang" id="lang-flag">
     <div class="form-box">
         <div class="form-column">
             <div class="info-form-field">

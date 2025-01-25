@@ -117,5 +117,11 @@
     "category_5": "Oratorio",
     "category_6": "Evento privato generico",
     "category_7": "Evento pubblico generico",
-    "category_8": "Altro"
+    "category_8": "Altro",
+    
+    "popup.success.claim": "Grazie per averci contattato!",
+    "popup.success.user.claim": "Successo!",
+    "popup.error.claim": "Attenzione!",
+    "popup.no.results": "Nessun risultato",
+    "popup.no.result": "Nessun risultato trovato"
 }

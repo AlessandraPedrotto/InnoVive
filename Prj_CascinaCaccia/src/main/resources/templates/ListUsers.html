@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
 <head>
@@ -46,8 +46,8 @@
 			</div>
 			<p>Lista di tutti gli account</p><br>
 			<!-- Error messages -->
-			<div th:if="${success}" th:attr="data-success=${success}" class="hidden"></div>
-			<div th:if="${error}" th:attr="data-error=${error}" class="hidden"></div>
+			<div th:if="${success}" th:attr="data-success=${success}, data-claim-success=popup.success.user.claim" class="hidden"></div>
+			<div th:if="${error}" th:attr="data-error=${error} , data-claim-error=popup.error.claim" class="hidden"></div>
 		    
 		    <!-- If no results -->
 			<div th:if="${noResults}" th:attr="data-no-results=${noResults}" class="hidden"></div>
@@ -55,7 +55,7 @@
 			<div id="custom-popup" class="popup hidden">
 			    <div class="popup-content">
 			        <span id="popup-logo"></span>
-			        <span id="popup-claim"></span>
+			        <span id="popup-claim" th:attr="data-translate=${success != null ? 'popup.success.user.claim' : (error != null ? 'popup.error.claim' : '')}"></span>
 			        <span id="popup-message"></span>
 			        <button id="popup-close">Chiudi</button>
 			    </div>
@@ -201,6 +201,7 @@
 	<script src="/scripts/message.js"></script>
 	<script src="/scripts/notification.js"></script>
 	<script src="/scripts/offline.js"></script>
+	<script src="/scripts/translation.js"></script>
 </body>
 
 

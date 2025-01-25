@@ -19,15 +19,20 @@ document.addEventListener('DOMContentLoaded', function () {
     function getPopupClaim(type) {
       const isSimplifiedPage = document.body.classList.contains('simplified-popup');
       if (isSimplifiedPage) {
-          if (type === 'success') return 'Successo!';
-          if (type === 'error') return 'Attenzione!';
+          if (type === 'success') return successUserClaim || 'Successo!';
+          if (type === 'error') return errorClaim || 'Attenzione!';
           if (type === 'no-result') return 'Nessun risultato';
       } else {
-        if (type === 'success') return 'Grazie per averci contattato!';
-          if (type === 'error') return 'Attenzione!';
+        if (type === 'success') return successClaim || 'Grazie per averci contattato!';
+          if (type === 'error') return errorClaim || 'Attenzione!';
           if (type === 'no-result') return 'Nessun risultato';
       }
       return '';
+  }
+  
+  // Function to get the translation for a specific key
+  function getTranslation(key) {
+    return window.translations?.[key] || key;
   }
   
     function showPopup(message) {
@@ -52,18 +57,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (successMessage) {
         showPopup(successMessage);
         popupLogo.innerHTML = succesLogo;
-        popupClaim.innerHTML = getPopupClaim('success');
+        popupClaim.innerHTML = getPopupClaim('popup.success.claim');
     } else if (errorMessage) {
         showPopup(errorMessage);
         popupLogo.innerHTML = errorLogo;
-        popupClaim.innerHTML = getPopupClaim('error');
+        popupClaim.innerHTML = getPopupClaim('popup.error.claim');
     } else if (noResultsMessage) {
         showPopup(noResultsMessage)
         popupLogo.innerHTML = noResultLogo
-        popupClaim.innerHTML = getPopupClaim('no-result'); // Display the no results message
+        popupClaim.innerHTML = getPopupClaim('popup.no.result'); // Display the no results message
     } else if (noMessageMessage) {
         showPopup(noMessageMessage)
         popupLogo.innerHTML = noResultLogo
-        popupClaim.innerHTML = getPopupClaim('no-result'); // Display the no results message
+        popupClaim.innerHTML = getPopupClaim('popup.no.result'); // Display the no results message
     }
   });

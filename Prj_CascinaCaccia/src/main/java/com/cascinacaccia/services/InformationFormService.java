@@ -275,6 +275,7 @@ public class InformationFormService {
     private void sendHtmlEmail(String toEmail, String subject, String htmlBody) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        
 
         try {
 	        helper.setTo(toEmail);

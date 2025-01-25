@@ -2,14 +2,17 @@ package com.cascinacaccia.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cascinacaccia.entities.BookingForm;
@@ -33,6 +36,10 @@ public class BookingFormController {
     private BookingFormDAO bookingFormDAO;
     @Autowired
     private BookingFormService bookingFormService;
+    @Autowired
+    private LocaleResolver localeResolver;
+    @Autowired
+    private MessageSource messageSource;
     
     //navigation to the page booking form
     @GetMapping("/bookingForm")
@@ -52,7 +59,16 @@ public class BookingFormController {
         @RequestParam String checkIn, 
         @RequestParam String checkOut,
         @RequestParam String content, 
-        RedirectAttributes redirectAttributes) {
+        RedirectAttributes redirectAttributes,
+        HttpServletRequest request,
+        @RequestParam(value = "lang", required = false) String lang,
+    	Model model){
+
+    	if (lang == null || lang.isEmpty()) {
+            lang = "it"; // Default to Italian
+        }
+    	
+    	model.addAttribute("selectedLanguage", lang);
 
         try {
         	
@@ -85,12 +101,16 @@ public class BookingFormController {
             bookingFormService.sendEmailToAdmin("innovive2024@gmail.com", generalform.getName(), generalform.getSurname(), generalform.getEmail(), categoryName, parsedCheckIn, parsedCheckOut, bookingForm.getContent());
             bookingFormService.sendConfirmationEmail(email, name, surname, email, categoryName, parsedCheckIn, parsedCheckOut, content);
 
-            redirectAttributes.addFlashAttribute("success", "Prenotazione inviata con successo!");
-            return "redirect:/prenota";
+            String successMessage = (lang.equals("en")) ? "Form submitted successfully!" : "Modulo inviato con successo!";
+            redirectAttributes.addFlashAttribute("success", successMessage);
+            String referer = request.getHeader("Referer");
+            return "redirect:" + (referer != null ? referer : "/") + "?lang=" + lang;
 
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Errore durante l'invio della prenotazione, prova ad inviarla di nuovo.");
-            return "redirect:/prenota";
+        	String errorMessage = (lang.equals("en")) ? "Error during form submission, please try again." : "Errore durante l'invio del modulo, prova ad inviarlo di nuovo.";
+            redirectAttributes.addFlashAttribute("error", errorMessage);
+            String referer = request.getHeader("Referer");
+            return "redirect:" + (referer != null ? referer : "/") + "?lang=" + lang;
         }
     }
     

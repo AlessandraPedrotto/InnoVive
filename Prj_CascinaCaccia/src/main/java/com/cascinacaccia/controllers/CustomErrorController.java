@@ -1,6 +1,8 @@
 package com.cascinacaccia.controllers;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public class CustomErrorController {
 	
@@ -12,7 +14,8 @@ public class CustomErrorController {
      * @return The name of the error page view to be rendered.
      */
 	@GetMapping("/error")
-	public String handleError() {
+	public String handleError(Model model,@RequestParam(value = "lang", required = false) String lang) {
+		model.addAttribute("selectedLanguage", lang);
 		
 		//return the Error page
 		return "Error";
