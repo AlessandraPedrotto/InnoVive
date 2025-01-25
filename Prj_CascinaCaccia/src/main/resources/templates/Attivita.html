@@ -238,12 +238,11 @@
       <li class="language-toggle">
         <a href="javascript:void(0);" class="language-switcher" onclick="toggleLanguageMobile()"
           aria-label="cambio lingua">
-          <img src="/img/italy-flag.png" alt="Italiano" class="flag" id="desktopLanguageFlag"
-            aria-label="bandiera italiana">
+          <img src="/img/italy-flag.png" alt="Italiano" class="flag" id="desktopLanguageFlag">
           <span id="desktopLanguageText">Italiano</span>
         </a>
       </li>
-      <li><a title="Home" href="/" data-translate="home" aria-label="" aria-label="home"></a></li>
+      <li><a title="Home" href="/" data-translate="home" aria-label="home"></a></li>
       <li class="item-active"><a title="Attività" href="#" data-translate="attivita" aria-label="attivita"></a></li>
       <li><a title="Struttura" href="/struttura" data-translate="struttura" aria-label="struttura"></a></li>
       <li><a title="Prenota" href="/prenota" data-translate="prenota" aria-label="prenota"></a></li>
@@ -251,9 +250,8 @@
           aria-label="area riservata"></a></li>
     </ul>
     <!-- hamburger menu -->
-    <div class="hamburger" onclick="toggleMenu()">
-      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50"
-        aria-label="icona hamburger menu">
+    <div class="hamburger" onclick="toggleMenu()" aria-label="icona hamburger menu">
+      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
         <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z">
         </path>
       </svg>
@@ -263,7 +261,7 @@
     <div class="mobile-menu" id="mobileMenu" aria-label="menu mobile">
       <div class="close" onclick="toggleMenu()">
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50"
-          aria-label="icona chiusura menu mobile">
+          aria-label="chiudi menu">
           <path
             d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z">
           </path>
@@ -276,13 +274,12 @@
             <span id="mobileLanguageText">Italiano</span>
           </a>
         </li>
-        <li><a title="Home" href="/" data-translate="home" aria-label="home"></a></li>
-        <li><a title="Attività" href="#" data-translate="attivita" aria-label="attivita"></a></li>
-        <li><a title="Struttura" href="/struttura" data-translate="struttura" aria-label="struttura"></a></li>
-        <li><a title="Prenota" href="/prenota" data-translate="prenota" aria-label="prenota"></a></li>
+        <li><a title="Home" href="/" data-translate="home"></a></li>
+        <li><a title="Attività" href="#" data-translate="attivita"></a></li>
+        <li><a title="Struttura" href="/struttura" data-translate="struttura"></a></li>
+        <li><a title="Prenota" href="/prenota" data-translate="prenota"></a></li>
         <!-- Anchor links for Login and Registration -->
-        <li><a title="Area riservata" href="/login" class="area-riservata" data-translate="area_riservata"
-            aria-label="area riservata"></a></li>
+        <li><a title="Area riservata" href="/login" class="area-riservata" data-translate="area_riservata"></a></li>
       </ul>
       <div class="mobile-logo">
         <img src="/img/logo.png" alt="Education logo">
@@ -296,7 +293,7 @@
   <div th:if="${success}" th:attr="data-success=${success}, data-claim-success=popup.success.claim" class="hidden">
   </div>
   <div th:if="${error}" th:attr="data-error=${error}, data-claim-error=popup.error.claim" class="hidden"></div>
-  <div id="custom-popup" class="popup hidden">
+  <div id="custom-popup" class="popup hidden" aria-label="popup errore">
     <div class="popup-content">
       <span id="popup-logo"></span>
       <span id="popup-claim"
@@ -310,31 +307,31 @@
   <h1 class="page-title" data-translate="attivita"></h1>
   <div class="secondary">
     <a title="Attività per le scuole medie" class="active" data-target="medie" href="#medie" data-translate="medie"
-      aria-label="attivita per scuole medie"></a>
+      aria-label="attivita per le scuole media"></a>
     <a title="Attività per le scuole uperiori" data-target="superiori" href="#superiori" data-translate="superiori"
-      aria-label="attivita per scuole superiori"></a>
+      aria-label="attivita per le scuole superiori"></a>
     <a title="Attività per tutti" data-target="tutti" href="#tutti" data-translate="tutti"
       aria-label="attivita per tutti"></a>
   </div>
 
-  <div id="medie" class="attivita" aria-label="attivita per scuole medie">
-    <div class="card-attivita">
-      <div class="foto-attivita">
+  <div id="medie" class="attivita" aria-label="attivita per le scuole medie">
+    <div class="card-attivita" aria-label="attivita">
+      <div class="foto-attivita" aria-label="foto attivita">
 
         <img src="/img/attivita/le-regole.avif" alt="Attività per le medie: le regole">
       </div>
-      <div class="descrizione-attivita">
+      <div class="descrizione-attivita" aria-label="descrizione attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_medie_regole"></h3>
         <p data-translate="attivita_medie_1"></p>
       </div>
     </div>
 
-    <div class="card-attivita" aria-label="attivita per scuole medie">
-      <div class="descrizione-attivita">
+    <div class="card-attivita" aria-label="attivita">
+      <div class="descrizione-attivita" aria-label="descrizione attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_medie_gioco"></h3>
         <p data-translate="attivita_medie_2"></p>
       </div>
-      <div class="foto-attivita">
+      <div class="foto-attivita" aria-label="foto attivita">
         <img src="/img/attivita/mondo-del-gioco.avif" alt="Attività per le medie: mondo del gioco">
       </div>
 
@@ -344,73 +341,75 @@
   </div>
 
   </div>
-  <div id="superiori" class="hidden" aria-label="attivita per scuole superiori">
-    <div class="card-attivita" aria-label="attivita per scuole superiori">
-      <div class="foto-attivita">
+  <div id="superiori" class="hidden" aria-label="attivita per le scuole superiori">
+    <div class="card-attivita" aria-label="attivita">
+      <div class="foto-attivita" aria-label="foto attivita">
         <img src="/img/attivita/mafia-e-cinema.avif" alt="Attività per le superiori: mafia e cinema">
       </div>
-      <div class="descrizione-attivita">
+      <div class="descrizione-attivita" aria-label="descrizione attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_superiori_cinema"></h3>
         <p data-translate="attivita_superiori_1"></p>
       </div>
 
     </div>
-    <div class="card-attivita" aria-label="attivita per scuole superiori">
-      <div class="descrizione-attivita">
+    <div class="card-attivita" aria-label="attivita">
+      <div class="descrizione-attivita" aria-label="descrizione attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_superiori_rischi"></h3>
         <p data-translate="attivita_superiori_2"></p>
       </div>
-      <div class="foto-attivita">
+      <div class="foto-attivita" aria-label="foto attivita">
         <img src="/img/attivita/rischi-del-gioco.avif" alt="Attività per le superiori: i rischi del gioco">
       </div>
+
+
     </div>
   </div>
 
   <div id="tutti" class="hidden" aria-label="attivita per tutti">
-    <div class="card-attivita" aria-label="attivita per tutti">
-      <div class="foto-attivita">
+    <div class="card-attivita" aria-label="attivita">
+      <div class="foto-attivita" aria-label="foto attivita">
         <img src="/img/attivita/storia-cascina.avif" alt="Attività per le tutti: storia della cascina">
       </div>
-      <div class="descrizione-attivita">
+      <div class="descrizione-attivita" aria-label="descrizione attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_cascina"></h3>
         <p data-translate="attivita_tutti_1"></p>
       </div>
     </div>
-    <div class="card-attivita" aria-label="attivita per tutti">
-      <div class="descrizione-attivita">
+    <div class="card-attivita" aria-label="attivita">
+      <div class="descrizione-attivita" aria-label="descrizione attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_caccia"></h3>
         <p data-translate="attivita_tutti_2"></p>
       </div>
-      <div class="foto-attivita">
+      <div class="foto-attivita" aria-label="foto attivita">
         <img src="/img/attivita/bruno-caccia.avif" alt="Attività per le tutti: figura di Bruno Caccia">
       </div>
 
     </div>
-    <div class="card-attivita" aria-label="attivita per tutti">
-      <div class="foto-attivita">
+    <div class="card-attivita" aria-label="attivita">
+      <div class="foto-attivita" aria-label="foto attivita">
         <img src="/img/attivita/agromafie.avif" alt="Attività per le tutti: agromafie">
       </div>
-      <div class="descrizione-attivita">
+      <div class="descrizione-attivita" aria-label="descrizione attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_agromafie"></h3>
         <p data-translate="attivita_tutti_3"></p>
       </div>
 
     </div>
-    <div class="card-attivita" aria-label="attivita per tutti">
-      <div class="descrizione-attivita">
+    <div class="card-attivita" aria-label="attivita">
+      <div class="descrizione-attivita" aria-label="descrizione attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_beni"></h3>
         <p data-translate="attivita_tutti_4"></p>
       </div>
-      <div class="foto-attivita">
+      <div class="foto-attivita" aria-label="foto attivita">
         <img src="/img/attivita/beni-confiscati.avif" alt="Attività per le tutti: beni confiscati">
       </div>
 
     </div>
-    <div class="card-attivita" aria-label="attivita per tutti">
-      <div class="foto-attivita">
+    <div class="card-attivita" aria-label="attivita">
+      <div class="foto-attivita" aria-label="foto attivita">
         <img src="/img/attivita/miele-e-api.avif" alt="Attività per le tutti: miele e api">
       </div>
-      <div class="descrizione-attivita">
+      <div class="descrizione-attivita" aria-label="descrizione attivita">
         <h3 class="titolo-attivita" data-translate="titolo_sezione_tutti_miele"></h3>
         <p data-translate="attivita_tutti_5"></p>
       </div>
@@ -420,7 +419,7 @@
   <!-- ATTIVITA ENDS -->
   <!-- footer -->
   <footer>
-    <div class="footer">
+    <div class="footer" aria-label="footer">
       <div class="footer-content footer-map">
         <h3 data-translate="dove_siamo"></h3>
         <div class="map-container">
@@ -436,17 +435,17 @@
       <div class="footer-content footer-links">
         <h3 data-translate="education_on">&nbsp;</h3>
         <div class="links">
-          <a href="/attivita" data-translate="attivita" aria-label="attivita"></a>
-          <a href="/struttura" data-translate="struttura" aria-label="struttura"></a>
-          <a href="/prenota" data-translate="prenota" aria-label="prenota"></a>
+          <a href="/attivita" data-translate="attivita" aria-label="link ad attivita"></a>
+          <a href="/struttura" data-translate="struttura" aria-label="link a struttura"></a>
+          <a href="/prenota" data-translate="prenota" aria-label="link a prenotazioni"></a>
         </div>
       </div>
       <div class="footer-content footer-social">
         <h3 data-translate="social"></h3>
         <div class="social-links-container">
-          <a class="social-links" href="https://www.facebook.com/cascinacaccia/?locale=it_IT" target="_blank"
-            aria-label="link alla pagina facebook"><img class="social-icons" src="/img/facebook-logo.svg"
-              alt="facebook"></a>
+          <a class="social-links" href="https://www.facebook.com/cascinacaccia/?locale=it_IT" target="_blank"><img
+              class="social-icons" src="/img/facebook-logo.svg" alt="facebook"
+              aria-label="link alla pagina facebook"></a>
           <a class="social-links" href="https://www.instagram.com/cascina_caccia/" target="_blank"
             aria-label="link alla pagina instagram"><img class="social-icons" src="/img/instagram-logo.svg"
               alt="instagram"></a>
@@ -484,9 +483,11 @@
   </div>
 
   <div id="informationFormContainer" aria-label="form di contatto">
+
     <h3 data-translate="titolo_info_form"></h3>
+
     <!-- Information form -->
-    <form action="/submit-form" method="post" aria-label="form di contatto">
+    <form action="/submit-form" method="post">
       <input type="hidden" name="lang" id="lang-flag">
       <div class="form-box">
         <div class="form-column">
@@ -535,15 +536,19 @@
               <label for="privacy" data-translate="checkbox_2"></label>
             </div>
           </div>
+
         </div>
       </div>
-      <button id="sendInfoButton" type="submit" data-translate="invia" aria-label="submit form"></button>
+
+
+
+      <button id="sendInfoButton" type="submit" data-translate="invia"></button>
     </form>
   </div>
 
   <!-- Chatbot Button -->
   <div id="chatbotButton" onclick="toggleChatbot()" aria-label="bottone chatbot"><svg width="40px" viewBox="0 0 24 24"
-      fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" aria-label="apri chatbot">
+      fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
       <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
       <g id="SVGRepo_iconCarrier">
