@@ -119,17 +119,17 @@ public class BookingFormService {
             "    <p>Ciao,</p>" +
             "    <p>Un nuovo modulo per la richiesta di prenotazione è stato appena inviato. Qua sotto puoi trovare i dettagli:</p>" +
             "    <table style='width: 100%%; border-collapse: collapse; margin-top: 10px;'>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Nome:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Cognome:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Email:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Categoria:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Periodo:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s - %s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Messaggio:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Nome:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Cognome:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Email:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Categoria:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Periodo:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s - %s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Messaggio:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
             "    </table>" +
             "    <p style='margin-top: 20px;'><a href='http://localhost:8080/login' style='color: #007bff;'>Accedi al tuo account </a>per assegnare la richiesta a qualcuno.</p></br>" +
             "    <p style='margin-top: 20px;'>Grazie e buon proseguimento di giornata.</p>" +
-            "    <p style='margin-top: 20px;'>Team Cascina Caccia</p>" +
-            "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cascinaCaccia_logo_footer.png' alt='Company Logo' style='width: 150px;'/>" +
+            "    <p style='margin-top: 20px;'>Team</p>" +
+            "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Logo' style='width: 200px;'/>" +
             "  </div>" +
             "  <div style='width: 100%%; height: 10px; background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E);'></div>" +
             "  <div style='background-color: rgba(255, 119, 0, 0.56); display: flex; flex-direction: column; align-items: center; padding: 20px; color: black; text-align: center;'>" +
@@ -201,17 +201,17 @@ public class BookingFormService {
             "    <p>Grazie per averci contattato! Abbiamo ricevuto la tua richiesta, qualcuno provvederà a contattarti il più presto possibile.</p>" +
             "    <p>Qua sotto puoi trovare il riepilogo della tua richiesta:</p>" +
             "    <table style='width: 100%%; border-collapse: collapse; margin-top: 10px;'>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Nome:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Cognome:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Email:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Categoria:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Periodo:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s - %s</td></tr>" +
-            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Messaggio:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Nome:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Cognome:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Email:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Categoria:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Periodo:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s - %s</td></tr>" +
+            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Messaggio:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
             "    </table>" +
             "    <p style='margin-top: 20px;'>Se hai altri dubbi non esitare a <a href='http://localhost:8080/' style='color: #007bff;'>scriverci</a> di nuovo.</p>" +
             "    <p style='margin-top: 20px;'>Grazie e buon proseguimento di giornata.</p>" +
             "    <p style='margin-top: 20px;'>Team Cascina Caccia</p>" +
-            "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cascinaCaccia_logo_footer.png' alt='Company Logo' style='width: 150px;'/>" +
+            "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Logo' style='width: 200px;'/>" +
             "  </div>" +
             "  <div style='width: 100%%; height: 10px; background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E);'></div>" +
             "  <div style='background-color: rgba(255, 119, 0, 0.56); display: flex; flex-direction: column; align-items: center; padding: 20px; color: black; text-align: center;'>" +
@@ -287,17 +287,17 @@ public class BookingFormService {
                 "    <p>Ciao <strong>%s %s</strong>,</p>" +
                 "    <p>Sei stato assegnato ad una nuova prenotazione. Qua sotto puoi trovare i dettagli per contattare il cliente:</p>" +
                 "    <table style='width: 100%%; border-collapse: collapse; margin-top: 10px;'>" +
-                "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Nome:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-                "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Cognome:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-                "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Email:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-                "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Categoria:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-                "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Periodo:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s - %s</td></tr>" +
-                "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Messaggio:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
+                "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Nome:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+                "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Cognome:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+                "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Email:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+                "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Categoria:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+                "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Periodo:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s - %s</td></tr>" +
+                "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Messaggio:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
                 "    </table>" +
                 "    <p style='margin-top: 20px;'><a href='http://localhost:8080/login' style='color: #007bff;'>Accedi al tuo account</a> per aggiornare lo stato della richiesta.</p></br>" +
                 "    <p style='margin-top: 20px;'>Grazie e buon proseguimento di giornata.</p>" +
                 "    <p style='margin-top: 20px;'>Team Cascina Caccia</p>" +
-                "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cascinaCaccia_logo_footer.png' alt='Company Logo' style='width: 150px;'/>" +
+                "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Logo' style='width: 200px;'/>" +
                 "  </div>" +
                 "  <div style='width: 100%%; height: 10px; background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E);'></div>" +
                 "  <div style='background-color: rgba(255, 119, 0, 0.56); display: flex; flex-direction: column; align-items: center; padding: 20px; color: black; text-align: center;'>" +
@@ -436,17 +436,17 @@ public class BookingFormService {
 	            "    <p>Ciao <strong>%s %s</strong>,</p>" +
 	            "    <p>Sei stato rimosso da un task, quindi ora non te ne dovrai più occupare. Qua sotto puoi trovare i dettagli della richiesta:</p>" +
 	            "    <table style='width: 100%%; border-collapse: collapse; margin-top: 10px;'>" +
-	            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Nome:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-	            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Cognome:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-	            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Email:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-	            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Categoria:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
-	            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Periodo:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s - %s</td></tr>" +
-	            "      <tr><td style='padding: 5px; border: 1px solid #ccc;'>Messaggio:</td><td style='padding: 5px; border: 1px solid #ccc;'>%s</td></tr>" +
+	            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Nome:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+	            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Cognome:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+	            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Email:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+	            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Categoria:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
+	            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Periodo:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s - %s</td></tr>" +
+	            "      <tr><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: none;'>Messaggio:</td><td style='padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: none;'>%s</td></tr>" +
 	            "    </table>" +
 	            "    <p style='margin-top: 20px;'>Se ritieni che questo sia stato un errore contatta l'amministratore della pagina.</p></br>" +
 	            "    <p style='margin-top: 20px;'>Grazie e buon proseguimento di giornata.</p>" +
 	            "    <p style='margin-top: 20px;'>Team Cascina Caccia</p>" +
-	            "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cascinaCaccia_logo_footer.png' alt='Company Logo' style='width: 150px;'/>" +
+	            "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Logo' style='width: 200px;'/>" +
 	            "  </div>" +
 	            "  <div style='width: 100%%; height: 10px; background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E);'></div>" +
 	            "  <div style='background-color: rgba(255, 119, 0, 0.56); display: flex; flex-direction: column; align-items: center; padding: 20px; color: black; text-align: center;'>" +
