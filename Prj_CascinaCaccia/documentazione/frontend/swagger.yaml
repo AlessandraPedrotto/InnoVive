@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  title: API Cascina Caccia
+  description: API to manage Education Cascina Caccia's bookings
+  version: 1.0.0
+paths:
+  /submit-booking:
+    post:
+      summary: Send a booking request
+      description: Send the booking data to Cascina Caccia
+      operationId: submitBooking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "User name"
+                  example: "Mario"
+                surname:
+                  type: string
+                  description: "User surname"
+                  example: "Rossi"
+                email:
+                  type: string
+                  description: "User email"
+                  example: "mario.rossi@example.com"
+                categoryId:
+                  type: integer
+                  description: "Booking category"
+                  enum: [1, 2, 3, 4, 5, 6, 7, 8]
+                  example: 1
+                content:
+                  type: string
+                  description: "Booking message"
+                  example: "Prenotazione per evento aziendale"
+                newsletter:
+                  type: boolean
+                  description: "Newsletter subscription"
+                  example: true
+                privacy:
+                  type: boolean
+                  description: "Privacy consent"
+                  example: true
+                checkIn:
+                  type: string
+                  format: date
+                  description: "Check-in date"
+                  example: "2025-02-01"
+                checkOut:
+                  type: string
+                  format: date
+                  description: "Check-out date"
+                  example: "2025-02-03"
+      responses:
+        '200':
+          description: "Booking sent successfully"
+        '400':
+          description: "Bad request"
+        '500':
+          description: "Internal server error"
+  
+  /submit-form:
+    post:
+      summary: Send an information request
+      description: Send the information data to Cascina Caccia
+      operationId: submitForm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "User name"
+                  example: "Giovanni"
+                surname:
+                  type: string
+                  description: "User surname"
+                  example: "Bianchi"
+                email:
+                  type: string
+                  description: "User email"
+                  example: "giovanni.bianchi@example.com"
+                categoryId:
+                  type: integer
+                  description: "Information category"
+                  enum: [1, 2, 3, 4, 5, 6, 7, 8]
+                  example: 2
+                content:
+                  type: string
+                  description: "User message"
+                  example: "Richiesta informazioni"
+                newsletter:
+                  type: boolean
+                  description: "Newsletter subscription"
+                  example: true
+                privacy:
+                  type: boolean
+                  description: "Privacy consent"
+                  example: true
+      responses:
+        '200':
+          description: "Information request sent successfully"
+        '400':
+          description: "Bad request"
+        '500':
+          description: "Internal server error"
