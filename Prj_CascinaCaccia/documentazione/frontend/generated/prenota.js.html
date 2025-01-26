@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: prenota.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: prenota.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @file: prenota.js
  * @author: InnoVive
   * @file This script manages the calendar interface, date selection, and language support for a booking or reservation system.
@@ -37,7 +65,7 @@ let dateSelection = {
  * @returns {boolean} - isBisestile true or false
  */
 const isBisestile = (year) => {
-    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    return (year % 4 === 0 &amp;&amp; year % 100 !== 0) || (year % 400 === 0);
 };
 
 
@@ -146,7 +174,7 @@ const getCalendar = (month, year) => {
     let firstDay = new Date(year, month, 1);
 
     // iterate all month days
-    for (let i = 0; i < monthDays[month] + firstDay.getDay(); i++) {
+    for (let i = 0; i &lt; monthDays[month] + firstDay.getDay(); i++) {
         // create a div for the day
         let day = document.createElement('div');
 
@@ -158,7 +186,7 @@ const getCalendar = (month, year) => {
 
             day.textContent = dayNumber;
 
-            if (dateToCheck < currentDate.setHours(0, 0, 0, 0)) {
+            if (dateToCheck &lt; currentDate.setHours(0, 0, 0, 0)) {
                 // if it is a past day is disabled
                 day.classList.add('disabled');
             } else {
@@ -169,10 +197,10 @@ const getCalendar = (month, year) => {
                 } else if (dateSelection.checkOut === formattedDate) {
                     day.classList.add('selected');  // selected check out
                 } else if (
-                    dateSelection.checkIn &&
-                    dateSelection.checkOut &&
-                    dateToCheck > new Date(dateSelection.checkIn) &&
-                    dateToCheck < new Date(dateSelection.checkOut)
+                    dateSelection.checkIn &amp;&amp;
+                    dateSelection.checkOut &amp;&amp;
+                    dateToCheck > new Date(dateSelection.checkIn) &amp;&amp;
+                    dateToCheck &lt; new Date(dateSelection.checkOut)
                 ) {
                     day.classList.add('range');  // range betweeen check in and check out
                 }
@@ -186,7 +214,7 @@ const getCalendar = (month, year) => {
                         document.getElementById('selected-check-in').textContent = `${dayNumber} ${monthNames[month]} ${year}`;
                         document.getElementById('check-in-confirm').textContent = `${dayNumber} ${monthNames[month]} ${year}`;
                         document.getElementById('hidden-datepicker-checkin').value = formattedDate;
-                    } else if (!dateSelection.checkOut && formattedDate > dateSelection.checkIn) {
+                    } else if (!dateSelection.checkOut &amp;&amp; formattedDate > dateSelection.checkIn) {
                         // checkout selection
                         dateSelection.checkOut = formattedDate;
                         day.classList.add('selected');
@@ -285,4 +313,26 @@ window.addEventListener('scroll', () => {
     } else {
         confermaContainer.classList.remove('hidden-conferma');
     }
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#changeLanguage">changeLanguage</a></li><li><a href="global.html#currentLanguage">currentLanguage</a></li><li><a href="global.html#disableAllButtons">disableAllButtons</a></li><li><a href="global.html#email">email</a></li><li><a href="global.html#getBotResponse">getBotResponse</a></li><li><a href="global.html#getCalendar">getCalendar</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getLocalizedText">getLocalizedText</a></li><li><a href="global.html#handleQuestionClick">handleQuestionClick</a></li><li><a href="global.html#initializeMenuBehavior">initializeMenuBehavior</a></li><li><a href="global.html#isBisestile">isBisestile</a></li><li><a href="global.html#reloadMonthNames">reloadMonthNames</a></li><li><a href="global.html#scrollToBottom">scrollToBottom</a></li><li><a href="global.html#setFebruaryDays">setFebruaryDays</a></li><li><a href="global.html#setLangFlagFromStorage">setLangFlagFromStorage</a></li><li><a href="global.html#showInitialMessage">showInitialMessage</a></li><li><a href="global.html#toggleChatbot">toggleChatbot</a></li><li><a href="global.html#toggleInformationForm">toggleInformationForm</a></li><li><a href="global.html#toggleLanguage">toggleLanguage</a></li><li><a href="global.html#toggleLanguageMobile">toggleLanguageMobile</a></li><li><a href="global.html#toggleMenu">toggleMenu</a></li><li><a href="global.html#updateLanguageSwitcher">updateLanguageSwitcher</a></li><li><a href="global.html#updateMonthNames">updateMonthNames</a></li><li><a href="global.html#updateSelectedDateDisplay">updateSelectedDateDisplay</a></li><li><a href="global.html#updateUIWithTranslations">updateUIWithTranslations</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Jan 26 2025 19:45:23 GMT+0100 (Ora standard dell’Europa centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

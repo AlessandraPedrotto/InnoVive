@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @file: main.js
  * @author: InnoVive
  * 
@@ -27,7 +55,7 @@ function toggleChatbot() {
   chatbotContainer.style.display = (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '') ? 'flex' : 'none';
 
   // If chatbot is shown for the first time, display the initial message
-  if (chatbotContainer.style.display === 'flex' && document.getElementById('chatMessages').childElementCount === 0) {
+  if (chatbotContainer.style.display === 'flex' &amp;&amp; document.getElementById('chatMessages').childElementCount === 0) {
       showInitialMessage();
   }
 }
@@ -64,7 +92,7 @@ function handleQuestionClick(question, buttonsContainer) {
 
   // Add replay icon
   const replayIcon = document.createElement('span');
-  replayIcon.innerHTML = "&#x21ba;"; // Unicode for refresh icon
+  replayIcon.innerHTML = "&amp;#x21ba;"; // Unicode for refresh icon
   replayIcon.style.cursor = "pointer";
   replayIcon.style.marginLeft = "10px";
   replayIcon.style.fontSize = "12px";
@@ -246,10 +274,10 @@ function getBotResponse(userMessage) {
   const responses = {
       [getLocalizedText("La storia di Cascina Caccia", "History of Cascina Caccia")]: getLocalizedText("Cosa desideri sapere?", "What would you like to know?"),
       [getLocalizedText("Informazioni sulla cascina", "Information about the farm")]: getLocalizedText("Cosa desideri sapere?", "What would you like to know?"),
-      [getLocalizedText("Attività da svolgere", "Activities to do")]: getLocalizedText("Oltre alle attività di sensibilizzazione sull'argomento mafia, offriamo anche laboratori manuali, che includono la raccolta dei frutti prodotti in cascina e la loro preparazione in cucina, oltre a attività artistiche per la creazione di candele. Per avere maggiori dettagli clicca <a href='http://localhost:8080/attivita' target='_blank'>qui</a>.", "In addition to activities raising awareness about mafia issues, we also offer hands-on workshops, including fruit picking from the farm and cooking, as well as artistic activities like candle-making. For more details, click <a href='http://localhost:8080/attivita' target='_blank'>here</a>."),
+      [getLocalizedText("Attività da svolgere", "Activities to do")]: getLocalizedText("Oltre alle attività di sensibilizzazione sull'argomento mafia, offriamo anche laboratori manuali, che includono la raccolta dei frutti prodotti in cascina e la loro preparazione in cucina, oltre a attività artistiche per la creazione di candele. Per avere maggiori dettagli clicca &lt;a href='http://localhost:8080/attivita' target='_blank'>qui&lt;/a>.", "In addition to activities raising awareness about mafia issues, we also offer hands-on workshops, including fruit picking from the farm and cooking, as well as artistic activities like candle-making. For more details, click &lt;a href='http://localhost:8080/attivita' target='_blank'>here&lt;/a>."),
       [getLocalizedText("Dove si trova la cascina?", "Where is the farm located?")]: getLocalizedText("La Cascina si trova a San Sebastiano da Po, in provincia di Torino, Piemonte.", "The farm is located in San Sebastiano da Po, in the province of Turin, Piedmont."),
-      [getLocalizedText("Come posso contattarvi?", "How can I contact you?")]: getLocalizedText("Puoi contattarci compilando il modulo per le informazioni, che trovi cliccando sul pulsante rotondo con la 'i' qua di lato oppure <a href='javascript:void(0);' onclick='toggleInformationForm(); toggleChatbot();'>qui</a>.", "You can contact us by filling out the information form, which you can find by clicking the round button with the 'i' or <a href='javascript:void(0);' onclick='toggleInformationForm(); toggleChatbot();'>here</a>."),
-      [getLocalizedText("Come prenoto una visita?", "How can I book a visit?")]: getLocalizedText("Puoi prenotare una visita cliccando sul tasto 'Prenota' nel menu in alto oppure  <a href='http://localhost:8080/prenota' target='_blank'>qui</a>.", "You can book a visit by clicking the 'Book' button in the top menu or <a href='http://localhost:8080/prenota' target='_blank'>here</a>."),
+      [getLocalizedText("Come posso contattarvi?", "How can I contact you?")]: getLocalizedText("Puoi contattarci compilando il modulo per le informazioni, che trovi cliccando sul pulsante rotondo con la 'i' qua di lato oppure &lt;a href='javascript:void(0);' onclick='toggleInformationForm(); toggleChatbot();'>qui&lt;/a>.", "You can contact us by filling out the information form, which you can find by clicking the round button with the 'i' or &lt;a href='javascript:void(0);' onclick='toggleInformationForm(); toggleChatbot();'>here&lt;/a>."),
+      [getLocalizedText("Come prenoto una visita?", "How can I book a visit?")]: getLocalizedText("Puoi prenotare una visita cliccando sul tasto 'Prenota' nel menu in alto oppure  &lt;a href='http://localhost:8080/prenota' target='_blank'>qui&lt;/a>.", "You can book a visit by clicking the 'Book' button in the top menu or &lt;a href='http://localhost:8080/prenota' target='_blank'>here&lt;/a>."),
       [getLocalizedText("Cos'è Cascina Caccia?", "What is Cascina Caccia?")]: getLocalizedText("Cascina Caccia era un bene della famiglia Belfiore, legata alla 'Ndrangheta, e fu confiscata dopo la condanna di Domenico Belfiore, mandante dell’omicidio del giudice Bruno Caccia. Oggi è un luogo simbolo di riscatto. Rappresenta la vittoria della giustizia sulla criminalità organizzata.", "Cascina Caccia was once a property of the Belfiore family, linked to the 'Ndrangheta, and was confiscated after the conviction of Domenico Belfiore, the mastermind behind the murder of Judge Bruno Caccia. Today it stands as a symbol of redemption. It represents the victory of justice over organized crime."),
       [getLocalizedText("Chi era Bruno Caccia?", "Who was Bruno Caccia?")]: getLocalizedText("Bruno Caccia era un giudice torinese ucciso nel 1983 per la sua lotta contro la criminalità organizzata. La sua morte, causata da Domenico Belfiore, mandante dell'omicidio, ha portato alla confisca di beni legati alla famiglia Belfiore, tra cui questa Cascina.", "Bruno Caccia was a Turin judge murdered in 1983 for his fight against organized crime. His death, orchestrated by Domenico Belfiore, led to the confiscation of assets tied to the Belfiore family, including this farm.")
   };
@@ -356,9 +384,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const popupClose = document.getElementById('popup-close');
   let popupTimeout;
 
-  const succesLogo = '<svg width="100px" fill="#18d100" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 98.25 98.25" xml:space="preserve" stroke="#18d100"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M49.125,0C22.037,0,0,22.038,0,49.125S22.037,98.25,49.125,98.25S98.25,76.212,98.25,49.125S76.213,0,49.125,0z M49.125,88.25C27.551,88.25,10,70.699,10,49.125S27.551,10,49.125,10S88.25,27.551,88.25,49.125S70.699,88.25,49.125,88.25z"></path> <path d="M77.296,33.027L71.02,26.75c-0.442-0.442-1.227-0.442-1.668,0L39.67,56.432L28.898,45.661 c-0.441-0.442-1.225-0.442-1.668,0l-6.276,6.276c-0.222,0.222-0.346,0.521-0.346,0.834c0,0.313,0.124,0.613,0.346,0.834 l17.882,17.881c0.23,0.229,0.531,0.346,0.834,0.346c0.301,0,0.604-0.115,0.834-0.346l36.792-36.792 c0.222-0.221,0.347-0.521,0.347-0.834S77.518,33.248,77.296,33.027z"></path> </g> </g> </g></svg>';
-  const errorLogo = '<svg width="100px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#e00000" stroke="#e00000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>error</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="add" fill="#db0000" transform="translate(42.666667, 42.666667)"> <path d="M213.333333,3.55271368e-14 C331.136,3.55271368e-14 426.666667,95.5306667 426.666667,213.333333 C426.666667,331.136 331.136,426.666667 213.333333,426.666667 C95.5306667,426.666667 3.55271368e-14,331.136 3.55271368e-14,213.333333 C3.55271368e-14,95.5306667 95.5306667,3.55271368e-14 213.333333,3.55271368e-14 Z M213.333333,42.6666667 C119.232,42.6666667 42.6666667,119.232 42.6666667,213.333333 C42.6666667,307.434667 119.232,384 213.333333,384 C307.434667,384 384,307.434667 384,213.333333 C384,119.232 307.434667,42.6666667 213.333333,42.6666667 Z M262.250667,134.250667 L292.416,164.416 L243.498667,213.333333 L292.416,262.250667 L262.250667,292.416 L213.333333,243.498667 L164.416,292.416 L134.250667,262.250667 L183.168,213.333333 L134.250667,164.416 L164.416,134.250667 L213.333333,183.168 L262.250667,134.250667 Z" id="error"> </path> </g> </g> </g></svg>';
-  const noResultLogo = '<img width="100px" src="/img/question-mark.svg" alt="question icon">'
+  const succesLogo = '&lt;svg width="100px" fill="#18d100" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 98.25 98.25" xml:space="preserve" stroke="#18d100">&lt;g id="SVGRepo_bgCarrier" stroke-width="0">&lt;/g>&lt;g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">&lt;/g>&lt;g id="SVGRepo_iconCarrier"> &lt;g> &lt;g> &lt;path d="M49.125,0C22.037,0,0,22.038,0,49.125S22.037,98.25,49.125,98.25S98.25,76.212,98.25,49.125S76.213,0,49.125,0z M49.125,88.25C27.551,88.25,10,70.699,10,49.125S27.551,10,49.125,10S88.25,27.551,88.25,49.125S70.699,88.25,49.125,88.25z">&lt;/path> &lt;path d="M77.296,33.027L71.02,26.75c-0.442-0.442-1.227-0.442-1.668,0L39.67,56.432L28.898,45.661 c-0.441-0.442-1.225-0.442-1.668,0l-6.276,6.276c-0.222,0.222-0.346,0.521-0.346,0.834c0,0.313,0.124,0.613,0.346,0.834 l17.882,17.881c0.23,0.229,0.531,0.346,0.834,0.346c0.301,0,0.604-0.115,0.834-0.346l36.792-36.792 c0.222-0.221,0.347-0.521,0.347-0.834S77.518,33.248,77.296,33.027z">&lt;/path> &lt;/g> &lt;/g> &lt;/g>&lt;/svg>';
+  const errorLogo = '&lt;svg width="100px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#e00000" stroke="#e00000">&lt;g id="SVGRepo_bgCarrier" stroke-width="0">&lt;/g>&lt;g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">&lt;/g>&lt;g id="SVGRepo_iconCarrier"> &lt;title>error&lt;/title> &lt;g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> &lt;g id="add" fill="#db0000" transform="translate(42.666667, 42.666667)"> &lt;path d="M213.333333,3.55271368e-14 C331.136,3.55271368e-14 426.666667,95.5306667 426.666667,213.333333 C426.666667,331.136 331.136,426.666667 213.333333,426.666667 C95.5306667,426.666667 3.55271368e-14,331.136 3.55271368e-14,213.333333 C3.55271368e-14,95.5306667 95.5306667,3.55271368e-14 213.333333,3.55271368e-14 Z M213.333333,42.6666667 C119.232,42.6666667 42.6666667,119.232 42.6666667,213.333333 C42.6666667,307.434667 119.232,384 213.333333,384 C307.434667,384 384,307.434667 384,213.333333 C384,119.232 307.434667,42.6666667 213.333333,42.6666667 Z M262.250667,134.250667 L292.416,164.416 L243.498667,213.333333 L292.416,262.250667 L262.250667,292.416 L213.333333,243.498667 L164.416,292.416 L134.250667,262.250667 L183.168,213.333333 L134.250667,164.416 L164.416,134.250667 L213.333333,183.168 L262.250667,134.250667 Z" id="error"> &lt;/path> &lt;/g> &lt;/g> &lt;/g>&lt;/svg>';
+  const noResultLogo = '&lt;img width="100px" src="/img/question-mark.svg" alt="question icon">'
 
   // Function to determine which message to show
   function getPopupClaim(type) {
@@ -417,3 +445,26 @@ document.addEventListener('DOMContentLoaded', function () {
       popupClaim.textContent = getTranslation('popup.no.result'); // Display the no results message
   }
 });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#changeLanguage">changeLanguage</a></li><li><a href="global.html#currentLanguage">currentLanguage</a></li><li><a href="global.html#disableAllButtons">disableAllButtons</a></li><li><a href="global.html#email">email</a></li><li><a href="global.html#getBotResponse">getBotResponse</a></li><li><a href="global.html#getCalendar">getCalendar</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getLocalizedText">getLocalizedText</a></li><li><a href="global.html#handleQuestionClick">handleQuestionClick</a></li><li><a href="global.html#initializeMenuBehavior">initializeMenuBehavior</a></li><li><a href="global.html#isBisestile">isBisestile</a></li><li><a href="global.html#reloadMonthNames">reloadMonthNames</a></li><li><a href="global.html#scrollToBottom">scrollToBottom</a></li><li><a href="global.html#setFebruaryDays">setFebruaryDays</a></li><li><a href="global.html#setLangFlagFromStorage">setLangFlagFromStorage</a></li><li><a href="global.html#showInitialMessage">showInitialMessage</a></li><li><a href="global.html#toggleChatbot">toggleChatbot</a></li><li><a href="global.html#toggleInformationForm">toggleInformationForm</a></li><li><a href="global.html#toggleLanguage">toggleLanguage</a></li><li><a href="global.html#toggleLanguageMobile">toggleLanguageMobile</a></li><li><a href="global.html#toggleMenu">toggleMenu</a></li><li><a href="global.html#updateLanguageSwitcher">updateLanguageSwitcher</a></li><li><a href="global.html#updateMonthNames">updateMonthNames</a></li><li><a href="global.html#updateSelectedDateDisplay">updateSelectedDateDisplay</a></li><li><a href="global.html#updateUIWithTranslations">updateUIWithTranslations</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Jan 26 2025 19:45:23 GMT+0100 (Ora standard dell’Europa centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
