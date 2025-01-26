@@ -1,4 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+/**
+* style.css
+*
+*
+* This file contains the styles for the main website dashboard. It defines the layout, 
+* design, and responsiveness of various components used throughout the web pages, 
+* including navbar, home page, struttura page, attivita page, prenota page, login page.
+*/
+
+
 
 * {
   font-family: 'Montserrat';
