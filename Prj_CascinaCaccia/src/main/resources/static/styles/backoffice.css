@@ -1,3 +1,12 @@
+/**
+* backoffice.css
+*
+*
+* This file contains the styles for the backoffice dashboard. It defines the layout, 
+* design, and responsiveness of various components used throughout the backoffice pages, 
+* including sidebar, profile image, user lists, requests, and user registration forms.
+*/
+
 .backoffice-container {
     display: flex;
     flex-direction: column;
@@ -690,3 +699,20 @@
 }
 
 /* BACKOFFICE PROFILE IMAGE ENDS */
+
+
+.badge {
+	background-color: red;
+	color: white;
+	font-size: 14px;
+	padding: 5px 10px;
+	border-radius: 50%;
+	margin-left: 10px;
+	position: relative;
+	top: -5px; /* Adjust the position slightly to align better with the text */
+	display: inline-block; /* Ensure the badge is inline */
+}
+
+.badge.hidden {
+    display: none;
+}
