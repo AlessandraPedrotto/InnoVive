@@ -123,5 +123,11 @@
     "popup.success.user.claim": "Success!",
     "popup.error.claim": "Attention!",
     "popup.no.results": "No results",
-    "popup.no.result": "No result found"
+    "popup.no.result": "No result found",
+    
+    "placeholder_messaggio": "Tell us who you are, what you expect from this visit, and let us know your needs",
+    "placeholder_messaggio2": "Do you have any questions? Write them here",
+	"placeholder_mail": "Your email",
+	"placeholder_cognome": "Your last name",
+	"placeholder_nome": "Your first name"
 }
