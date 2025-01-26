@@ -1,13 +1,13 @@
 ## Come installare il progetto
 #### Step 1: Installazione di un IDE
-Installare un IDE che supporti Java, uno dei più conosciuti è Eclipse. È possibile scaricare l'installer dal sito ufficiale https://www.eclipse.org/downloads/download.php?file=/oomph/epp/2024-09/R/eclipse-inst-jre-win64.exe e, durante il processo di installazione, selezionare l'opzione per Java Developer.
+Installare un IDE che supporti Java, uno dei più conosciuti è Eclipse. È possibile scaricare l'installer dal sito ufficiale, durante il processo di installazione, selezionare l'opzione per Java Developer.
 #### Step 2: Configurazione di Spring Boot su Eclipse
 Una volta completata l'installazione di Eclipse, procedere con l'installazione del framework Spring Boot tramite il Marketplace di Eclipse. 
 Qui sotto sono illustrati i passaggi dettagliati tramite immagini per facilitare la configurazione.
 
 ##### Passaggi:
 
-1 . Fare clic su Help nella barra dei menu e selezionare Eclipse Marketplace.
+1 . Fare clic su Help nella barra del menu e selezionare Eclipse Marketplace.
 ![alt text](img/image.png)
 2 . Nella barra di ricerca del Marketplace, digitare "Spring Boot".
 ![alt text](img/image-1.png)
@@ -19,7 +19,7 @@ Qui sotto sono illustrati i passaggi dettagliati tramite immagini per facilitare
 ![alt text](img/image-5.png)
 
 #### Step 3: Installazione di un Server Manager
-Installlare un server manager, come XAMPP. È possibile scaricarlo dal sito ufficiale https://www.apachefriends.org/it/index.html. Qui sotto sono illustrati i passaggi dettagliati tramite immagini per guidare l'installazione.
+Installare un server manager, come XAMPP. È possibile scaricarlo dal sito ufficiale. Qui sotto sono illustrati i passaggi dettagliati tramite immagini per guidare l'installazione.
 
 ##### Passaggi:
 
@@ -52,7 +52,7 @@ Per gestire l'invio di email, è necessario impostare un'email nella riga spring
 Il file pom.xml gestisce le dipendenze di Maven per l'applicazione Spring Boot e include tutte le librerie necessarie per il corretto funzionamento del progetto. Di seguito è riportato un elenco delle principali dipendenze utilizzate:
 
 * ##### spring-boot-starter
-Questa dipendenza include le configurazioni di base necessarie per un'applicazione Spring Boot. Fornisce il setup iniziale per avviare il progetto, inclusi i componenti fondamentali per l'esecuzione di un'applicazione Spring
+Questa dipendenza include le configurazioni di base necessarie per un'applicazione Spring Boot. Fornisce il setup iniziale per avviare il progetto, inclusi i componenti fondamentali per l'esecuzione di un'applicazione Spring.
 ![alt text](img/image-12.png)
 
 * ##### spring-boot-starter-mail
