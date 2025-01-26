@@ -1,13 +1,33 @@
+/**
+ * @file: request.js
+ * @author: InnoVive
+ * Toggles visibility of various elements on the page when certain actions are performed.
+ * The script listens for `click` events and toggles the `hidden` class for corresponding elements.
+ * 
+ * - Handles the visibility toggle for request headers and bodies.
+ * - Handles the visibility toggle for user assignment forms.
+ * - Handles the visibility toggle for status assignment forms.
+ * - Handles the visibility toggle for closing the user and status assignment forms via 'X' buttons.
+ * 
+ * @function
+ * @listens {DOMContentLoaded} - Waits for the DOM to fully load before attaching event listeners.
+ */
 document.addEventListener('DOMContentLoaded', () => {
-    //toggle della classe 'hidden' sugli header delle richieste
+    /**
+     * Toggles the 'hidden' class on the request body and header when a request header is clicked.
+     * Only one request body is visible at a time, and clicking another header will close the current body.
+     * 
+     * @param {HTMLElement} headers - The headers of the requests.
+     * @param {HTMLElement} bodies - The corresponding bodies of the requests.
+     */
     const headers = document.querySelectorAll('.request-header');
     const bodies = document.querySelectorAll('.request-body');
 
     for (let i = 0; i < headers.length; i++) {
         headers[i].addEventListener('click', () => {
+            // Close previously opened body if a different header is clicked
             for (let j = 0; j < headers.length; j++) {
                 if (headers[j].classList.contains('request-header-selected') && j !== i) {
-                    // if (headers[j].classList.contains('request-header-selected')) { <---usare questa linea per l' apertura della request alternativa
                     headers[j].classList.toggle('request-header-selected');
                     bodies[j].classList.toggle('hidden');
                 }
@@ -17,7 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    //toggle della classe 'hidden' del form per assegnare l' utente
+    /**
+     * Toggles the 'hidden' class on the user assignment form when the corresponding button is clicked.
+     * 
+     * @param {HTMLElement} assignUserButton - The button to trigger the user assignment form toggle.
+     * @param {HTMLElement} assignUserContent - The content of the user assignment form.
+     */
     const assignUserButton = document.querySelectorAll('.assign-user-button');
     const assignUserContent = document.querySelectorAll('.assign-user-content');
 
@@ -27,7 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    //toggle della classe 'hidden' del form per assegnare lo status
+    /**
+     * Toggles the 'hidden' class on the status assignment form when the corresponding button is clicked.
+     * 
+     * @param {HTMLElement} assignStatusButton - The button to trigger the status assignment form toggle.
+     * @param {HTMLElement} assignStatusForm - The content of the status assignment form.
+     */
     const assignStatusButton = document.querySelectorAll('.assign-status-button');
     const assignStatusForm = document.querySelectorAll('.assign-status-content');
 
@@ -37,15 +67,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    //toggle della classe hidden del form per assegnare l utente tramite il bottone 'X'
+    /**
+     * Toggles the 'hidden' class on the user assignment form when the close button is clicked.
+     * 
+     * @param {HTMLElement} closeUserAssignmentButtons - The buttons used to close the user assignment form.
+     * @param {HTMLElement} assignUserContent - The content of the user assignment form.
+     */
     const closeUserAssignmentButtons = document.querySelectorAll('.close-user-assignment');
-    const closeStatusAssignmentButtons = document.querySelectorAll('.close-status-assignment');
-
+    
     for (let i = 0; i < closeUserAssignmentButtons.length; i++) {
         closeUserAssignmentButtons[i].addEventListener('click', () => {
             assignUserContent[i].classList.toggle('hidden');
         });
     }
+
+    /**
+     * Toggles the 'hidden' class on the status assignment form when the close button is clicked.
+     * 
+     * @param {HTMLElement} closeStatusAssignmentButtons - The buttons used to close the status assignment form.
+     * @param {HTMLElement} assignStatusForm - The content of the status assignment form.
+     */
+    const closeStatusAssignmentButtons = document.querySelectorAll('.close-status-assignment');
 
     for (let i = 0; i < closeStatusAssignmentButtons.length; i++) {
         closeStatusAssignmentButtons[i].addEventListener('click', () => {
@@ -53,4 +95,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
