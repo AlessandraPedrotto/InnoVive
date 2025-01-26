@@ -62,8 +62,8 @@ public class ForgotPasswordService {
                     "    </p>" +
                     "    <p style='margin-top: 20px;'>Questo link scadrà tra 15 minuti. Se non hai chiesto il reset della password ingora questa mail.</p>" +
                     "    <p style='margin-top: 20px;'>Grazie e buon proseguimento di giornata.</p>" +
-                    "    <p style='margin-top: 20px;'>Team Cascina Caccia</p>" +
-                    "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cascinaCaccia_logo_footer.png' alt='Company Footer Logo' style='width: 150px;'/>" +
+                    "    <p style='margin-top: 20px;'>Team</p>" +
+                    "    <img src='https://cascinacaccia.net/wp-content/uploads/2018/05/cropped-logo-cascina-header-1.png' alt='Company Footer Logo' style='width: 200px;'/>" +
                     "  </div>" +
                     "  <div style='width: 100%%; height: 10px; background: linear-gradient(to right, #FFDD07, #F1921F, #E3007E);'></div>" +
                     "  <div style='background-color: rgba(255, 119, 0, 0.56); display: flex; flex-direction: column; align-items: center; padding: 20px; color: black; text-align: center;'>" +
