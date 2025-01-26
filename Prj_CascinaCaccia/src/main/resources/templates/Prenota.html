@@ -171,15 +171,15 @@
                 <input type="hidden" name="lang" id="lang-flag">
                 <div class="form-field">
                     <label for="nome" data-translate="label_nome" aria-label="nome"></label>
-                    <input type="text" id="nome" placeholder="Il tuo nome" name="name" aria-label="nome">
+                    <input type="text" id="nome" data-translate="placeholder_nome" name="name" aria-label="nome">
                 </div>
                 <div class="form-field">
                     <label for="cognome" data-translate="label_cognome" aria-label="cognome"></label>
-                    <input type="text" id="cognome" placeholder="Il tuo cognome" name="surname" aria-label="cognome">
+                    <input type="text" id="cognome" data-translate="placeholder_cognome" name="surname" aria-label="cognome">
                 </div>
                 <div class="form-field">
                     <label for="email" data-translate="label_mail" aria-label="email"></label>
-                    <input type="email" id="email" placeholder="La tua email" name="email" aria-label="email">
+                    <input type="email" id="email" data-translate="placeholder_mail" name="email" aria-label="email">
                 </div>
                 <div class="form-field" aria-label="categoria">
                     <label for="categoryId" data-translate="label_categoria"></label>
@@ -200,16 +200,16 @@
                 <div class="form-field" aria-label="messaggio">
                     <label for="messaggio" data-translate="label_messaggio"></label>
                     <textarea rows="10" cols="5" name="content" id="messaggio"
-                        placeholder="Raccontaci chi sei, cosa ti aspetti da questa visita e dicci le tue esigenze"></textarea>
+                        data-translate="placeholder_messaggio"></textarea>
                 </div>
                 <div class="checkboxes" aria-label="checkbox">
                     <div>
                         <input required type="checkbox" id="newsletter" name="newsletter" />
-                        <label for="newsletter">Acconsento al trattemento dei dati</label>
+                        <label for="newsletter" data-translate="checkbox_1"></label>
                     </div>
                     <div>
                         <input type="checkbox" id="privacy" name="privacy" />
-                        <label for="privacy">Iscriviti alla newsletter</label>
+                        <label for="privacy" data-translate="checkbox_2"></label>
                     </div>
                 </div>
                 <input type="date" id="hidden-datepicker-checkin" name="checkIn" aria-label="checkin" />
@@ -346,16 +346,16 @@
                 <div class="form-column">
                     <div class="info-form-field">
                         <label for="name" data-translate="label_nome"></label>
-                        <input type="text" id="name" name="name" required><br>
+                        <input type="text" id="name" name="name" data-translate="placeholder_nome" required><br>
                     </div>
                     <div class="info-form-field">
                         <label for="surname" data-translate="label_cognome"></label>
-                        <input type="text" id="surname" name="surname" required><br>
+                        <input type="text" id="surname" name="surname" data-translate="placeholder_cognome" required><br>
                     </div>
 
                     <div class="info-form-field">
                         <label for="email" data-translate="label_mail"></label>
-                        <input type="email" id="email" name="email" required><br>
+                        <input type="email" id="email" name="email" data-translate="placeholder_mail" required><br>
                     </div>
                 </div>
                 <div class="form-column">
@@ -376,7 +376,7 @@
                     </div>
                     <div class="info-form-field">
                         <label for="content-message" data-translate="label_messaggio"></label>
-                        <textarea rows="4" col="2" type="text" id="content-message" name="content" required></textarea>
+                        <textarea rows="4" col="2" type="text" id="content-message" name="content" data-translate="placeholder_messaggio2" required></textarea>
                     </div>
                     <div class="checkboxes">
 

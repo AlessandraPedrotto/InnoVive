@@ -123,5 +123,11 @@
     "popup.success.user.claim": "Successo!",
     "popup.error.claim": "Attenzione!",
     "popup.no.results": "Nessun risultato",
-    "popup.no.result": "Nessun risultato trovato"
+    "popup.no.result": "Nessun risultato trovato",
+    
+    "placeholder_messaggio": "Raccontaci chi sei, cosa ti aspetti da questa visita e dicci le tue esigenze",
+    "placeholder_messaggio2": "Hai delle domande? Scrivile qui",
+    "placeholder_mail": "La tua email",
+    "placeholder_cognome": "Il tuo cognome",
+    "placeholder_nome": "Il tuo nome"
 }
