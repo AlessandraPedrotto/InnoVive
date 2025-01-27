@@ -3,4 +3,4 @@ User-agent: *
 Disallow: /login
 
 # Specificare la sitemap
-Sitemap: https://www.educatiOn.com/sitemap.xml
+Sitemap: https://www.educationcascinacaccia.it/sitemap.xml
