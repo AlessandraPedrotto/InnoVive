@@ -592,7 +592,7 @@ public class AdminController {
     		userService.deleteUserById(userId);
     		
     		//add success message to redirect attributes
-            redirectAttributes.addFlashAttribute("success", "Utente eliminatocon successo!");
+            redirectAttributes.addFlashAttribute("success", "Utente eliminato con successo!");
         } catch (Exception e) {
             //add error message to redirect attributes if an exception occurs
             redirectAttributes.addFlashAttribute("error", "Errore durante la registrazione, riprova.");
@@ -667,7 +667,7 @@ public class AdminController {
 
         //validate password format
         if (!isValidPassword(user.getPassword())) {
-        	redirectAttributes.addFlashAttribute("error", "Password must be at least 8 characters long, contain an uppercase letter, a number, and a special character.");
+        	redirectAttributes.addFlashAttribute("error", "La password deve essere di almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale.");
             return "UserRegister";  
         }
         
