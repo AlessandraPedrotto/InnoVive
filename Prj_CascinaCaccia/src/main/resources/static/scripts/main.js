@@ -346,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
   const successMessage = document.querySelector('[data-success]')?.getAttribute('data-success');
   const errorMessage = document.querySelector('[data-error]')?.getAttribute('data-error');
+  const errorSession = document.querySelector('[data-error-session]')?.getAttribute('data-error-session');
   const noResultsMessage = document.querySelector('[data-no-results]')?.getAttribute('data-no-results');
   const noMessageMessage = document.querySelector('[data-no-message]')?.getAttribute('data-no-message');
 
@@ -405,6 +406,10 @@ document.addEventListener('DOMContentLoaded', function () {
       popupClaim.textContent = getTranslation('popup.success.claim');
   } else if (errorMessage) {
       showPopup(errorMessage);
+      popupLogo.innerHTML = errorLogo;
+      popupClaim.textContent = getTranslation('popup.error.claim');
+  }  else if (errorSession) {
+      showPopup(errorSession);
       popupLogo.innerHTML = errorLogo;
       popupClaim.textContent = getTranslation('popup.error.claim');
   } else if (noResultsMessage) {

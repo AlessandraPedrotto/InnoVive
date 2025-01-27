@@ -83,7 +83,7 @@ public class ForgotPasswordController {
         	if(lang.equals("it")) {
         		 model.addAttribute("error", "Non esiste nessun utente con questa mail.");
         	}else {
-        		 model.addAttribute("error", "english");
+        		 model.addAttribute("error", "There is no user with this email.");
         	}
            
         }
