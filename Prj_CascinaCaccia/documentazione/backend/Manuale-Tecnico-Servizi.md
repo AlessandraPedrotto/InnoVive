@@ -1,4 +1,5 @@
-## Servizzi
+## Servizi
+
 ### UserService
 ##### Descrizione Generale
 UserService è una classe di servizio che gestisce tutte le operazioni relative agli utenti all'interno del sistema. Queste operazioni comprendono la registrazione di un nuovo utente, la gestione delle credenziali di accesso, la modifica dei dettagli dell'utente (come nome, cognome e immagine del profilo), e la gestione dei ruoli. Inoltre, fornisce funzionalità per il recupero e l'aggiornamento delle informazioni utente, la gestione della password, e la verifica dell'uso delle email già registrate.
@@ -6,7 +7,7 @@ La classe implementa l'interfaccia UserDetailsService di Spring Security, consen
 ##### Dipendenze
 
 * UserDAO: Interfaccia del repository per l'accesso al database degli utenti.
-* UserImageDAO: Interfaccia del repository per l'accesso al database delle immagini degli utenti.
+* UserImageDAO: Interfaccia del repository per l'accesso al database delle immagini.
 * PasswordEncoder: Encoder per la gestione delle password sicure.
 * BookingFormService: Servizio per gestire i moduli di prenotazione (Lazy-loaded).
 * SessionRegistry: Registry delle sessioni per la gestione delle sessioni attive (Lazy-loaded).
@@ -19,7 +20,7 @@ Questo metodo aggiorna lo stato dell'utente e l'orario dell'ultimo accesso nel d
 
 ##### markInactiveUsersOffline
 ###### Descrizione:
-Questo metodo controlla periodicamente (ogni 2 minuti) gli utenti che sono marcati come "ONLINE" ma non hanno aggiornato il loro orario dell'ultimo accesso negli ultimi 10 minuti. Se vengono trovati utenti inattivi, il loro stato viene aggiornato a "OFFLINE" e vengono disconnessi dal sistema.
+Questo metodo controlla periodicamente (ogni 2 minuti) gli utenti che sono marcati come "ONLINE" ma che da 10 minuti o più non hanno avuto alcun tipo di attività sul sito. Se vengono trovati utenti inattivi, il loro stato viene aggiornato a "OFFLINE" e vengono disconnessi dal sistema.
 
 ##### logoutUserByUsername
 ###### Descrizione:
@@ -55,7 +56,7 @@ Questo metodo verifica se un'email è già in uso da un altro utente nel sistema
 
 ##### getUserByEmail
 ###### Descrizione:
-Recupera l'utente associato all'email dell'utente autenticato. Questo metodo usa l'oggetto principal, che rappresenta l'utente attualmente autenticato, per estrarre l'email e cercare l'utente nel database.
+Recupera l'utente associato all'email.
 
 ##### getUserById
 ###### Descrizione:
@@ -95,6 +96,8 @@ Recupera tutti gli utenti dal database. Questo metodo può essere utilizzato per
 ###### Descrizione:
 Aggiorna il nome e il cognome di un utente identificato dal suo ID. I nuovi valori di vengono salvati nel database.
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ### ForgotPasswordService
 ##### Descrizione Generale
 ForgotPasswordService gestisce tutte le operazioni relative al processo di reset della password. Questo servizio è incaricato di generare un token per il reset della password, inviare un'email all'utente con il link per il reset, verificare se un token di reset è scaduto, e recuperare un token utilizzando il suo valore. Inoltre, gestisce la pulizia periodica dei token di reset scaduti per mantenere il sistema sicuro. Il servizio utilizza il meccanismo di invio di email in formato HTML, includendo link personalizzati e informazioni aggiuntive per un'esperienza utente migliore.
@@ -104,13 +107,6 @@ ForgotPasswordService gestisce tutte le operazioni relative al processo di reset
 * JavaMailSender: Fornisce il supporto per inviare email in formato HTML (incluso il reset link) agli utenti.
 
 ##### Metodi
-##### sendResetEmail
-###### Descrizione:
-Questo metodo genera un token di reset per l'utente, crea il link di reset della password e invia un'email all'utente con il link di reset. L'email è formattata in HTML e include il nome e cognome dell'utente, un link per il reset della password, e un messaggio che avvisa che il link scadrà in 15 minuti.
-
-##### sendHtmlEmail
-###### Descrizione:
-Questo metodo invia un'email formattata in HTML all'utente. Viene utilizzato dal metodo sendResetEmail per inviare l'email contenente il link di reset della password.
 
 ##### sendResetEmail
 ###### Descrizione:
@@ -128,14 +124,17 @@ Questo metodo genera un token univoco di reset della password per l'utente speci
 ###### Descrizione:
 Questo metodo elimina un token di reset della password dal database e "flush" (applica) le modifiche, garantendo che il token non venga più utilizzato.
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ### FilterService
 ##### Descrizione Generale
-Il servizio FilterService offre una serie di metodi per filtrare, ordinare e paginare gli utenti nel database, semplificando la gestione e la visualizzazione di grandi quantità di dati. Fornisce funzionalità per recuperare tutti gli utenti, ordinare la lista in base al cognome, cercare gli utenti per email, nome o cognome, e suddividere i risultati in pagine. L'uso di questi metodi consente di ottenere informazioni in modo efficiente e mirato, migliorando la navigabilità e l'usabilità dell'applicazione.
+Il servizio FilterService offre una serie di metodi per filtrare, ordinare e paginare gli elementi nel database, semplificando la gestione e la visualizzazione di grandi quantità di dati. Fornisce funzionalità per recuperare tutti gli utenti, ordinare la lista in base al cognome, cercare gli utenti per email, nome o cognome, e suddividere i risultati in pagine. L'uso di questi metodi consente di ottenere informazioni in modo efficiente e mirato, migliorando la navigabilità e l'usabilità dell'applicazione.
 
 ##### Dipendenze
 * UserDAO: Gestisce l'accesso al database per le operazioni relative agli utenti, come il recupero dell'elenco di tutti gli utenti.
 
 ##### Metodi
+
 ##### getAllUsers
 ###### Descrizione:
 Recupera tutti gli utenti presenti nel database. Questo metodo restituisce una lista completa di tutti gli utenti, utile per operazioni che richiedono l'accesso a tutti i dati disponibili.
@@ -150,7 +149,7 @@ Esegue la ricerca di utenti in base alla query fornita. Se la query contiene uno
 
 ##### handleSinglePartQuery
 ###### Descrizione:
-Gestisce le query che contengono un solo termine (nome, cognome, o email). La ricerca avviene separatamente per ogni campo (email, nome, cognome) e i risultati vengono combinati ed eliminati i duplicati.
+Gestisce le query che contengono un solo termine (nome, cognome, o email). La ricerca avviene separatamente per ogni campo (email, nome, cognome) e i risultati vengono combinati.
 
 ##### getPaginatedList
 ###### Descrizione:
@@ -202,7 +201,9 @@ Filtra una lista di oggetti Generalform in base alla presenza o assenza di un mo
 
 ##### filterByDateRange
 ###### Descrizione:
-Filtra una lista di oggetti Generalform restituendo solo quelli la cui data di sottomissione (submissionDate) rientra nell'intervallo di date specificato.
+Filtra una lista di oggetti Generalform restituendo solo quelli la cui data di invio (submissionDate) rientra nell'intervallo di date specificato.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### InformationFormService
 ##### Descrizione generale
@@ -221,9 +222,10 @@ In sintesi, questa classe gestisce le operazioni relative ai moduli di informazi
 * UserDAO: Gestisce le operazioni dirette sugli utenti nel database.
 
 ##### Metodi
+
 ##### sendEmailToAdmin
 ###### Descrizione:
-Questo metodo invia un'email all'amministratore per informarlo di una nuova sottomissione del modulo di informazioni. L'email contiene dettagli sul modulo inviato, come il nome e il cognome dell'utente, la sua email, la categoria scelta, e il contenuto del messaggio.
+Questo metodo invia un'email all'amministratore per informarlo di un nuovo modulo di informazioni in arrivo. L'email contiene dettagli sul modulo inviato, come il nome e il cognome dell'utente, la sua email, la categoria scelta, e il contenuto del messaggio.
 
 ##### sendConfirmationEmail
 ###### Descrizione:
@@ -253,7 +255,7 @@ Il metodo sendRemovedTaskEmail ha l'obiettivo di inviare un'email a un utente pe
 ###### Descrizione:
 Il metodo removeUser rimuove un utente da un modulo di informazioni specifico. Controlla se l'utente è effettivamente assegnato al modulo e, in tal caso, lo rimuove e invia un'email di notifica all'utente informandolo della rimozione.
 
-##### List<Generalform> getAssignedFormsByUser(String userId)
+##### getAssignedFormsByUser
 ###### Descrizione:
 Il metodo getAssignedFormsByUser recupera tutti i moduli di informazioni (tasks) a cui un determinato utente è assegnato. Restituisce una lista di entità Generalform correlate ai moduli assegnati.
 
@@ -264,6 +266,8 @@ Il metodo assignStatus assegna uno stato specifico a un modulo di informazioni (
 ##### saveInformationForm
 ###### Descrizione:
 Il metodo saveInformationForm salva un modulo di informazioni (task) nel database. Questo metodo persiste l'entità Informationform fornita come parametro.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### BookingFormService
 ##### Descrizione generale
@@ -277,6 +281,7 @@ Il servizio BookingFormService gestisce la logica aziendale relativa ai moduli d
 * UserDAO: Gestisce l'accesso al database per la gestione dei dati degli utenti.
 
 ##### Metodi
+
 ##### validateAndSubmitBookingForm
 ###### Descrizione:
 Questo metodo valida le date di check-in e check-out fornite per una prenotazione. Verifica che le date siano almeno un giorno dopo la data corrente, che il check-out non avvenga prima del check-in e che entrambe le date siano valide. Se tutte le condizioni sono soddisfatte, la prenotazione può essere considerata valida, altrimenti vengono restituiti messaggi di errore per ogni problema riscontrato.
