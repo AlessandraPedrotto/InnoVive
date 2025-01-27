@@ -25,7 +25,7 @@ Installare un server manager, come XAMPP. È possibile scaricarlo dal sito uffic
 
 1 . Installare XAMPP e, una volta completata l'installazione, avviare il servizio MySQL facendo clic su Start nel pannello di controllo di XAMPP.
 ![alt text](img/image-6.png)
-2 . Fare clic su Admin, che aprirà la pagina: http://localhost/phpmyadmin/index.php. Nella pagina di phpMyAdmin, creare un nuovo database chiamato caccia, selezionarlo e fare clic su Importa. Caricare il file caccia.sql dalla cartella del progetto, mantenendo le impostazioni di default.
+2 . Fare clic su Admin, che aprirà la pagina phpMyAdmin. Nella pagina di phpMyAdmin, creare un nuovo database chiamato caccia, selezionarlo e fare clic su Importa. Caricare il file caccia.sql dalla cartella del progetto, mantenendo le impostazioni di default.
 ![alt text](img/image-7.png)
 
 #### Step 4: Importare il Progetto sull'IDE
