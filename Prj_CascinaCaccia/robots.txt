@@ -1,0 +1,13 @@
+# Bloccare l'accesso alla cartella
+User-agent: *
+Disallow: /login
+Disallow: /profile
+Disallow: /admin
+Disallow: /yourTasks
+Disallow: /changePassword
+Disallow: /request
+Disallow: /profileImage
+Disallow: /error
+
+# Specificare la sitemap
+Sitemap: https://www.educationcascinacaccia.it/sitemap.xml
